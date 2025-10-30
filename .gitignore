@@ -1,0 +1,31 @@
+Dependency Directories
+
+/node_modules
+/dist
+/build
+
+Environment Variables
+
+.env
+.env.*
+.env.local
+
+Supabase Local Development Files
+
+/supabase/.temp/
+/supabase/db
+/supabase/config.toml
+*.db
+
+Log and Cache Files
+
+*.log
+*.tmp
+.cache
+.DS_Store # macOS files
+
+Build and IDE-specific files
+
+.vscode/
+*.sublime-workspace
+Thumbs.db
