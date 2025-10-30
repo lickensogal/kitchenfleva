@@ -3,213 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modal Component</title>
+    <title>Kitchen Fleva Reusable Modal</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Inter font -->
+    <!-- Use Inter font family -->
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f7f7f7;
+        body { font-family: 'Inter', sans-serif; }
+        /* Custom styles for modal overlay and center positioning */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 50; /* Above navbar and sidebar */
+            transition: opacity 0.3s ease-in-out;
         }
-
-        /* Modal specific styling for smooth transition */
-        .modal-container {
-            transition: opacity 0.3s ease, visibility 0.3s ease;
-        }
-
-        /* Custom animation for the dialog entrance */
-        .modal-dialog {
-            animation: zoom-in 0.3s ease-out;
-        }
-
-        @keyframes zoom-in {
-            from {
-                transform: scale(0.95);
-                opacity: 0;
-            }
-            to {
-                transform: scale(1);
-                opacity: 1;
-            }
+        .modal-content {
+            max-height: 90vh;
+            max-width: 95%;
+            width: 400px;
+            transform: translateY(-50px);
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100 p-10">
 
-    <!-- 1. MODAL CONTAINER (Hidden by default) -->
-    <div id="generic-modal" 
-         class="modal-container hidden fixed inset-0 z-50 overflow-y-auto" 
-         aria-labelledby="modal-title" role="dialog" aria-modal="true">
-
-        <!-- 2. Modal Backdrop (Clickable area outside the dialog) -->
-        <div class="fixed inset-0 bg-gray-900 bg-opacity-75 transition-opacity" onclick="hideModal()"></div>
-
-        <!-- 3. Modal Centering Wrapper -->
-        <div class="flex items-center justify-center min-h-full p-4 sm:p-0">
+    <!-- Kitchen Fleva Reusable Modal Component (Hidden by default) -->
+    <div id="reusable-modal-overlay" class="modal-overlay fixed inset-0 flex items-center justify-center opacity-0 pointer-events-none">
+        
+        <div id="modal-content-wrapper" class="modal-content bg-white rounded-xl p-6 shadow-2xl opacity-0">
             
-            <!-- 4. Modal Dialog (The actual content box) -->
-            <div class="modal-dialog bg-white rounded-xl shadow-2xl overflow-hidden transform transition-all sm:my-8 sm:w-full sm:max-w-lg">
-                
-                <!-- Dialog Content -->
-                <div class="px-6 py-8">
-                    <div class="sm:flex sm:items-start">
-                        <!-- Icon Placeholder (e.g., Success, Error, Info icon) -->
-                        <div id="modal-icon-wrapper" class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-indigo-100 sm:mx-0 sm:h-10 sm:w-10">
-                            <!-- Default Info Icon -->
-                            <svg id="modal-icon" class="h-6 w-6 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                        
-                        <!-- Text Content -->
-                        <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left w-full">
-                            <h3 class="text-xl leading-6 font-bold text-gray-900" id="modal-title">
-                                Welcome to Kitchen Fleva!
-                            </h3>
-                            <div class="mt-4">
-                                <p id="modal-body" class="text-sm text-gray-500">
-                                    This is a reusable message box component. Call <code>showModal()</code> to display custom content.
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Action Buttons -->
-                <div class="bg-gray-50 px-6 py-3 flex flex-row-reverse space-x-2 space-x-reverse">
-                    <button type="button" 
-                            id="modal-primary-button" 
-                            class="w-full sm:w-auto inline-flex justify-center rounded-lg border border-transparent shadow-sm px-4 py-2 bg-indigo-600 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm transition duration-150" 
-                            onclick="hideModal()">
-                        OK
-                    </button>
-                    <button type="button" 
-                            id="modal-secondary-button" 
-                            class="hidden w-full sm:w-auto inline-flex justify-center rounded-lg border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:text-sm transition duration-150" 
-                            onclick="hideModal()">
-                        Cancel
-                    </button>
-                </div>
-
+            <div class="flex justify-between items-start border-b pb-3 mb-4">
+                <h3 id="modal-title" class="text-xl font-bold text-gray-900">Modal Title</h3>
+                <!-- Close Button -->
+                <button onclick="hideModal()" class="text-gray-400 hover:text-gray-600 transition" aria-label="Close modal">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
             </div>
+
+            <!-- Modal Body Content -->
+            <div id="modal-body" class="text-gray-700 space-y-4">
+                <p>This is the body content of the modal. It can contain warnings, confirmation requests, or general information.</p>
+                <p>Use the JavaScript functions to update this dynamically.</p>
+            </div>
+
+            <!-- Modal Footer / Action Buttons -->
+            <div id="modal-footer" class="mt-6 pt-4 border-t flex justify-end space-x-3">
+                <!-- Primary Action Button (e.g., Confirm) -->
+                <button id="modal-primary-btn" class="px-4 py-2 text-sm font-semibold rounded-lg text-white bg-amber-600 hover:bg-amber-700 transition hidden">
+                    Confirm
+                </button>
+                <!-- Secondary Action Button (e.g., Cancel or OK) -->
+                <button onclick="hideModal()" id="modal-secondary-btn" class="px-4 py-2 text-sm font-semibold rounded-lg text-gray-700 bg-gray-200 hover:bg-gray-300 transition">
+                    OK
+                </button>
+            </div>
+            
         </div>
     </div>
 
-    <!-- Demonstration Button -->
-    <div class="p-10">
-        <button onclick="showDemoModal()" class="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-md hover:bg-indigo-700 transition">
-            Show Demo Modal
-        </button>
-    </div>
+    <!-- Example usage / demonstration -->
+    <button onclick="showExampleAlert()" class="bg-blue-500 text-white p-3 rounded-lg shadow-md hover:bg-blue-600 transition">
+        Show Success Modal
+    </button>
+    <button onclick="showExampleConfirm()" class="bg-red-500 text-white p-3 rounded-lg shadow-md hover:bg-red-600 transition ml-4">
+        Show Confirmation Modal
+    </button>
+    
 
     <script>
+        const modalOverlay = document.getElementById('reusable-modal-overlay');
+        const modalContentWrapper = document.getElementById('modal-content-wrapper');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        const modalPrimaryBtn = document.getElementById('modal-primary-btn');
+        const modalSecondaryBtn = document.getElementById('modal-secondary-btn');
+        
+        // Ensure modal is hidden on load
+        modalOverlay.classList.add('opacity-0', 'pointer-events-none');
+        modalContentWrapper.classList.add('opacity-0');
+
+
         /**
-         * Generic function to show the modal with custom content and actions.
-         * @param {string} title - The main title of the modal.
-         * @param {string} message - The body message content.
-         * @param {string} [type='info'] - The type of message ('info', 'success', 'error', 'warning'). Changes icon and colors.
-         * @param {object} [primaryAction] - Optional configuration for the primary button. { text: 'Confirm', callback: function }
-         * @param {object} [secondaryAction] - Optional configuration for the secondary button (e.g., 'Cancel'). { text: 'Cancel', callback: function }
+         * Shows the modal and updates its content and behavior.
+         * @param {string} title - The title of the modal.
+         * @param {string} bodyHtml - The HTML content for the modal body.
+         * @param {function | null} onConfirm - Function to run when the primary button is clicked. If null, the primary button is hidden.
+         * @param {string} primaryText - Text for the primary (confirm) button.
+         * @param {string} secondaryText - Text for the secondary (cancel/close) button.
          */
-        window.showModal = function(title, message, type = 'info', primaryAction = null, secondaryAction = null) {
-            const modal = document.getElementById('generic-modal');
-            const titleEl = document.getElementById('modal-title');
-            const bodyEl = document.getElementById('modal-body');
-            const iconWrapper = document.getElementById('modal-icon-wrapper');
-            const iconEl = document.getElementById('modal-icon');
-            const primaryBtn = document.getElementById('modal-primary-button');
-            const secondaryBtn = document.getElementById('modal-secondary-button');
-            
-            // 1. Set Text Content
-            titleEl.textContent = title;
-            bodyEl.innerHTML = message;
+        window.showModal = function({
+            title = "Notification", 
+            bodyHtml = "<p>Operation complete.</p>", 
+            onConfirm = null, 
+            primaryText = "Confirm", 
+            secondaryText = "Close"
+        }) {
+            // Update content
+            modalTitle.textContent = title;
+            modalBody.innerHTML = bodyHtml;
+            modalSecondaryBtn.textContent = secondaryText;
 
-            // 2. Set Colors and Icons based on type
-            let iconSvgPath, bgColor, textColor;
+            // Handle primary button
+            if (onConfirm) {
+                modalPrimaryBtn.textContent = primaryText;
+                modalPrimaryBtn.classList.remove('hidden');
 
-            switch (type.toLowerCase()) {
-                case 'success':
-                    iconSvgPath = "M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z";
-                    bgColor = 'bg-green-100';
-                    textColor = 'text-green-600';
-                    break;
-                case 'error':
-                    iconSvgPath = "M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z";
-                    bgColor = 'bg-red-100';
-                    textColor = 'text-red-600';
-                    break;
-                case 'warning':
-                    iconSvgPath = "M12 9v2m0 4h.01M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.82 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.82 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.82-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.82-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z"; // Placeholder for an exclamation icon
-                    bgColor = 'bg-yellow-100';
-                    textColor = 'text-yellow-600';
-                    break;
-                case 'info':
-                default:
-                    iconSvgPath = "M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z";
-                    bgColor = 'bg-indigo-100';
-                    textColor = 'text-indigo-600';
-                    break;
-            }
+                // Clear previous event listeners
+                const newPrimaryBtn = modalPrimaryBtn.cloneNode(true);
+                modalPrimaryBtn.parentNode.replaceChild(newPrimaryBtn, modalPrimaryBtn);
 
-            // Apply classes and update icon
-            iconWrapper.className = `mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full ${bgColor} sm:mx-0 sm:h-10 sm:w-10`;
-            iconEl.className = `h-6 w-6 ${textColor}`;
-            iconEl.querySelector('path').setAttribute('d', iconSvgPath);
-
-            // 3. Configure Primary Button
-            primaryBtn.textContent = primaryAction?.text || 'OK';
-            primaryBtn.onclick = () => {
-                hideModal();
-                if (primaryAction && primaryAction.callback) {
-                    primaryAction.callback();
-                }
-            };
-            
-            // 4. Configure Secondary Button
-            if (secondaryAction) {
-                secondaryBtn.textContent = secondaryAction.text;
-                secondaryBtn.classList.remove('hidden');
-                secondaryBtn.onclick = () => {
+                // Add new listener that calls the provided function and hides the modal
+                newPrimaryBtn.addEventListener('click', () => {
+                    onConfirm();
                     hideModal();
-                    if (secondaryAction.callback) {
-                        secondaryAction.callback();
-                    }
-                };
+                });
             } else {
-                secondaryBtn.classList.add('hidden');
+                modalPrimaryBtn.classList.add('hidden');
+                
+                // Clear any existing listeners on the now-hidden button
+                modalPrimaryBtn.onclick = null;
             }
-            
-            // 5. Show Modal
-            modal.classList.remove('hidden');
+
+            // Show transitions
+            modalOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            modalContentWrapper.classList.remove('opacity-0', 'translate-y-[-50px]');
         };
 
+        /**
+         * Hides the modal.
+         */
         window.hideModal = function() {
-            document.getElementById('generic-modal').classList.add('hidden');
+            modalOverlay.classList.add('opacity-0', 'pointer-events-none');
+            modalContentWrapper.classList.add('opacity-0', 'translate-y-[-50px]');
         };
 
-        // --- Demo Function ---
-        window.showDemoModal = function() {
-            showModal(
-                "Confirm Deletion",
-                "Are you sure you want to delete this **Kitchen Fleva** recipe? This action cannot be undone.",
-                'error',
-                {
-                    text: 'Yes, Delete Recipe',
-                    callback: () => console.log('Recipe deletion confirmed.')
-                },
-                {
-                    text: 'Cancel',
-                    callback: () => console.log('Deletion cancelled.')
-                }
-            );
+
+        // --- Demonstration Functions ---
+
+        function showExampleAlert() {
+            showModal({
+                title: "Recipe Saved!",
+                bodyHtml: `<p>Your amazing Lemon Chicken recipe has been successfully saved to your profile and will be published shortly.</p>`,
+                onConfirm: null, // Hides the primary button
+                secondaryText: "Great!"
+            });
         }
 
-        // Initialize with a default hidden state
-        hideModal();
-    </script>
+        function showExampleConfirm() {
+            const deleteAction = () => {
+                console.log("CONFIRMATION RECEIVED: Recipe deleted!");
+                // Here you would execute the deletion
+                showModal({
+                    title: "Deleted",
+                    bodyHtml: "<p class='text-red-600 font-semibold'>The Draft Recipe has been removed permanently.</p>",
+                    secondaryText: "OK"
+                });
+            };
+            
+            showModal({
+                title: "Confirm Deletion",
+                bodyHtml: `<p>Are you sure you want to delete your draft recipe? This action cannot be undone.</p>`,
+                onConfirm: deleteAction,
+                primaryText: "Yes, Delete",
+                secondaryText: "Cancel"
+            });
+        }
 
+        // Hide modal when clicking the overlay (but not the content)
+        modalOverlay.addEventListener('click', function(event) {
+            if (event.target === modalOverlay) {
+                hideModal();
+            }
+        });
+    </script>
 </body>
-  </html>
-  
+</html>
