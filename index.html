@@ -1,85 +1,252 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Kitchen Fleva: Made with Passion. Served with Fleva. Add Some Fleva to Your Kitchen! Authentic Kenyan-inspired recipes and digital products.">
-    <title>Kitchen Fleva | Made with Passion. Served with Fleva.</title>
-
-    <!-- Font Imports (Poppins, Lato, Playfair Display, Roboto) -->
-    <!-- In a production build, these should be self-hosted or linked for performance -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:ital@1&family=Poppins:wght@500;600;700&family=Roboto:wght@500;600&display=swap" rel="stylesheet">
-    
-    <!-- External Dependencies: Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    
-    <!-- Core Stylesheet -->
-    <link rel="stylesheet" href="style.css">
-
+    <title>Kitchen Fleva - Your Home for Delicious Recipes</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font family -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .recipe-image {
+            height: 200px;
+        }
+        .hero-background {
+            background-image: url('https://placehold.co/1920x600/F59E0B/FFFFFF?text=Kitchen+Fleva+Hero');
+            background-size: cover;
+            background-position: center;
+        }
+        .rating-star {
+            color: #FFC107; /* Amber/Yellow for stars */
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+    </style>
 </head>
-<body>
+<body class="bg-gray-50">
 
-    <!-- 
-        1. GLOBAL HEADER CONTAINER 
-        Content from /components/navbar.html will be loaded here by app.js/router.js
-    -->
-    <header id="header-container" class="sticky-header">
-        <!-- Placeholder for Navbar component -->
-        <div class="header-loader-placeholder">
-            <span class="site-logo">Kitchen Fleva</span>
-            <div class="header-actions">
-                <button id="theme-toggle" class="icon-button"><i class="fas fa-sun"></i></button>
-                <select id="language-selector" aria-label="Language Selector">
-                    <option value="en">EN</option>
-                    <option value="sw">SW</option>
-                    <option value="fr">FR</option>
-                    <option value="es">ES</option>
-                </select>
-                <button id="mobile-menu-toggle" class="icon-button"><i class="fas fa-bars"></i></button>
+    <!-- 1. NAVIGATION BAR (components/navbar.html content) -->
+    <!-- START NAVBAR -->
+    <nav id="kitchenFlevaNavbar" class="bg-white shadow-lg border-b border-gray-100 sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+
+                <!-- Logo and Branding -->
+                <div class="flex-shrink-0 flex items-center">
+                    <a href="/" class="text-2xl font-extrabold text-amber-600 tracking-tight">
+                        Kitchen <span class="text-gray-900">Fleva</span>
+                    </a>
+                </div>
+
+                <!-- Desktop Navigation Links -->
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
+                    <a href="/index.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-amber-500 text-sm font-medium text-amber-600 transition duration-150">Home</a>
+                    <a href="/recipes.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:border-amber-500 hover:text-amber-600 transition duration-150">Recipes</a>
+                    <a href="/blog.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:border-amber-500 hover:text-amber-600 transition duration-150">Blog</a>
+                    <a href="/submit.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:border-amber-500 hover:text-amber-600 transition duration-150">Submit Recipe</a>
+                </div>
+
+                <!-- Auth Buttons / Mobile Menu Button -->
+                <div class="flex items-center">
+                    <!-- Search Icon (Visible on desktop/tablet) -->
+                    <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 mr-2 hidden sm:block" aria-label="Search">
+                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    </button>
+
+                    <div id="auth-buttons" class="hidden sm:flex sm:items-center space-x-2">
+                        <a id="login-link" href="/pages/login.html" class="text-sm font-medium text-gray-600 hover:text-amber-600 transition duration-150">Log In</a>
+                        <span id="separator" class="text-gray-300">|</span>
+                        <a id="register-link" href="/pages/register.html" class="text-sm font-medium text-gray-600 hover:text-amber-600 transition duration-150">Register</a>
+                        
+                        <div id="user-menu" class="hidden relative">
+                             <!-- Avatar/Dropdown Placeholder -->
+                            <button id="user-avatar-button" class="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white p-0" aria-label="User menu">
+                                <span class="sr-only">Open user menu</span>
+                                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            </button>
+                            <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none hidden" id="desktop-dropdown">
+                                <button id="logout-button" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign out</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Mobile menu button (Hamburger) -->
+                    <button type="button" id="mobile-menu-open-button" onclick="toggleSidebar()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-amber-500 sm:hidden" aria-controls="sidebar" aria-expanded="false" aria-label="Open sidebar menu">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                    </button>
+                </div>
             </div>
         </div>
-    </header>
+    </nav>
+    <!-- END NAVBAR -->
 
-    <!-- Global Alert/Notification Banner -->
-    <div id="global-alert-container" aria-live="polite"></div>
 
-    <!-- 
-        2. MAIN CONTENT AREA 
-        The router will dynamically load content partials (e.g., home.html, profile.html) here.
-    -->
-    <main id="app-content">
-        <!-- Initial loading spinner -->
-        <div id="initial-loading-spinner" class="full-screen-loader">
-            <div class="spinner-dot"></div>
-            <div class="spinner-dot"></div>
-            <div class="spinner-dot"></div>
-            <p>Loading Fleva...</p>
+    <!-- 2. SIDEBAR (components/sidebar.html content) -->
+    <!-- START SIDEBAR -->
+    <div id="kitchenFlevaSidebar" class="h-full fixed top-0 left-0 w-64 bg-white shadow-xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
+            <a href="/" class="text-2xl font-extrabold text-amber-600 tracking-tight">Kitchen Fleva</a>
+            <button onclick="toggleSidebar()" class="text-gray-400 hover:text-gray-600 transition" aria-label="Close sidebar">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
         </div>
-    </main>
 
-    <!-- 
-        3. FOOTER CONTAINER 
-        Content from /components/footer.html will be loaded here by app.js
-    -->
-    <footer id="footer-container">
-        <!-- Footer content placeholder -->
-    </footer>
+        <div class="p-6 border-b border-gray-100">
+            <div id="logged-out-section">
+                <p class="text-sm font-medium text-gray-500 mb-2">Welcome to Kitchen Fleva!</p>
+                <a href="/pages/login.html" class="block w-full text-center py-2 px-4 mb-2 text-sm font-semibold rounded-lg bg-amber-600 text-white shadow-md hover:bg-amber-700 transition">Log In</a>
+                <a href="/pages/register.html" class="block w-full text-center py-2 px-4 text-sm font-semibold rounded-lg text-amber-600 border border-amber-600 hover:bg-amber-50 transition">Register</a>
+            </div>
+
+            <div id="logged-in-section" class="hidden">
+                <p class="text-lg font-semibold text-gray-900 truncate mb-1" id="sidebar-user-display-name">Hello, User!</p>
+                <p class="text-xs text-gray-500 mb-3">ID: <span id="sidebar-user-display-id" class="font-mono text-xs">Loading...</span></p>
+                <button id="sidebar-logout-button" class="block w-full text-center py-2 px-4 text-sm font-semibold rounded-lg text-white bg-red-500 shadow-md hover:bg-red-600 transition">Sign Out</button>
+            </div>
+        </div>
+
+        <nav class="p-4 space-y-2">
+            <a href="/index.html" class="flex items-center space-x-3 p-3 rounded-lg text-amber-700 bg-amber-50 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-10l-2-2m2 2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                <span class="font-medium">Home</span>
+            </a>
+            <a href="/recipes.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zM12 15h.01M12 21h.01M12 3h.01M17.657 16.657L18 17m-6 0a5 5 0 100-10 5 5 0 000 10zM6.343 16.657L6 17m11.314-11.314L18 7M6.686 6.686L6 7"></path></svg>
+                <span class="font-medium">All Recipes</span>
+            </a>
+            <a href="/blog.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v3m-2 2l4 4m0 0l-4 4m4-4H7"></path></svg>
+                <span class="font-medium">Cooking Blog</span>
+            </a>
+            <a href="/submit.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                <span class="font-medium">Submit Recipe</span>
+            </a>
+
+            <a id="dashboard-link" href="/dashboard.html" class="hidden items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0h6"></path></svg>
+                <span class="font-medium">My Dashboard</span>
+            </a>
+        </nav>
+    </div>
+    <!-- END SIDEBAR -->
 
 
-    <!-- 
-        4. DEPENDENCIES & CORE SCRIPTS
-        Supabase SDK MUST be loaded before client scripts that use it.
-    -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script type="module" src="supabaseClient.js"></script>
-    <script type="module" src="router.js"></script>
-    <script type="module" src="app.js"></script>
+    <!-- MAIN CONTENT -->
+    <main class="relative z-10">
 
-    <!-- The modal component (/components/modal.html) will be injected here by ui.js -->
-    <div id="global-modal-container"></div>
-    
-</body>
-  </html>
-  
+        <!-- HERO SECTION + SEARCH BAR -->
+        <div class="hero-background text-white py-20 md:py-32">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                <h1 class="text-4xl sm:text-6xl font-extrabold mb-4 drop-shadow-lg">
+                    Discover Your Next <span class="text-amber-300">Culinary Adventure</span>
+                </h1>
+                <p class="text-xl sm:text-2xl font-medium mb-10 drop-shadow-md max-w-3xl mx-auto">
+                    Search thousands of recipes and cooking tips shared by home chefs just like you.
+                </p>
+
+                <!-- 3. SEARCH BAR (components/search-bar.html content) -->
+                <div class="max-w-xl mx-auto">
+                    <form id="recipe-search-form" class="flex items-center space-x-2 p-1 bg-white rounded-xl shadow-2xl border border-gray-200">
+                        <div class="flex items-center flex-grow p-2">
+                            <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                            <input 
+                                type="search" 
+                                id="search-input" 
+                                name="query"
+                                placeholder="Search for recipes, ingredients, or cuisines..." 
+                                aria-label="Search recipes"
+                                class="w-full text-gray-800 placeholder-gray-400 focus:outline-none text-base border-none ring-0 p-0"
+                                required
+                            >
+                        </div>
+                        <button 
+                            type="submit" 
+                            class="px-5 py-3 text-sm font-semibold rounded-lg text-white bg-amber-600 hover:bg-amber-700 transition duration-150 shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500"
+                        >
+                            Search
+                        </button>
+                    </form>
+                    <p id="search-feedback" class="mt-2 text-sm text-center text-white hidden"></p>
+                </div>
+            </div>
+        </div>
+        <!-- END HERO/SEARCH -->
+
+
+        <!-- POPULAR RECIPES SECTION -->
+        <section class="py-16">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-3xl font-extrabold text-gray-900 mb-8 border-b-2 border-amber-500 pb-2 inline-block">Popular Recipes</h2>
+                
+                <!-- Recipe Card Grid -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                    
+                    <!-- 4. RECIPE CARD 1 (components/card-recipe.html content) -->
+                    <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                        <a href="/recipe/lemon-chicken.html">
+                            <img class="w-full recipe-image object-cover object-center" 
+                                 src="https://placehold.co/600x400/F59E0B/FFFFFF?text=Lemon+Chicken" 
+                                 alt="Image of Lemon Herb Roasted Chicken">
+                        </a>
+                        <div class="p-5">
+                            <div class="mb-2"><span class="inline-flex items-center px-3 py-1 text-xs font-medium bg-amber-100 text-amber-800 rounded-full">Dinner</span></div>
+                            <a href="/recipe/lemon-chicken.html" class="block text-xl font-bold text-gray-900 hover:text-amber-600 transition duration-150 mb-2 leading-tight">Lemon Herb Roasted Chicken</a>
+                            <p class="text-gray-500 text-sm mb-4 line-clamp-3">A simple yet elegant roasted chicken recipe infused with fresh lemon, garlic, and aromatic herbs.</p>
+                            <div class="flex justify-between items-center text-sm text-gray-600">
+                                <div class="flex items-center space-x-1">
+                                    <span class="rating-star">★</span><span class="rating-star">★</span><span class="rating-star">★</span><span class="rating-star">★</span><span class="rating-star text-gray-300">★</span>
+                                    <span class="ml-1 text-xs font-semibold">(4.1/5)</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>45 min</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. RECIPE CARD 2 -->
+                    <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                        <a href="/recipe/spicy-tacos.html">
+                            <img class="w-full recipe-image object-cover object-center" 
+                                 src="https://placehold.co/600x400/D97706/FFFFFF?text=Spicy+Tacos" 
+                                 alt="Image of Spicy Street Tacos">
+                        </a>
+                        <div class="p-5">
+                            <div class="mb-2"><span class="inline-flex items-center px-3 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">Mexican</span></div>
+                            <a href="/recipe/spicy-tacos.html" class="block text-xl font-bold text-gray-900 hover:text-amber-600 transition duration-150 mb-2 leading-tight">Spicy Street Tacos (Quick Prep)</a>
+                            <p class="text-gray-500 text-sm mb-4 line-clamp-3">Authentic, fiery street tacos with a cilantro-lime slaw. Ready in under 30 minutes!</p>
+                            <div class="flex justify-between items-center text-sm text-gray-600">
+                                <div class="flex items-center space-x-1">
+                                    <span class="rating-star">★</span><span class="rating-star">★</span><span class="rating-star">★</span><span class="rating-star">★</span><span class="rating-star">★</span>
+                                    <span class="ml-1 text-xs font-semibold">(4.8/5)</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>25 min</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 4. RECIPE CARD 3 -->
+                    <div class="bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden">
+                        <a href="/recipe/choco-cake.html">
+                            <img class="w-full recipe-image object-cover object-center" 
+                                 src="https://placehold.co/600x400/4B5563/FFFFFF?text=Chocolate+Cake" 
+                                 alt="Image of Decadent Chocolate Lava Cake">
+                        </a>
+                        <div class="p-5">
+                            <div class="mb-2"><span class="inline-flex items-center px-3 py-1 text-xs font-medium bg-purple-100 text-purple-800 rounded-full">Dessert</span></div>
+                            <a href="/recipe/choco-cake.html" class="block text-xl font-bold text-gray-900 hover:text-amber-600 transition duration-150 mb-2 leading-tight">Decadent Chocolate Lava Cake</a>
+                            <p class="text-gray-500 text-sm mb-4 line-clamp-3">A rich, warm chocolate cake with a molten center. The ultimate dessert experience.</p>
+                            <div class="flex justify-between items-center text-sm text-gray-600">
+                                <div class="flex items-center space-x-1">
+                                    <span class="rating-star">★</span><span class="rating-star">★</span><span class="rating-star">★</span><span class="rating-star">★</span><span class="rating-star text-gray-300">★</span>
+                                    <span class="ml-1 text-xs font-semibold">(4.4/5)</span>
+                                </div>
+                                <div class="flex items-center space-x-1">
+                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="ro
