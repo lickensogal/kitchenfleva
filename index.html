@@ -248,7 +248,14 @@
                                     <span class="rating-star">★</span><span class="rating-star">★</span><span class="rating-star">★</span><span class="rating-star">★</span><span class="rating-star text-gray-300">★</span>
                                     <span class="ml-1 text-xs font-semibold">(4.4/5)</span>
                                 </div>
+                                <div class="flex items-center space-x-1">
+                                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                                    <span>60 min</span>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="text-center mt-12">
                     <a href="/recipes.html" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-amber-600 hover:bg-amber-700 transition">
@@ -526,6 +533,20 @@
         window.toggleSidebar = function() {
             sidebar.classList.toggle('-translate-x-full');
         };
+        
+        // Toggle desktop user dropdown
+        const userAvatarButton = document.getElementById('user-avatar-button');
+        if (userAvatarButton) {
+            userAvatarButton.addEventListener('click', () => {
+                if (userMenuContainer.classList.contains('hidden')) return; // Don't show if not logged in
+                desktopDropdown.classList.toggle('hidden');
+            });
+        }
+        document.addEventListener('click', (event) => {
+            if (userAvatarButton && !userAvatarButton.contains(event.target) && !desktopDropdown.contains(event.target)) {
+                desktopDropdown.classList.add('hidden');
+            }
+        });
 
         // --- 3. MODAL LOGIC (Copied from components/modal.html) ---
 
@@ -548,4 +569,75 @@
                 const newPrimaryBtn = modalPrimaryBtn.cloneNode(true);
                 modalPrimaryBtn.parentNode.replaceChild(newPrimaryBtn, modalPrimaryBtn);
                 newPrimaryBtn.addEventListener('click', () => {
-              
+                    onConfirm();
+                    hideModal();
+                });
+            } else {
+                modalPrimaryBtn.classList.add('hidden');
+                modalPrimaryBtn.onclick = null;
+            }
+
+            modalOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            modalContentWrapper.classList.remove('opacity-0', 'translate-y-[-50px]');
+        };
+
+        window.hideModal = function() {
+            modalOverlay.classList.add('opacity-0', 'pointer-events-none');
+            modalContentWrapper.classList.add('opacity-0', 'translate-y-[-50px]');
+        };
+        
+        modalOverlay.addEventListener('click', function(event) {
+            if (event.target === modalOverlay) hideModal();
+        });
+
+
+        // --- 4. SPINNER LOGIC (Copied from components/spinner.html) ---
+
+        window.showSpinner = function(message = "Loading delicious content...") {
+            spinnerMessage.textContent = message;
+            spinnerContainer.style.display = 'flex';
+        };
+
+        window.hideSpinner = function() {
+            spinnerContainer.style.display = 'none';
+        };
+
+
+        // --- 5. SEARCH LOGIC (Copied from components/search-bar.html) ---
+
+        document.getElementById('recipe-search-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const query = document.getElementById('search-input').value.trim();
+            const feedback = document.getElementById('search-feedback');
+
+            feedback.classList.remove('text-red-500', 'text-green-500', 'text-white');
+            feedback.classList.add('hidden');
+
+            if (query === "") {
+                // Since this is in the hero section, show feedback right below the search bar
+                feedback.textContent = "Please enter a search query (e.g., 'pasta').";
+                feedback.classList.remove('hidden');
+                feedback.classList.add('text-red-400'); // Light red for visibility on dark background
+                return;
+            }
+
+            showSpinner(`Finding recipes for "${query}"...`);
+
+            // Simulate search (e.g., 2 seconds)
+            setTimeout(() => {
+                hideSpinner();
+                
+                showModal({
+                    title: "Search Initiated",
+                    bodyHtml: `<p>We successfully started searching Kitchen Fleva for <strong>${query}</strong>. You would now be redirected to the results page!</p>`,
+                    secondaryText: "Close"
+                });
+
+            }, 2000);
+        });
+
+        // --- INITIALIZE ON LOAD ---
+        window.onload = handleAuthInitialization;
+    </script>
+</body>
+</html>
