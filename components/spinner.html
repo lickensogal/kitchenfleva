@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Fleva Loading Spinner Component</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font family -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        /* Custom Spinner Animation */
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-custom {
+            animation: spin 1s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 p-10 flex justify-center items-center h-screen">
+
+    <!-- Kitchen Fleva Loading Spinner Component (Hidden by default) -->
+    <div id="loading-spinner-container" class="flex flex-col items-center justify-center p-8 bg-white rounded-xl shadow-lg" style="display: none;">
+        
+        <!-- Spinner Icon -->
+        <div class="w-12 h-12 border-4 border-t-4 border-amber-600 border-opacity-25 rounded-full animate-spin-custom mb-3">
+            <div class="absolute w-full h-full border-4 border-t-4 border-amber-600 rounded-full animate-spin-custom" style="border-top-color: #F59E0B; animation-delay: -0.5s;"></div>
+        </div>
+
+        <!-- Loading Text -->
+        <p id="spinner-message" class="text-lg font-medium text-gray-600">Loading delicious content...</p>
+    </div>
+
+    <!-- Example usage / demonstration -->
+    <div class="absolute top-1/4">
+        <button onclick="simulateLoading()" class="bg-amber-600 text-white p-3 rounded-lg shadow-md hover:bg-amber-700 transition">
+            Simulate 3s Load
+        </button>
+    </div>
+
+    <script>
+        const spinnerContainer = document.getElementById('loading-spinner-container');
+        const spinnerMessage = document.getElementById('spinner-message');
+
+        /**
+         * Shows the loading spinner with an optional message.
+         * @param {string} message - The message to display (defaults to "Loading delicious content...").
+         */
+        window.showSpinner = function(message = "Loading delicious content...") {
+            spinnerMessage.textContent = message;
+            spinnerContainer.style.display = 'flex'; // Show spinner
+        };
+
+        /**
+         * Hides the loading spinner.
+         */
+        window.hideSpinner = function() {
+            spinnerContainer.style.display = 'none'; // Hide spinner
+        };
+
+        /**
+         * Function to simulate a network call.
+         */
+        window.simulateLoading = function() {
+            showSpinner("Fetching recipes and blog posts...");
+            
+            // Simulate 3 seconds of loading time
+            setTimeout(() => {
+                hideSpinner();
+                console.log("Loading complete.");
+            }, 3000);
+        };
+    </script>
+</body>
+</html>
