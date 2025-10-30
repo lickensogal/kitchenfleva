@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Fleva Search Bar Component</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font family -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-50 p-10 flex justify-center">
+
+    <!-- Kitchen Fleva Search Bar Component -->
+    <div class="w-full max-w-2xl">
+        <form id="recipe-search-form" class="flex items-center space-x-2 p-1 bg-white rounded-xl shadow-lg border border-gray-200">
+            
+            <!-- Search Icon and Input Field -->
+            <div class="flex items-center flex-grow p-2">
+                <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                <input 
+                    type="search" 
+                    id="search-input" 
+                    name="query"
+                    placeholder="Search for recipes, ingredients, or cuisines..." 
+                    aria-label="Search recipes"
+                    class="w-full text-gray-800 placeholder-gray-400 focus:outline-none text-base border-none ring-0 p-0"
+                    required
+                >
+            </div>
+
+            <!-- Submit Button -->
+            <button 
+                type="submit" 
+                class="px-5 py-3 text-sm font-semibold rounded-lg text-white bg-amber-600 hover:bg-amber-700 transition duration-150 shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500"
+            >
+                Search
+            </button>
+        </form>
+
+        <p id="search-feedback" class="mt-2 text-sm text-center text-gray-500 hidden">
+            <!-- Dynamic feedback will appear here -->
+        </p>
+    </div>
+
+    <script>
+        document.getElementById('recipe-search-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const query = document.getElementById('search-input').value.trim();
+            const feedback = document.getElementById('search-feedback');
+
+            feedback.classList.remove('text-red-500', 'text-green-500');
+            feedback.classList.add('hidden');
+
+            if (query === "") {
+                feedback.textContent = "Please enter a search query (e.g., 'pasta' or 'chicken').";
+                feedback.classList.remove('hidden');
+                feedback.classList.add('text-red-500');
+                return;
+            }
+
+            // In a real application, you would make an AJAX request here.
+            // For simulation, we'll log the query.
+            console.log("Searching for:", query);
+
+            // Simulate successful search initiation
+            feedback.textContent = `Searching Kitchen Fleva for recipes matching "${query}"...`;
+            feedback.classList.remove('hidden');
+            feedback.classList.add('text-green-500');
+
+            // You would typically redirect the user to a search results page here:
+            // window.location.href = `/search-results.html?q=${encodeURIComponent(query)}`;
+        });
+    </script>
+</body>
+</html>
