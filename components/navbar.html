@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Navigation Bar Component</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter font -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="bg-white shadow-lg sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                
+                <!-- Logo/Brand Section -->
+                <div class="flex-shrink-0 flex items-center">
+                    <span class="text-2xl font-bold text-indigo-600">App Name</span>
+                </div>
+
+                <!-- Desktop Navigation Links (Hidden on mobile) -->
+                <div class="hidden sm:ml-6 sm:flex sm:space-x-4">
+                    <a href="#" class="text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-lg font-medium transition duration-150">Home</a>
+                    <a href="/pages/faq.html" class="text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-lg font-medium transition duration-150">FAQ</a>
+                    <a href="#" class="text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-lg font-medium transition duration-150">Pricing</a>
+                    <a href="#" class="text-gray-900 hover:bg-gray-100 px-3 py-2 rounded-lg font-medium transition duration-150">Contact</a>
+                </div>
+
+                <!-- Authentication Section (Conditional rendering) -->
+                <div class="hidden sm:flex sm:items-center sm:space-x-3" id="auth-buttons-desktop">
+                    <!-- Placeholder buttons, visibility controlled by JS -->
+                    <div id="logged-out-view-desktop" class="flex space-x-3">
+                        <a href="/pages/login.html" class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition duration-150">Log In</a>
+                        <a href="/pages/register.html" class="px-3 py-2 border border-transparent rounded-lg text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition duration-150">Sign Up</a>
+                    </div>
+                    <div id="logged-in-view-desktop" class="hidden flex items-center space-x-3">
+                         <span id="user-display-desktop" class="text-sm font-medium text-gray-700"></span>
+                        <button id="logout-button-desktop" class="px-3 py-2 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-150">Log Out</button>
+                    </div>
+                </div>
+
+                <!-- Mobile Menu Button -->
+                <div class="-mr-2 flex sm:hidden">
+                    <button type="button" id="mobile-menu-button" 
+                            class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" 
+                            aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <!-- Hamburger icon -->
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <!-- Close icon (X) -->
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Menu (Collapsible) -->
+        <div class="sm:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#" class="text-gray-900 hover:bg-gray-100 block px-3 py-2 rounded-lg font-medium transition duration-150">Home</a>
+                <a href="/pages/faq.html" class="text-gray-900 hover:bg-gray-100 block px-3 py-2 rounded-lg font-medium transition duration-150">FAQ</a>
+                <a href="#" class="text-gray-900 hover:bg-gray-100 block px-3 py-2 rounded-lg font-medium transition duration-150">Pricing</a>
+                <a href="#" class="text-gray-900 hover:bg-gray-100 block px-3 py-2 rounded-lg font-medium transition duration-150">Contact</a>
+            </div>
+            
+            <!-- Mobile Auth Section -->
+            <div class="pt-4 pb-3 border-t border-gray-100 px-2 space-y-1">
+                <div id="logged-out-view-mobile" class="space-y-1">
+                    <a href="/pages/login.html" class="block w-full text-center px-4 py-2 border border-gray-300 rounded-lg text-base font-medium text-gray-700 hover:bg-gray-50 transition duration-150">Log In</a>
+                    <a href="/pages/register.html" class="block w-full text-center px-4 py-2 border border-transparent rounded-lg text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 transition duration-150">Sign Up</a>
+                </div>
+                <div id="logged-in-view-mobile" class="hidden space-y-1">
+                    <span id="user-display-mobile" class="block px-3 py-2 text-base font-medium text-gray-700 truncate"></span>
+                    <button id="logout-button-mobile" class="block w-full text-center px-4 py-2 border border-gray-300 rounded-lg text-base font-medium text-gray-700 hover:bg-red-50 hover:text-red-600 transition duration-150">Log Out</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        
+        // --- Globals & Setup ---
+        
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+        let auth;
+        let db; 
+        
+        if (firebaseConfig) {
+            const app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+
+            // Initial sign-in logic
+            if (initialAuthToken) {
+                signInWithCustomToken(auth, initialAuthToken).catch(e => {
+                    console.error("Custom token sign-in failed:", e);
+                    signInAnonymously(auth); 
+                });
+            } else {
+                signInAnonymously(auth);
+            }
+        } else {
+            console.error("Firebase config is missing. Authentication state will be simulated.");
+        }
+        
+        // --- UI Element Selectors ---
+
+        const loggedOutViews = [
+            document.getElementById('logged-out-view-desktop'),
+            document.getElementById('logged-out-view-mobile')
+        ];
+        const loggedInViews = [
+            document.getElementById('logged-in-view-desktop'),
+            document.getElementById('logged-in-view-mobile')
+        ];
+        const userDisplayElements = [
+            document.getElementById('user-display-desktop'),
+            document.getElementById('user-display-mobile')
+        ];
+        const logoutButtons = [
+            document.getElementById('logout-button-desktop'),
+            document.getElementById('logout-button-mobile')
+        ];
+
+        // --- Authentication Status Handler ---
+
+        const updateAuthUI = (user) => {
+            const isLoggedIn = user && !user.isAnonymous;
+            
+            // Toggle visibility of login/logout buttons
+            loggedOutViews.forEach(el => {
+                if (el) el.classList.toggle('hidden', isLoggedIn);
+            });
+            loggedInViews.forEach(el => {
+                if (el) el.classList.toggle('hidden', !isLoggedIn);
+                if (el && isLoggedIn) el.classList.add('flex'); // Ensure flex is applied when visible
+            });
+
+            // Update user display text
+            userDisplayElements.forEach(el => {
+                if (el) {
+                    el.textContent = isLoggedIn ? `Hi, ${user.email || 'User'}` : '';
+                    if (user && !user.email) {
+                        // Use UID for display if no email is set (e.g., initial custom token sign-in)
+                        el.textContent = `User ID: ${user.uid.substring(0, 8)}...`;
+                    }
+                }
+            });
+        };
+
+        // Attach listeners if auth is initialized
+        if (auth) {
+             onAuthStateChanged(auth, updateAuthUI);
+        } else {
+            // Simulate logged out state if no Firebase config
+            updateAuthUI(null);
+        }
+
+        // --- Logout Functionality ---
+        const handleLogout = () => {
+            if (auth) {
+                signOut(auth)
+                    .then(() => {
+                        console.log("User signed out successfully.");
+                        // Optional: Redirect or refresh page
+                        // window.location.href = '/pages/login.html'; 
+                    })
+                    .catch((error) => {
+                        console.error("Logout error:", error);
+                    });
+            } else {
+                console.log("Simulated logout.");
+                // Simulate returning to logged out state if no Firebase
+                updateAuthUI(null);
+            }
+        };
+        
+        logoutButtons.forEach(button => {
+            if (button) button.addEventListener('click', handleLogout);
+        });
+
+        // --- Mobile Menu Toggle ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true';
+            
+            mobileMenu.classList.toggle('hidden');
+            mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+            
+            // Toggle icons (Hamburger <-> X)
+            mobileMenuButton.querySelector('svg:first-child').classList.toggle('hidden');
+            mobileMenuButton.querySelector('svg:last-child').classList.toggle('hidden');
+        });
+    </script>
+
+</body>
+  </html>
+  
