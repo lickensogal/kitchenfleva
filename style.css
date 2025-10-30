@@ -1,0 +1,383 @@
+/**
+ * style.css
+ * ----------------------------------------------------------------------
+ * Kitchen Fleva: Global Stylesheet
+ * Implements the complete color, typography, and UX specification.
+ * ----------------------------------------------------------------------
+ */
+
+/* --- 1. CORE VARIABLES (LIGHT MODE DEFAULT) --------------------------- */
+:root {
+    /* Color Palette */
+    --color-main-bg: #FFF8F0;          /* Warm Ivory */
+    --color-alt-bg: #EDE2D2;           /* Light Sand */
+    --color-card-bg: #FFFFFF;
+    --color-heading-text: #264653;     /* Dark Slate Blue */
+    --color-body-text: #264653;
+    --color-muted-text: #4A5B67;
+    
+    --color-primary-cta: #E76F51;      /* Sunset Terracotta */
+    --color-primary-cta-hover: #F4A261;/* Golden Orange (Lighter) */
+    --color-secondary-cta: #2A9D8F;    /* Deep Teal (Links, Badges) */
+    --color-accent: #F4A261;           /* Accent highlights & ratings */
+    
+    /* Footer Colors */
+    --color-footer-bg: #264653;        /* Dark Slate Blue */
+    --color-footer-bg-alt: #192732;    /* Nearly black dark blue (for contrast) */
+    --color-footer-text: #FFFFFF;
+    
+    /* Typography */
+    --font-heading: 'Poppins', sans-serif;
+    --font-body: 'Lato', sans-serif;
+    --font-subheading: 'Roboto', sans-serif;
+    --font-decorative: 'Playfair Display', serif;
+    
+    /* Spacing */
+    --space-xs: 4px;
+    --space-sm: 8px;
+    --space-md: 16px;
+    --space-lg: 32px;
+    --space-xl: 48px;
+    --space-section: 80px;
+
+    /* Radius & Shadows */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-pill: 9999px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+}
+
+/* --- 2. DARK MODE OVERRIDES ----------------------------------------- */
+[data-theme="dark"] {
+    --color-main-bg: #192732;          /* Nearly black dark blue */
+    --color-alt-bg: #264653;           /* Dark Slate Blue */
+    --color-card-bg: #1E2B38;          /* Darker Card */
+    --color-heading-text: #FFF8F0;     /* Warm Ivory (Light text) */
+    --color-body-text: #E0E0E0;
+    --color-muted-text: #A0B0C0;
+    
+    --color-footer-bg: #192732;
+    --color-footer-bg-alt: #0D171E;
+}
+
+
+/* --- 3. BASE STYLES & RESETS ---------------------------------------- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-body);
+    font-size: 16px;
+    color: var(--color-body-text);
+    background-color: var(--color-main-bg);
+    line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Headings (Poppins Bold/Semi-Bold) */
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--color-heading-text);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+h1 { font-size: clamp(2.5rem, 6vw, 4.5rem); font-weight: 700; } /* 48px - 72px */
+h2 { font-size: clamp(2.25rem, 5vw, 3rem); font-weight: 700; }  /* 36px - 48px */
+h3 { font-size: clamp(1.75rem, 4vw, 2rem); font-weight: 600; }  /* 28px - 32px */
+h4 { font-size: clamp(1.375rem, 3vw, 1.5rem); font-weight: 600; } /* 22px - 24px */
+p { margin-bottom: var(--space-md); }
+
+a {
+    color: var(--color-secondary-cta);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+a:hover {
+    color: var(--color-primary-cta);
+    text-decoration: underline;
+}
+
+/* --- 4. LAYOUT & CONTAINERS ----------------------------------------- */
+.container {
+    max-width: 1440px;
+    padding: 0 var(--space-lg);
+    margin: 0 auto;
+}
+.section {
+    padding: var(--space-section) 0;
+}
+.grid {
+    display: grid;
+    gap: var(--space-lg);
+}
+
+/* --- 5. HEADER (NAVBAR) --------------------------------------------- */
+.sticky-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: var(--color-main-bg);
+    border-bottom: 1px solid rgba(38, 70, 83, 0.1);
+    box-shadow: var(--shadow-sm);
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
+#header-container {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--space-xl);
+}
+.site-logo {
+    font-family: var(--font-heading);
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--color-heading-text);
+}
+.site-logo span.fleva {
+    color: var(--color-primary-cta);
+}
+
+.nav-links a {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-heading-text);
+    margin-left: var(--space-lg);
+    text-transform: capitalize;
+}
+.nav-links a:hover {
+    color: var(--color-primary-cta);
+    text-decoration: none;
+}
+.nav-links a.active {
+    color: var(--color-secondary-cta);
+    border-bottom: 2px solid var(--color-secondary-cta);
+    padding-bottom: 4px;
+}
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-md);
+}
+
+/* --- 6. BUTTONS & FORMS --------------------------------------------- */
+.button {
+    padding: 12px 28px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+}
+
+.primary-button {
+    background-color: var(--color-primary-cta);
+    color: white;
+    box-shadow: 0 4px 8px rgba(231, 111, 81, 0.3);
+}
+.primary-button:hover {
+    background-color: var(--color-primary-cta-hover);
+    box-shadow: 0 6px 12px rgba(231, 111, 81, 0.4);
+}
+
+.secondary-button {
+    background-color: transparent;
+    border-color: var(--color-heading-text);
+    color: var(--color-heading-text);
+}
+.secondary-button:hover {
+    background-color: var(--color-heading-text);
+    color: white;
+}
+
+.ghost-button {
+    background-color: transparent;
+    color: var(--color-primary-cta);
+    border: none;
+    padding: 10px 15px;
+}
+.ghost-button:hover {
+    background-color: rgba(231, 111, 81, 0.1);
+}
+
+.icon-button {
+    background: none;
+    border: none;
+    color: var(--color-heading-text);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: var(--space-sm);
+    border-radius: var(--radius-sm);
+}
+
+input[type="text"], input[type="email"], input[type="password"], textarea, select {
+    background-color: var(--color-card-bg);
+    border: 1px solid var(--color-muted-text);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    font-size: 1rem;
+    color: var(--color-body-text);
+    transition: border-color 0.3s;
+}
+input:focus, textarea:focus {
+    border-color: var(--color-primary-cta);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(231, 111, 81, 0.3);
+}
+
+/* --- 7. CARDS & UI COMPONENTS --------------------------------------- */
+.card {
+    background-color: var(--color-card-bg);
+    border: 1px solid rgba(38,70,83,0.12);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+.card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+}
+.card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.card-content {
+    padding: var(--space-lg);
+}
+
+/* Special Element: Blockquotes */
+blockquote {
+    border-left: 4px solid var(--color-primary-cta);
+    background-color: var(--color-alt-bg);
+    padding: 20px 24px;
+    margin: var(--space-lg) 0;
+    font-family: var(--font-decorative);
+    font-style: italic;
+    color: var(--color-secondary-cta);
+    font-size: 1.125rem; /* 18px */
+    border-radius: var(--radius-sm);
+}
+
+/* --- 8. FOOTER ------------------------------------------------------ */
+#footer-container {
+    background-color: var(--color-footer-bg);
+    padding: 60px 40px;
+    color: var(--color-footer-text);
+    line-height: 1.5;
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-xl);
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: var(--space-xl);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.footer-section h4 {
+    font-family: var(--font-subheading);
+    font-size: 1.125rem;
+    font-weight: 600;
+    margin-bottom: var(--space-md);
+    color: var(--color-footer-text);
+}
+.footer-section a, .copyright a {
+    display: block;
+    color: rgba(255,255,255,0.8);
+    margin-bottom: var(--space-sm);
+}
+.footer-section a:hover, .copyright a:hover {
+    color: var(--color-primary-cta);
+}
+.social-icons a {
+    display: inline-block;
+    font-size: 1.5rem;
+    margin-right: var(--space-md);
+}
+.copyright {
+    text-align: center;
+    padding-top: var(--space-md);
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.6);
+}
+
+/* --- 9. UTILITIES & ANIMATION --------------------------------------- */
+.hidden {
+    display: none !important;
+}
+.text-center { text-align: center; }
+
+/* Transition Easing */
+.transition-normal { transition: all 0.3s ease-in-out; }
+
+/* Initial Loading Spinner */
+.full-screen-loader {
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.spinner-dot {
+    width: 10px;
+    height: 10px;
+    background-color: var(--color-primary-cta);
+    border-radius: 50%;
+    margin: 5px;
+    animation: bounce 1.4s infinite ease-in-out both;
+}
+@keyframes bounce {
+    0%, 80%, 100% { transform: scale(0); }
+    40% { transform: scale(1.0); }
+}
+/* Ensure the design uses responsive breakpoints effectively */
+
+/* --- 10. RESPONSIVE BREAKPOINTS ------------------------------------- */
+
+/* Tablet & Mobile Menu (Max 1023px) */
+@media (max-width: 1023px) {
+    #header-container {
+        padding: 0 var(--space-md);
+        height: 60px;
+    }
+    .nav-links {
+        display: none; /* Hide primary nav links on mobile */
+    }
+    .header-actions {
+        gap: var(--space-sm);
+    }
+    .site-logo {
+        font-size: 1.5rem;
+    }
+    .section {
+        padding: 40px 0; /* Reduced vertical padding */
+    }
+    .container {
+        padding: 0 var(--space-md);
+    }
+}
+
+/* Mobile (Max 767px) */
+@media (max-width: 767px) {
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 2rem; }
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+    }
+  
