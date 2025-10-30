@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Fleva Rating Stars Component</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font family -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .star {
+            color: #FFD700; /* Gold */
+            cursor: pointer;
+            transition: transform 0.1s ease;
+        }
+        .star:hover {
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 p-10 flex justify-center">
+
+    <!-- Kitchen Fleva Rating Stars Component - Display/Input -->
+    <div class="p-6 bg-white rounded-xl shadow-lg">
+        <h3 class="text-lg font-semibold text-gray-800 mb-4">Rate This Recipe!</h3>
+        
+        <div id="rating-container" class="flex space-x-1 text-4xl">
+            <!-- Stars will be dynamically injected here -->
+        </div>
+
+        <p id="rating-output" class="mt-4 text-center text-gray-600">Click a star to submit your rating.</p>
+    </div>
+
+    <script>
+        const RATING_MAX = 5;
+        let currentRating = 0; // The rating value from the server or 0 initially
+        let userRating = 0;    // The rating the user selects
+
+        const ratingContainer = document.getElementById('rating-container');
+        const ratingOutput = document.getElementById('rating-output');
+        const recipeId = "recipe-123"; // Placeholder for the ID of the item being rated
+
+        /**
+         * Renders the stars based on a given rating value.
+         * @param {number} ratingValue - The value to display (1 to 5).
+         */
+        function renderStars(ratingValue) {
+            ratingContainer.innerHTML = '';
+            for (let i = 1; i <= RATING_MAX; i++) {
+                const star = document.createElement('span');
+                star.classList.add('star', 'transition-colors');
+                star.setAttribute('data-value', i);
+                star.textContent = '★'; 
+
+                if (i <= ratingValue) {
+                    star.classList.add('text-yellow-500');
+                    star.classList.remove('text-gray-300');
+                } else {
+                    star.classList.add('text-gray-300');
+                    star.classList.remove('text-yellow-500');
+                }
+
+                ratingContainer.appendChild(star);
+            }
+        }
+
+        /**
+         * Handles the user clicking a star to submit a rating.
+         */
+        function handleStarClick(event) {
+            const star = event.target.closest('.star');
+            if (!star) return;
+
+            const value = parseInt(star.getAttribute('data-value'), 10);
+            userRating = value;
+            
+            // Re-render based on the submitted user rating
+            renderStars(userRating);
+
+            // In a real application, you would send this to the server/Firestore
+            console.log(`User submitted a rating of ${userRating} for recipe ${recipeId}`);
+            ratingOutput.textContent = `You rated this ${userRating} out of ${RATING_MAX}! Thank you.`;
+        }
+
+        /**
+         * Handles the mouse entering a star (hover effect).
+         */
+        function handleStarHover(event) {
+            const star = event.target.closest('.star');
+            if (!star) return;
+
+            const hoverValue = parseInt(star.getAttribute('data-value'), 10);
+            
+            // Show filled stars up to the hover point
+            ratingContainer.querySelectorAll('.star').forEach(s => {
+                const sValue = parseInt(s.getAttribute('data-value'), 10);
+                if (sValue <= hoverValue) {
+                    s.classList.add('text-yellow-500');
+                    s.classList.remove('text-gray-300');
+                } else {
+                    // Reset stars that are past the hover point but were filled by the current/user rating
+                    if (sValue > (userRating || currentRating)) {
+                       s.classList.add('text-gray-300');
+                       s.classList.remove('text-yellow-500');
+                    }
+                }
+            });
+        }
+
+        /**
+         * Handles the mouse leaving the entire container (resets to current/user rating).
+         */
+        function handleMouseLeave() {
+             renderStars(userRating || currentRating);
+        }
+
+        // Attach event listeners
+        ratingContainer.addEventListener('click', handleStarClick);
+        ratingContainer.addEventListener('mouseover', handleStarHover);
+        ratingContainer.addEventListener('mouseleave', handleMouseLeave);
+
+
+        // --- Initialization ---
+        // Simulate fetching an existing rating from the backend (e.g., 3.5 stars)
+        function initRating() {
+            // This would be replaced with your Firestore fetch logic
+            currentRating = 3.5; 
+            userRating = Math.round(currentRating); // Use rounded value for initial display if not yet rated by user
+            renderStars(userRating); 
+        }
+
+        window.onload = initRating;
+    </script>
+</body>
+</html>
