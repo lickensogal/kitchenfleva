@@ -1,0 +1,88 @@
+<section id="profile-page" class="section-container">
+    <div id="profile-access-message" class="hidden-logged-out card error-card">
+        <h3 class="h4-heading">Access Restricted</h3>
+        <p class="body-text">Please log in to view your profile, favorites, and AI generated content.</p>
+        <a href="#login" class="button primary-button mt-md">Go to Login</a>
+    </div>
+
+    <div id="profile-dashboard-content" class="hidden-logged-out">
+        
+        <!-- Profile Header -->
+        <header class="profile-header-strip card shadow-md">
+            <img id="profile-avatar" src="/assets/images/placeholders/user-placeholder.png" alt="User Avatar" class="profile-avatar">
+            <div class="profile-info">
+                <h1 id="profile-name" class="h2-heading">Welcome Back, [User Name]!</h1>
+                <p id="profile-email" class="muted-text body-text"></p>
+                <div class="membership-badge-container">
+                    <span id="membership-plan-display" class="tag tag-large tag-secondary">FREE TIER</span>
+                    <button id="upgrade-cta-btn" class="button primary-button button-sm ml-md">Upgrade to Premium</button>
+                </div>
+            </div>
+            <button id="edit-profile-btn" class="button secondary-button button-sm"><i class="fas fa-edit"></i> Edit Info</button>
+        </header>
+
+        <!-- Main Profile Content Grid -->
+        <div class="profile-content-grid mt-xl">
+            
+            <!-- Sidebar Navigation -->
+            <aside class="profile-sidebar card shadow-sm">
+                <h4 class="h5-heading">Account Menu</h4>
+                <nav class="profile-nav-links">
+                    <a href="#profile/favorites" id="nav-favorites" class="active"><i class="fas fa-heart"></i> Saved Recipes</a>
+                    <a href="#profile/generated" id="nav-generated"><i class="fas fa-magic"></i> AI Generated Content</a>
+                    <a href="#profile/subscription" id="nav-subscription"><i class="fas fa-crown"></i> Manage Subscription</a>
+                    <a href="#profile/settings" id="nav-settings"><i class="fas fa-cog"></i> Account Settings</a>
+                    <a href="#" id="profile-logout-link" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </nav>
+                
+                <div class="sidebar-group mt-lg">
+                    <h5 class="h6-heading">AI Credits Remaining</h5>
+                    <div id="ai-credits-display" class="credit-counter">5 / 50</div>
+                    <p class="small-text muted-text">Upgrade for unlimited generation.</p>
+                </div>
+            </aside>
+
+            <!-- Dynamic Content Area -->
+            <main id="profile-dynamic-content" class="profile-main-area">
+                
+                <!-- DEFAULT VIEW: Favorites / Saved Recipes -->
+                <section id="favorites-view">
+                    <h2 class="h3-heading">Your Favorite Recipes</h2>
+                    <p class="section-subtitle">The fleva you love, saved just for you.</p>
+                    <div id="favorites-grid" class="recipe-grid-container grid-small mt-md">
+                        <!-- card-recipe.html components for saved recipes loaded here -->
+                        <div class="placeholder-card">
+                            <i class="fas fa-spinner fa-spin"></i> Loading Favorites...
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Settings Modal Placeholder (will load modal.html content) -->
+                <div id="settings-modal" class="modal-hidden">
+                    <div class="modal-content">
+                        <h3 class="h4-heading">Edit Account Information</h3>
+                        <form id="profile-settings-form">
+                            <label for="full-name">Full Name</label>
+                            <input type="text" id="full-name" required>
+                            
+                            <label for="email">Email Address (Read Only)</label>
+                            <input type="email" id="email" disabled>
+                            
+                            <label for="new-password">Change Password</label>
+                            <input type="password" id="new-password" placeholder="Leave blank to keep current password">
+
+                            <button type="submit" class="button primary-button">Save Changes</button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Ad Placement: Targeted Premium CTA Ad -->
+                <div id="profile-ad-placement" class="ad-container ad-inline-content mt-xl">
+                    <span class="ad-label">SPECIAL OFFER</span>
+                    <p class="body-text">Get 20% off your first Premium month! Limited time only.</p>
+                    <a href="#subscription" class="button secondary-button button-sm">Claim Offer</a>
+                </div>
+            </main>
+        </div>
+    </div>
+</section>
