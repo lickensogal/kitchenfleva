@@ -3,239 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sidebar Component</title>
+    <title>Kitchen Fleva Sidebar Component</title>
     <!-- Load Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Load Inter font -->
+    <!-- Use Inter font family -->
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f3f4f6; /* Light gray background to show contrast */
-            min-height: 100vh;
-        }
-
-        /* Responsive Sidebar styles: Hidden on mobile, fixed on large screens */
-        #sidebar {
-            /* Default state: fully off-screen to the left, but fixed in position */
-            transform: translateX(-100%);
-        }
-        
-        /* Apply transform for large screens */
-        @media (min-width: 1024px) {
-            #sidebar {
-                transform: translateX(0); /* Visible on desktop */
-            }
-            .content-area {
-                margin-left: 16rem; /* Push content over to make space for the 64px (w-64) sidebar */
-            }
-        }
-        
-        /* Transition for smooth slide effect */
-        .transition-transform {
-            transition-property: transform;
-        }
-
+        body { font-family: 'Inter', sans-serif; }
     </style>
 </head>
-<body>
+<body class="bg-gray-100 min-h-screen">
 
-    <!-- Example Layout for demonstration purposes -->
-    <div class="content-area p-4 lg:p-6 transition-all duration-300">
-        <!-- Button to open sidebar on small screens -->
-        <button onclick="toggleSidebar()" class="lg:hidden p-3 bg-indigo-600 text-white rounded-lg shadow-md hover:bg-indigo-700 transition mb-6">
-            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" /></svg>
-        </button>
-        <h1 class="text-3xl font-bold text-gray-800">Main Content Area</h1>
-        <p class="mt-2 text-gray-600">This area shifts right on large screens and is covered by the sidebar on small screens.</p>
-    </div>
-
-    <!-- 1. Sidebar Container -->
-    <div id="sidebar" 
-         class="fixed inset-y-0 left-0 z-40 w-64 bg-white shadow-2xl overflow-y-auto 
-                transition-transform duration-300 ease-in-out lg:translate-x-0">
+    <!-- The Sidebar Component (Hidden by default, fixed position) -->
+    <div id="kitchenFlevaSidebar" class="h-full fixed top-0 left-0 w-64 bg-white shadow-xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
         
-        <div class="flex flex-col h-full">
-
-            <!-- Sidebar Header/Logo -->
-            <div class="px-6 py-4 border-b border-gray-100">
-                <span class="text-3xl font-extrabold text-indigo-700 tracking-wider">
-                    DASHBOARD
-                </span>
-            </div>
-
-            <!-- Main Navigation Links -->
-            <nav class="flex-grow p-4 space-y-2">
-                <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-150">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l-2 2m-7 7h10m0 0a1 1 0 001-1v-4a1 1 0 00-1-1h-2a1 1 0 00-1 1v4a1 1 0 001 1z" /></svg>
-                    <span class="font-medium">Dashboard</span>
-                </a>
-                <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-150">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-4v4m-4-4v4M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
-                    <span class="font-medium">Analytics</span>
-                </a>
-                <a href="#" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-150">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.82 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.82 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.82-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.82-3.31 2.37-2.37a1.724 1.724 0 002.572-1.065z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                    <span class="font-medium">Settings</span>
-                </a>
-                <a href="/pages/login.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition duration-150" id="sidebar-login-link">
-                    <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" /></svg>
-                    <span class="font-medium">Log In</span>
-                </a>
-            </nav>
-
-            <!-- User Profile / Footer Section -->
-            <div class="p-4 border-t border-gray-100 mt-auto">
-                <div id="user-info-area" class="flex items-center space-x-3 cursor-pointer p-2 rounded-lg hover:bg-gray-100 transition duration-150">
-                    <div class="h-10 w-10 bg-indigo-200 rounded-full flex items-center justify-center">
-                         <!-- User Icon -->
-                        <svg class="h-6 w-6 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                    </div>
-                    <div>
-                        <p id="user-display-sidebar" class="text-sm font-semibold text-gray-800 truncate">Loading...</p>
-                        <p id="user-status-sidebar" class="text-xs text-gray-500">Not authenticated</p>
-                    </div>
-                </div>
-                <!-- Logout Button (Visible only when logged in) -->
-                 <button id="logout-button-sidebar" class="hidden w-full mt-3 flex items-center justify-center p-2 rounded-lg text-red-600 bg-red-50 hover:bg-red-100 transition duration-150">
-                    <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" /></svg>
-                    <span>Log Out</span>
-                </button>
-            </div>
-            
+        <!-- Sidebar Header / Logo -->
+        <div class="p-6 border-b border-gray-100">
+            <a href="/" class="text-3xl font-extrabold text-amber-600 tracking-tight">
+                Kitchen <span class="text-gray-900">Fleva</span>
+            </a>
         </div>
+
+        <!-- User Info / Auth Status -->
+        <div class="p-6 border-b border-gray-100">
+            <div id="logged-out-section">
+                <p class="text-sm font-medium text-gray-500 mb-2">Welcome to Kitchen Fleva!</p>
+                <a href="/pages/login.html" class="block w-full text-center py-2 px-4 mb-2 text-sm font-semibold rounded-lg bg-amber-600 text-white shadow-md hover:bg-amber-700 transition">Log In</a>
+                <a href="/pages/register.html" class="block w-full text-center py-2 px-4 text-sm font-semibold rounded-lg text-amber-600 border border-amber-600 hover:bg-amber-50 transition">Register</a>
+            </div>
+
+            <div id="logged-in-section" class="hidden">
+                <p class="text-lg font-semibold text-gray-900 truncate mb-1" id="user-display-name">Hello, User!</p>
+                <p class="text-xs text-gray-500 mb-3">ID: <span id="user-display-id" class="font-mono text-xs">Loading...</span></p>
+                <button id="sidebar-logout-button" class="block w-full text-center py-2 px-4 text-sm font-semibold rounded-lg text-white bg-red-500 shadow-md hover:bg-red-600 transition">Sign Out</button>
+            </div>
+        </div>
+
+        <!-- Navigation Links -->
+        <nav class="p-4 space-y-2">
+            <a href="/index.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-10l-2-2m2 2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                <span class="font-medium">Home</span>
+            </a>
+            <a href="/recipes.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zM12 15h.01M12 21h.01M12 3h.01M17.657 16.657L18 17m-6 0a5 5 0 100-10 5 5 0 000 10zM6.343 16.657L6 17m11.314-11.314L18 7M6.686 6.686L6 7"></path></svg>
+                <span class="font-medium">All Recipes</span>
+            </a>
+            <a href="/blog.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v3m-2 2l4 4m0 0l-4 4m4-4H7"></path></svg>
+                <span class="font-medium">Cooking Blog</span>
+            </a>
+            <a href="/submit.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
+                <span class="font-medium">Submit Recipe</span>
+            </a>
+
+            <!-- User-specific links (e.g., Dashboard) -->
+            <a id="dashboard-link" href="/dashboard.html" class="hidden items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0h6"></path></svg>
+                <span class="font-medium">My Dashboard</span>
+            </a>
+        </nav>
+        
     </div>
 
-    <!-- 2. Backdrop for mobile mode (closes sidebar when clicked outside) -->
-    <div id="backdrop" class="fixed inset-0 bg-gray-900 bg-opacity-75 z-30 hidden lg:hidden transition-opacity duration-300 opacity-0" 
-         onclick="toggleSidebar()">
+    <!-- Example usage / placeholder for demonstration -->
+    <div class="p-10">
+        <button onclick="toggleSidebar()" class="bg-amber-500 text-white p-3 rounded-lg shadow-md hover:bg-amber-600 transition">
+            Toggle Sidebar
+        </button>
     </div>
 
+
+    <!-- Firebase and Dynamic Logic for Auth State -->
     <script type="module">
-        // Firebase Imports
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
         
-        // --- Globals & Setup ---
-        
+        // --- MANDATORY GLOBAL VARIABLE SETUP ---
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-
-        let auth;
-        let db; 
         
+        let auth;
+        let authReady = false;
+
+        // DOM elements
+        const sidebar = document.getElementById('kitchenFlevaSidebar');
+        const loggedOutSection = document.getElementById('logged-out-section');
+        const loggedInSection = document.getElementById('logged-in-section');
+        const sidebarLogoutButton = document.getElementById('sidebar-logout-button');
+        const dashboardLink = document.getElementById('dashboard-link');
+        const userDisplayName = document.getElementById('user-display-name');
+        const userDisplayId = document.getElementById('user-display-id');
+
+        // Initialize Firebase
         if (firebaseConfig) {
             const app = initializeApp(firebaseConfig);
             auth = getAuth(app);
-            db = getFirestore(app);
+        } else {
+            console.error("Firebase configuration is missing. Authentication features will be simulated.");
+        }
 
-            // Initial sign-in logic
-            if (initialAuthToken) {
-                signInWithCustomToken(auth, initialAuthToken).catch(e => {
-                    console.error("Custom token sign-in failed:", e);
-                    signInAnonymously(auth); 
+        // Global function to show/hide the sidebar (can be called from navbar)
+        window.toggleSidebar = function() {
+            sidebar.classList.toggle('-translate-x-full');
+        };
+
+        // Function to update the UI based on auth state
+        function updateAuthStateUI(user) {
+            if (user && user.uid && !user.isAnonymous) {
+                // User is signed in and authenticated (not anonymous)
+                loggedOutSection.classList.add('hidden');
+                loggedInSection.classList.remove('hidden');
+                dashboardLink.classList.replace('hidden', 'flex'); // Show dashboard link
+
+                userDisplayName.textContent = `Hello, Kitchen Friend!`; // Placeholder name
+                userDisplayId.textContent = user.uid;
+                
+            } else {
+                // User is signed out or anonymous
+                loggedOutSection.classList.remove('hidden');
+                loggedInSection.classList.add('hidden');
+                dashboardLink.classList.replace('flex', 'hidden'); // Hide dashboard link
+            }
+        }
+        
+        // Handle initial authentication
+        async function handleAuthInitialization() {
+            if (auth) {
+                // 1. Attempt to sign in with custom token if available
+                if (initialAuthToken) {
+                    try {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                    } catch (error) {
+                        console.error("Error signing in with custom token, falling back to anonymous:", error.message);
+                        await signInAnonymously(auth); // Fallback
+                    }
+                } else {
+                    // 2. Sign in anonymously if no custom token is provided
+                    await signInAnonymously(auth);
+                }
+
+                // 3. Listen for auth state changes
+                onAuthStateChanged(auth, (user) => {
+                    authReady = true;
+                    updateAuthStateUI(user);
                 });
             } else {
-                signInAnonymously(auth);
-            }
-        } else {
-            console.error("Firebase config is missing. Authentication state will be simulated.");
-        }
-        
-        // --- UI Element Selectors ---
-
-        const sidebar = document.getElementById('sidebar');
-        const backdrop = document.getElementById('backdrop');
-        const userDisplayElement = document.getElementById('user-display-sidebar');
-        const userStatusElement = document.getElementById('user-status-sidebar');
-        const logoutButton = document.getElementById('logout-button-sidebar');
-        const loginLink = document.getElementById('sidebar-login-link');
-        
-        // --- Sidebar Toggle Functionality (Global) ---
-        
-        window.toggleSidebar = function() {
-            const isHidden = sidebar.classList.contains('translate-x-[-100%]') || sidebar.style.transform === 'translateX(-100%)';
-
-            if (isHidden) {
-                // Show Sidebar
-                sidebar.classList.remove('translate-x-[-100%]');
-                sidebar.style.transform = 'translateX(0)';
-                backdrop.classList.remove('hidden', 'opacity-0');
-                backdrop.classList.add('opacity-100');
-            } else {
-                // Hide Sidebar
-                sidebar.classList.add('translate-x-[-100%]');
-                sidebar.style.transform = 'translateX(-100%)';
-                backdrop.classList.remove('opacity-100');
-                backdrop.classList.add('opacity-0');
-                
-                // Hide backdrop after transition
-                setTimeout(() => {
-                    backdrop.classList.add('hidden');
-                }, 300);
+                // Simulation: Assume logged out if Firebase isn't initialized
+                updateAuthStateUI(null);
             }
         }
-        
-        // --- Authentication Status Handler ---
 
-        const updateAuthUI = (user) => {
-            const isLoggedIn = user && !user.isAnonymous;
-            
-            if (isLoggedIn) {
-                // Logged In State
-                userDisplayElement.textContent = user.email || `User: ${user.uid.substring(0, 8)}...`;
-                userStatusElement.textContent = 'Authenticated';
-                logoutButton.classList.remove('hidden');
-                loginLink.classList.add('hidden');
-                
-            } else {
-                // Logged Out State (or Anonymous)
-                userDisplayElement.textContent = 'Guest User';
-                userStatusElement.textContent = 'Sign in required';
-                logoutButton.classList.add('hidden');
-                loginLink.classList.remove('hidden');
-            }
-        };
-
-        // Attach listeners if auth is initialized
-        if (auth) {
-             onAuthStateChanged(auth, updateAuthUI);
-        } else {
-            // Simulate logged out state if no Firebase config
-            updateAuthUI(null);
+        // Add Logout Handler
+        if (sidebarLogoutButton) {
+            sidebarLogoutButton.addEventListener('click', async () => {
+                if (auth && authReady) {
+                    try {
+                        await signOut(auth);
+                        // UI update happens via onAuthStateChanged listener
+                    } catch (error) {
+                        console.error("Error signing out:", error.message);
+                    }
+                } else {
+                    console.log("Logout simulation (Firebase not initialized or auth not ready).");
+                    updateAuthStateUI(null); // Simulate logout
+                }
+            });
         }
 
-        // --- Logout Functionality ---
-        const handleLogout = () => {
-            if (auth) {
-                signOut(auth)
-                    .then(() => {
-                        console.log("User signed out successfully.");
-                    })
-                    .catch((error) => {
-                        console.error("Logout error:", error);
-                    });
-            } else {
-                console.log("Simulated logout.");
-                updateAuthUI(null);
-            }
-            toggleSidebar(); // Close sidebar after action
-        };
-        
-        if (logoutButton) {
-            logoutButton.addEventListener('click', handleLogout);
-        }
-
-        // Hide sidebar on window resize if it's visible (for better desktop experience)
-        window.addEventListener('resize', () => {
-             if (window.innerWidth >= 1024 && backdrop && !backdrop.classList.contains('hidden')) {
-                 toggleSidebar();
-             }
-        });
-
+        handleAuthInitialization();
     </script>
-
 </body>
-                                                                                                                     </html>
-  
+    </html>
