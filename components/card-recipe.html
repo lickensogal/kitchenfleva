@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Fleva Recipe Card Component</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Use Inter font family and custom styles -->
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        .rating-star {
+            color: #FFC107; /* Amber/Yellow for stars */
+            font-size: 1.25rem;
+            line-height: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 p-10">
+
+    <!-- Kitchen Fleva Recipe Card Component -->
+    <div class="max-w-sm bg-white rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 overflow-hidden m-4">
+        
+        <!-- Recipe Image -->
+        <a href="/recipe/example-slug.html">
+            <img class="w-full h-48 object-cover object-center" 
+                 src="https://placehold.co/600x400/F59E0B/FFFFFF?text=Delicious+Recipe" 
+                 alt="Image of Delicious Lemon Chicken"
+                 onerror="this.onerror=null; this.src='https://placehold.co/600x400/F59E0B/FFFFFF?text=Recipe+Image+Unavailable';">
+        </a>
+
+        <div class="p-5">
+            <!-- Category Tag -->
+            <div class="mb-2">
+                <span class="inline-flex items-center px-3 py-1 text-xs font-medium bg-amber-100 text-amber-800 rounded-full">
+                    Dinner
+                </span>
+            </div>
+
+            <!-- Recipe Title -->
+            <a href="/recipe/example-slug.html" class="block text-xl font-bold text-gray-900 hover:text-amber-600 transition duration-150 mb-2 leading-tight">
+                Lemon Herb Roasted Chicken
+            </a>
+
+            <!-- Recipe Summary / Description -->
+            <p class="text-gray-500 text-sm mb-4 line-clamp-3">
+                A simple yet elegant roasted chicken recipe infused with fresh lemon, garlic, and aromatic herbs like rosemary and thyme. Perfect for a cozy weeknight meal.
+            </p>
+
+            <!-- Metadata: Rating and Time -->
+            <div class="flex justify-between items-center text-sm text-gray-600">
+                
+                <!-- Rating Stars -->
+                <div class="flex items-center space-x-1">
+                    <span class="rating-star">★</span>
+                    <span class="rating-star">★</span>
+                    <span class="rating-star">★</span>
+                    <span class="rating-star">★</span>
+                    <span class="rating-star text-gray-300">★</span>
+                    <span class="ml-1 text-xs font-semibold">(4.1/5)</span>
+                </div>
+
+                <!-- Prep Time -->
+                <div class="flex items-center space-x-1">
+                    <svg class="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    <span>45 min</span>
+                </div>
+            </div>
+            
+            <!-- Call to Action Button (Optional) -->
+            <div class="mt-4">
+                <a href="/recipe/example-slug.html" class="inline-block w-full text-center py-2 px-4 border border-transparent rounded-lg shadow-sm text-base font-medium text-white bg-amber-600 hover:bg-amber-700 transition">
+                    View Recipe
+                </a>
+            </div>
+
+        </div>
+    </div>
+
+</body>
+              </html>
