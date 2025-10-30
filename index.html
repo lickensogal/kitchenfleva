@@ -41,10 +41,10 @@
 
                 <!-- Desktop Navigation Links -->
                 <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                    <a href="/index.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-amber-500 text-sm font-medium text-amber-600 transition duration-150">Home</a>
-                    <a href="/recipes.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:border-amber-500 hover:text-amber-600 transition duration-150">Recipes</a>
-                    <a href="/blog.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:border-amber-500 hover:text-amber-600 transition duration-150">Blog</a>
-                    <a href="/submit.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:border-amber-500 hover:text-amber-600 transition duration-150">Submit Recipe</a>
+                    <a href="index.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-amber-500 text-sm font-medium text-amber-600 transition duration-150">Home</a>
+                    <a href="recipes.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:border-amber-500 hover:text-amber-600 transition duration-150">Recipes</a>
+                    <a href="blog.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:border-amber-500 hover:text-amber-600 transition duration-150">Blog</a>
+                    <a href="submit.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:border-amber-500 hover:text-amber-600 transition duration-150">Submit Recipe</a>
                 </div>
 
                 <!-- Auth Buttons / Mobile Menu Button -->
@@ -55,9 +55,9 @@
                     </button>
 
                     <div id="auth-buttons" class="hidden sm:flex sm:items-center space-x-2">
-                        <a id="login-link" href="/pages/login.html" class="text-sm font-medium text-gray-600 hover:text-amber-600 transition duration-150">Log In</a>
+                        <a id="login-link" href="pages/login.html" class="text-sm font-medium text-gray-600 hover:text-amber-600 transition duration-150">Log In</a>
                         <span id="separator" class="text-gray-300">|</span>
-                        <a id="register-link" href="/pages/register.html" class="text-sm font-medium text-gray-600 hover:text-amber-600 transition duration-150">Register</a>
+                        <a id="register-link" href="pages/register.html" class="text-sm font-medium text-gray-600 hover:text-amber-600 transition duration-150">Register</a>
                         
                         <div id="user-menu" class="hidden relative">
                              <!-- Avatar/Dropdown Placeholder -->
@@ -96,8 +96,8 @@
         <div class="p-6 border-b border-gray-100">
             <div id="logged-out-section">
                 <p class="text-sm font-medium text-gray-500 mb-2">Welcome to Kitchen Fleva!</p>
-                <a href="/pages/login.html" class="block w-full text-center py-2 px-4 mb-2 text-sm font-semibold rounded-lg bg-amber-600 text-white shadow-md hover:bg-amber-700 transition">Log In</a>
-                <a href="/pages/register.html" class="block w-full text-center py-2 px-4 text-sm font-semibold rounded-lg text-amber-600 border border-amber-600 hover:bg-amber-50 transition">Register</a>
+                <a href="pages/login.html" class="block w-full text-center py-2 px-4 mb-2 text-sm font-semibold rounded-lg bg-amber-600 text-white shadow-md hover:bg-amber-700 transition">Log In</a>
+                <a href="pages/register.html" class="block w-full text-center py-2 px-4 text-sm font-semibold rounded-lg text-amber-600 border border-amber-600 hover:bg-amber-50 transition">Register</a>
             </div>
 
             <div id="logged-in-section" class="hidden">
@@ -108,19 +108,19 @@
         </div>
 
         <nav class="p-4 space-y-2">
-            <a href="/index.html" class="flex items-center space-x-3 p-3 rounded-lg text-amber-700 bg-amber-50 transition">
+            <a href="index.html" class="flex items-center space-x-3 p-3 rounded-lg text-amber-700 bg-amber-50 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-10l-2-2m2 2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                 <span class="font-medium">Home</span>
             </a>
-            <a href="/recipes.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
+            <a href="recipes.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zM12 15h.01M12 21h.01M12 3h.01M17.657 16.657L18 17m-6 0a5 5 0 100-10 5 5 0 000 10zM6.343 16.657L6 17m11.314-11.314L18 7M6.686 6.686L6 7"></path></svg>
                 <span class="font-medium">All Recipes</span>
             </a>
-            <a href="/blog.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
+            <a href="blog.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v3m-2 2l4 4m0 0l-4 4m4-4H7"></path></svg>
                 <span class="font-medium">Cooking Blog</span>
             </a>
-            <a href="/submit.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
+            <a href="submit.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
                 <span class="font-medium">Submit Recipe</span>
             </a>
@@ -258,7 +258,7 @@
                 </div>
 
                 <div class="text-center mt-12">
-                    <a href="/recipes.html" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-amber-600 hover:bg-amber-700 transition">
+                    <a href="recipes.html" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-white bg-amber-600 hover:bg-amber-700 transition">
                         View More Recipes
                     </a>
                 </div>
@@ -312,7 +312,7 @@
                 </div>
 
                 <div class="text-center mt-12">
-                    <a href="/blog.html" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-gray-900 bg-white hover:bg-gray-100 transition border-gray-300">
+                    <a href="pages/blog-main.html" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-lg shadow-sm text-gray-900 bg-white hover:bg-gray-100 transition border-gray-300">
                         Read All Blog Posts
                     </a>
                 </div>
@@ -350,9 +350,9 @@
                             <h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase">Community</h3>
                             <ul role="list" class="mt-4 space-y-4">
                                 <li><a href="/submit.html" class="text-base text-gray-400 hover:text-amber-500 transition">Submit Your Recipe</a></li>
-                                <li><a href="/blog.html" class="text-base text-gray-400 hover:text-amber-500 transition">Kitchen Blog</a></li>
-                                <li><a href="/profile/dashboard.html" class="text-base text-gray-400 hover:text-amber-500 transition">My Dashboard</a></li>
-                                <li><a href="/pages/faq.html" class="text-base text-gray-400 hover:text-amber-500 transition">FAQ</a></li>
+                                <li><a href="pages/blog-main.html" class="text-base text-gray-400 hover:text-amber-500 transition">Kitchen Blog</a></li>
+                                <li><a href="profile/dashboard.html" class="text-base text-gray-400 hover:text-amber-500 transition">My Dashboard</a></li>
+                                <li><a href="pages/faq.html" class="text-base text-gray-400 hover:text-amber-500 transition">FAQ</a></li>
                             </ul>
                         </div>
                     </div>
@@ -360,16 +360,16 @@
                         <div>
                             <h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase">Company</h3>
                             <ul role="list" class="mt-4 space-y-4">
-                                <li><a href="/pages/about.html" class="text-base text-gray-400 hover:text-amber-500 transition">About Us</a></li>
-                                <li><a href="/pages/contact.html" class="text-base text-gray-400 hover:text-amber-500 transition">Contact</a></li>
-                                <li><a href="/pages/careers.html" class="text-base text-gray-400 hover:text-amber-500 transition">Careers</a></li>
+                                <li><a href="pages/about.html" class="text-base text-gray-400 hover:text-amber-500 transition">About Us</a></li>
+                                <li><a href="pages/contact.html" class="text-base text-gray-400 hover:text-amber-500 transition">Contact</a></li>
+                                <li><a href="pages/careers.html" class="text-base text-gray-400 hover:text-amber-500 transition">Careers</a></li>
                             </ul>
                         </div>
                         <div class="mt-12 md:mt-0">
                             <h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase">Legal</h3>
                             <ul role="list" class="mt-4 space-y-4">
-                                <li><a href="/pages/privacy.html" class="text-base text-gray-400 hover:text-amber-500 transition">Privacy Policy</a></li>
-                                <li><a href="/pages/terms.html" class="text-base text-gray-400 hover:text-amber-500 transition">Terms of Service</a></li>
+                                <li><a href="pages/privacy.html" class="text-base text-gray-400 hover:text-amber-500 transition">Privacy Policy</a></li>
+                                <li><a href="pages/terms.html" class="text-base text-gray-400 hover:text-amber-500 transition">Terms of Service</a></li>
                             </ul>
                         </div>
                     </div>
@@ -641,3 +641,4 @@
     </script>
 </body>
 </html>
+
