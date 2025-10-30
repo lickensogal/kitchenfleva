@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kitchen Fleva: Made with Passion. Served with Fleva. Add Some Fleva to Your Kitchen! Authentic Kenyan-inspired recipes and digital products.">
+    <title>Kitchen Fleva | Made with Passion. Served with Fleva.</title>
+
+    <!-- Font Imports (Poppins, Lato, Playfair Display, Roboto) -->
+    <!-- In a production build, these should be self-hosted or linked for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Playfair+Display:ital@1&family=Poppins:wght@500;600;700&family=Roboto:wght@500;600&display=swap" rel="stylesheet">
+    
+    <!-- External Dependencies: Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Core Stylesheet -->
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+    <!-- 
+        1. GLOBAL HEADER CONTAINER 
+        Content from /components/navbar.html will be loaded here by app.js/router.js
+    -->
+    <header id="header-container" class="sticky-header">
+        <!-- Placeholder for Navbar component -->
+        <div class="header-loader-placeholder">
+            <span class="site-logo">Kitchen Fleva</span>
+            <div class="header-actions">
+                <button id="theme-toggle" class="icon-button"><i class="fas fa-sun"></i></button>
+                <select id="language-selector" aria-label="Language Selector">
+                    <option value="en">EN</option>
+                    <option value="sw">SW</option>
+                    <option value="fr">FR</option>
+                    <option value="es">ES</option>
+                </select>
+                <button id="mobile-menu-toggle" class="icon-button"><i class="fas fa-bars"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Global Alert/Notification Banner -->
+    <div id="global-alert-container" aria-live="polite"></div>
+
+    <!-- 
+        2. MAIN CONTENT AREA 
+        The router will dynamically load content partials (e.g., home.html, profile.html) here.
+    -->
+    <main id="app-content">
+        <!-- Initial loading spinner -->
+        <div id="initial-loading-spinner" class="full-screen-loader">
+            <div class="spinner-dot"></div>
+            <div class="spinner-dot"></div>
+            <div class="spinner-dot"></div>
+            <p>Loading Fleva...</p>
+        </div>
+    </main>
+
+    <!-- 
+        3. FOOTER CONTAINER 
+        Content from /components/footer.html will be loaded here by app.js
+    -->
+    <footer id="footer-container">
+        <!-- Footer content placeholder -->
+    </footer>
+
+
+    <!-- 
+        4. DEPENDENCIES & CORE SCRIPTS
+        Supabase SDK MUST be loaded before client scripts that use it.
+    -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script type="module" src="supabaseClient.js"></script>
+    <script type="module" src="router.js"></script>
+    <script type="module" src="app.js"></script>
+
+    <!-- The modal component (/components/modal.html) will be injected here by ui.js -->
+    <div id="global-modal-container"></div>
+    
+</body>
+  </html>
+  
