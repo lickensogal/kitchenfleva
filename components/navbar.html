@@ -5,165 +5,179 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kitchen Fleva Navbar Component</title>
     <!-- Load Tailwind CSS -->
-    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Use Inter font family -->
     <style>
         body { font-family: 'Inter', sans-serif; }
+        /* Custom styles for complex dropdowns */
+        .dropdown-menu {
+            transition: opacity 0.2s, visibility 0.2s, transform 0.2s;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px); /* Slight lift animation */
+            min-width: 150px;
+        }
+        .group:hover .dropdown-menu {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
     </style>
 </head>
 <body>
 
-    <nav id="kitchenFlevaNavbar" class="bg-white shadow-lg border-b border-gray-100 sticky top-0 z-40">
+    <nav id="kitchenFlevaNavbar" class="bg-white shadow-lg sticky top-0 z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-16">
+            <div class="flex justify-between h-20">
 
                 <!-- Logo and Branding -->
                 <div class="flex-shrink-0 flex items-center">
-                    <a href="/" class="text-2xl font-extrabold text-amber-600 tracking-tight">
+                    <a href="/index.html" class="text-3xl font-extrabold text-amber-600 tracking-tight">
                         Kitchen <span class="text-gray-900">Fleva</span>
                     </a>
                 </div>
 
-                <!-- Desktop Navigation Links (Hidden on small screens) -->
-                <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                    <a href="/index.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:border-amber-500 hover:text-amber-600 transition duration-150">Home</a>
-                    <a href="/recipes.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:border-amber-500 hover:text-amber-600 transition duration-150">Recipes</a>
-                    <a href="/blog.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:border-amber-500 hover:text-amber-600 transition duration-150">Blog</a>
-                    <a href="/submit.html" class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium text-gray-500 hover:border-amber-500 hover:text-amber-600 transition duration-150">Submit Recipe</a>
-                </div>
+                <!-- Desktop Navigation Links (Complex Dropdowns) -->
+                <div class="hidden lg:ml-6 lg:flex lg:space-x-4 xl:space-x-8 items-center">
+                    
+                    <!-- Primary Links -->
+                    <a href="/index.html" class="px-1 py-1 border-b-2 border-transparent text-sm font-medium text-gray-700 hover:border-amber-500 hover:text-amber-600 transition">Home</a>
+                    <a href="/about.html" class="px-1 py-1 border-b-2 border-transparent text-sm font-medium text-gray-700 hover:border-amber-500 hover:text-amber-600 transition">About Us</a>
 
-                <!-- Auth Buttons / User Avatar -->
-                <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                    <!-- Placeholder for Search Icon (to be integrated with search-bar component) -->
-                    <button class="p-1 rounded-full text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-500 mr-2" aria-label="Search">
-                        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
-                    </button>
+                    <!-- Recipes Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center text-sm font-medium text-gray-700 hover:text-amber-600 transition">Recipes <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+                        <div class="dropdown-menu absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1">
+                            <a href="/recipes.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Recipe Library</a>
+                            <a href="/recipes.html?category=breakfast" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Breakfast</a>
+                            <a href="/recipes.html?category=lunch" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Lunch</a>
+                            <a href="/recipes.html?category=dinner" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dinner</a>
+                        </div>
+                    </div>
 
-                    <!-- Auth State Logic -->
-                    <div id="auth-buttons" class="flex space-x-2">
-                        <!-- Login/Register (Shown when logged out) -->
-                        <a id="login-link" href="/pages/login.html" class="text-sm font-medium text-gray-600 hover:text-amber-600 transition duration-150">Log In</a>
-                        <span id="separator" class="text-gray-300">|</span>
-                        <a id="register-link" href="/pages/register.html" class="text-sm font-medium text-gray-600 hover:text-amber-600 transition duration-150">Register</a>
-                        
-                        <!-- Logout Button/Avatar (Shown when logged in) -->
-                        <div id="user-menu" class="hidden relative">
-                            <button id="user-avatar-button" class="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white p-0" aria-label="User menu">
-                                <span class="sr-only">Open user menu</span>
-                                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                            </button>
-                            <!-- Dropdown (Simplified for this component) -->
-                            <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="user-avatar-button" tabindex="-1">
-                                <button id="logout-button" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">Sign out</button>
-                            </div>
+                    <!-- Blog Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center text-sm font-medium text-gray-700 hover:text-amber-600 transition">Blog <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+                        <div class="dropdown-menu absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1">
+                            <a href="/blog.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Latest Posts</a>
+                            <a href="/blog.html?category=tips" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Recipe Tips</a>
+                            <a href="/blog.html?category=ai" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">AI Cooking Insights</a>
+                        </div>
+                    </div>
+                    
+                    <!-- AI Tools Dropdown -->
+                    <div class="relative group">
+                        <button class="flex items-center text-sm font-medium text-gray-700 hover:text-amber-600 transition">AI Tools <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
+                        <div class="dropdown-menu absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1">
+                            <a href="/ai/generator.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Recipe Generator</a>
+                            <a href="/ai/mealplan.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Meal Plan Generator</a>
+                            <a href="/ai/video.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Video Generator</a>
                         </div>
                     </div>
                 </div>
 
-                <!-- Mobile menu button (Hamburger) -->
-                <div class="-mr-2 flex items-center sm:hidden">
-                    <button type="button" id="mobile-menu-open-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-amber-500" aria-controls="mobile-menu" aria-expanded="false">
-                        <span class="sr-only">Open main menu</span>
-                        <svg class="block h-6 w-6" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                        <svg class="hidden h-6 w-6" xmlns="[http://www.w3.org/2000/svg](http://www.w3.org/2000/svg)" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                <!-- Utility and Auth Buttons -->
+                <div class="flex items-center space-x-2">
+                    <!-- Language Selector -->
+                    <div class="relative group hidden sm:block">
+                        <button id="language-button" class="flex items-center text-sm text-gray-500 hover:text-gray-700 transition px-2 py-1 rounded-lg hover:bg-gray-100">
+                            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M3 9h9m-9 4h6m-3 4h3"></path></svg>
+                            <span id="current-language">EN</span>
+                        </button>
+                        <div class="dropdown-menu absolute z-10 mt-2 w-32 right-0 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1">
+                            <a href="?lang=en" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">English</a>
+                            <a href="?lang=sw" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Kiswahili</a>
+                            <a href="?lang=fr" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">French</a>
+                            <a href="?lang=es" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Spanish</a>
+                        </div>
+                    </div>
+
+                    <!-- Dark Mode Toggle -->
+                    <button id="dark-mode-toggle" class="p-2 rounded-full text-gray-500 hover:bg-gray-100 hover:text-amber-600 transition" aria-label="Toggle dark mode">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="light-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
+                        <svg class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" id="dark-icon"><path d="M17.293 13.914A1.001 1.001 0 0117 14h-4a1 1 0 110-2h4a1 1 0 01.707.293zM10 2a8 8 0 100 16 8 8 0 000-16zM3.465 6.343l.707.707A6 6 0 0010 16a6 6 0 005.828-4.524l.707-.707a8 8 0 11-13.138 0z"></path></svg>
                     </button>
-                </div>
 
-            </div>
-        </div>
+                    <!-- Auth State Logic -->
+                    <div id="auth-buttons" class="hidden lg:flex items-center">
+                        <!-- Logged Out State -->
+                        <a id="login-link" href="/pages/login.html" class="px-3 py-2 text-sm font-bold rounded-lg text-white bg-amber-600 hover:bg-amber-700 transition shadow-md">Login / Signup</a>
+                        
+                        <!-- Logged In State (Dropdown) -->
+                        <div id="user-profile-menu" class="hidden relative group">
+                            <button id="user-avatar-button" class="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-amber-500 p-0" aria-label="User profile menu">
+                                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
+                            </button>
+                            <div id="desktop-dropdown" class="dropdown-menu absolute z-10 mt-2 w-56 right-0 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1">
+                                <a href="/profile/favorites.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Favorites / Saved Recipes</a>
+                                <a href="/profile/generated.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Generated Content</a>
+                                <a href="/profile/settings.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account Settings</a>
+                                <a href="/membership.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Manage Subscription</a>
+                                <button id="logout-button" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 border-t mt-1">Logout</button>
+                            </div>
+                        </div>
+                    </div>
 
-        <!-- Mobile menu, show/hide based on menu state. -->
-        <div class="sm:hidden hidden" id="mobile-menu">
-            <div class="pt-2 pb-3 space-y-1">
-                <a href="/index.html" class="block pl-3 pr-4 py-2 border-l-4 border-amber-500 text-base font-medium text-amber-700 bg-amber-50">Home</a>
-                <a href="/recipes.html" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">Recipes</a>
-                <a href="/blog.html" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">Blog</a>
-                <a href="/submit.html" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800">Submit Recipe</a>
-            </div>
-            <div class="pt-4 pb-3 border-t border-gray-200">
-                <div id="mobile-auth-buttons" class="space-y-1 px-2">
-                    <a id="mobile-login-link" href="/pages/login.html" class="block w-full text-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 rounded-md">Log In</a>
-                    <a id="mobile-register-link" href="/pages/register.html" class="block w-full text-center px-3 py-2 text-base font-medium text-white bg-amber-600 hover:bg-amber-700 rounded-md shadow-md">Register</a>
-                    <button id="mobile-logout-button" class="hidden block w-full text-center px-3 py-2 text-base font-medium text-gray-700 hover:bg-gray-50 rounded-md">Sign out</button>
+                    <!-- Mobile menu button (Hamburger) -->
+                    <div class="flex items-center lg:hidden ml-2">
+                        <!-- Assumes window.toggleSidebar() function is defined in index.html to control the sidebar -->
+                        <button type="button" id="mobile-menu-open-button" onclick="window.toggleSidebar()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-amber-500" aria-label="Open sidebar menu">
+                            <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </nav>
 
-    <!-- Firebase and Dynamic Logic for Auth State -->
+    <!-- Firebase and Dynamic Logic for Auth State, Dark Mode, and Dropdowns -->
     <script type="module">
-        import { initializeApp } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js)";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "[https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js](https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js)";
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
         
         // --- MANDATORY GLOBAL VARIABLE SETUP ---
-        const appId = typeof __app_id !== 'undefined' ? __app_id : 'default-app-id';
         const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
         const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
         
         let auth;
+        let authReady = false;
 
-        // Initialize Firebase
+        // --- DOM elements ---
+        const loginLink = document.getElementById('login-link');
+        const userProfileMenu = document.getElementById('user-profile-menu');
+        const logoutButton = document.getElementById('logout-button');
+        const desktopDropdown = document.getElementById('desktop-dropdown');
+        const languageButton = document.getElementById('language-button');
+        const currentLanguageSpan = document.getElementById('current-language');
+
+        // Dark Mode
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const lightIcon = document.getElementById('light-icon');
+        const darkIcon = document.getElementById('dark-icon');
+
+        // --- Firebase Initialization ---
         if (firebaseConfig) {
             const app = initializeApp(firebaseConfig);
             auth = getAuth(app);
-            // setLogLevel('Debug'); // Optional: For debugging Firestore/Auth
         } else {
             console.error("Firebase configuration is missing. Authentication features will be simulated.");
         }
 
-        // DOM elements
-        const authButtonsContainer = document.getElementById('auth-buttons');
-        const userMenuContainer = document.getElementById('user-menu');
-        const loginLink = document.getElementById('login-link');
-        const registerLink = document.getElementById('register-link');
-        const separator = document.getElementById('separator');
-        const logoutButton = document.getElementById('logout-button');
-        
-        const mobileAuthButtons = document.getElementById('mobile-auth-buttons');
-        const mobileLoginLink = document.getElementById('mobile-login-link');
-        const mobileRegisterLink = document.getElementById('mobile-register-link');
-        const mobileLogoutButton = document.getElementById('mobile-logout-button');
-
-        // Mobile Menu Toggler
-        const mobileMenuOpenButton = document.getElementById('mobile-menu-open-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        
-        mobileMenuOpenButton.addEventListener('click', () => {
-            const isHidden = mobileMenu.classList.toggle('hidden');
-            // Toggle hamburger/close icon (optional, often handled by CSS)
-        });
-
-        // Function to update the UI based on auth state
+        // --- Auth State Logic ---
         function updateAuthStateUI(user) {
-            if (user && user.uid) {
-                // User is signed in
+            const isLoggedIn = user && user.uid && !user.isAnonymous;
+
+            if (isLoggedIn) {
                 loginLink.classList.add('hidden');
-                registerLink.classList.add('hidden');
-                separator.classList.add('hidden');
-
-                userMenuContainer.classList.remove('hidden');
-
-                // Mobile
-                mobileLoginLink.classList.add('hidden');
-                mobileRegisterLink.classList.add('hidden');
-                mobileLogoutButton.classList.remove('hidden');
-                
+                userProfileMenu.classList.remove('hidden');
             } else {
-                // User is signed out or not authenticated
                 loginLink.classList.remove('hidden');
-                registerLink.classList.remove('hidden');
-                separator.classList.remove('hidden');
-
-                userMenuContainer.classList.add('hidden');
-
-                // Mobile
-                mobileLoginLink.classList.remove('hidden');
-                mobileRegisterLink.classList.remove('hidden');
-                mobileLogoutButton.classList.add('hidden');
+                userProfileMenu.classList.add('hidden');
+                // Hide dropdown when logged out
+                if(desktopDropdown) desktopDropdown.classList.add('opacity-0', 'visibility'); 
             }
         }
         
-        // Handle initial authentication
         async function handleAuthInitialization() {
             if (auth) {
                 if (initialAuthToken) {
@@ -174,49 +188,63 @@
                         await signInAnonymously(auth);
                     }
                 } else {
-                    // Sign in anonymously if no custom token is provided
                     await signInAnonymously(auth);
                 }
 
-                // Listen for auth state changes
                 onAuthStateChanged(auth, (user) => {
+                    authReady = true;
                     updateAuthStateUI(user);
                 });
             } else {
-                // Simulation: Assume logged out if Firebase isn't initialized
                 updateAuthStateUI(null);
             }
         }
 
-        // Add Logout Handler
         if (logoutButton) {
             logoutButton.addEventListener('click', async () => {
-                if (auth) {
-                    try {
-                        await signOut(auth);
-                        // UI update happens via onAuthStateChanged listener
-                    } catch (error) {
-                        console.error("Error signing out:", error.message);
-                    }
-                } else {
-                    console.log("Logout simulation (Firebase not initialized).");
-                    updateAuthStateUI(null); // Simulate logout
-                }
-            });
-        }
-        
-        if (mobileLogoutButton) {
-            mobileLogoutButton.addEventListener('click', async () => {
-                // Same logic as desktop logout
-                if (auth) {
-                    await signOut(auth);
+                if (auth && authReady) {
+                    await signOut(auth).catch(error => console.error("Sign out error:", error.message));
                 } else {
                     updateAuthStateUI(null);
                 }
             });
         }
+        
+        // --- Dark Mode Logic ---
+        const isDarkMode = localStorage.getItem('theme') === 'dark' || 
+                           (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
+        function applyTheme(isDark) {
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                lightIcon.classList.add('hidden');
+                darkIcon.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                lightIcon.classList.remove('hidden');
+                darkIcon.classList.add('hidden');
+            }
+        }
+
+        applyTheme(isDarkMode);
+
+        darkModeToggle.addEventListener('click', () => {
+            const isCurrentlyDark = document.documentElement.classList.contains('dark');
+            applyTheme(!isCurrentlyDark);
+            localStorage.setItem('theme', isCurrentlyDark ? 'light' : 'dark');
+        });
+        
+        // --- Language Selector Logic (Simulation) ---
+        function updateLanguageUI() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const lang = urlParams.get('lang') || 'en';
+            if (currentLanguageSpan) currentLanguageSpan.textContent = lang.toUpperCase();
+        }
+        
+        window.addEventListener('load', updateLanguageUI);
+        
+        // --- Initialize Auth ---
         handleAuthInitialization();
     </script>
 </body>
-</html>
+    </html>
