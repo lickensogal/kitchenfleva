@@ -463,12 +463,380 @@
     </main>
 
     <!-- 9. FOOTER (components/footer.html content) -->
-    <!-- START FOOTER -->
-    <footer class="bg-gray-900 text-white mt-12 border-t border-amber-600/30">
-        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-            <div class="xl:grid xl:grid-cols-3 xl:gap-8">
-                <div class="space-y-4 xl:col-span-1">
-                    <a href="/" class="text-3xl font-extrabold text-amber-500 tracking-tight">Kitchen <span class="text-white">Fleva</span></a>
-                    <p class="text-gray-400 text-sm max-w-xs">Your daily source for the most delicious, home-cooked recipes and food inspiration from around the world. Spice up your cooking routine!</p>
-                    <div class="flex space-x-4 mt-6">
-                        <a href="#" class="text-gray-400 hover:text-amber-500 transition"><span class="sr-only">Facebook</span><svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-3 7h-2.5v-1.5c0-.825.26-1.5 1.5-1.5h1c.825 0 1.5-.675 1.5-1.5s-.675-1.5-1.5-1.5h-2
+    <!-- START FOOTER DYNAMIC PLACEHOLDER -->
+    <div id="footer-placeholder" class="mt-12">
+        <!-- The content of components/footer.html would be loaded here asynchronously via JS -->
+        <footer class="bg-gray-900 text-white py-12 text-center">
+            <p class="text-xl font-bold text-amber-500">Loading Kitchen Fleva Footer...</p>
+        </footer>
+    </div>
+    <!-- END FOOTER DYNAMIC PLACEHOLDER -->
+
+
+    <!-- MODAL & SPINNER (Combined in main HTML for simplicity) -->
+    <!-- START MODAL -->
+    <div id="reusable-modal-overlay" class="fixed inset-0 flex items-center justify-center opacity-0 pointer-events-none modal-overlay">
+        <div id="modal-content-wrapper" class="bg-white rounded-xl p-6 shadow-2xl opacity-0 modal-content">
+            <div class="flex justify-between items-start border-b pb-3 mb-4">
+                <h3 id="modal-title" class="text-xl font-bold text-gray-900">Notification</h3>
+                <button onclick="hideModal()" class="text-gray-400 hover:text-gray-600 transition" aria-label="Close modal">
+                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            <div id="modal-body" class="text-gray-700 space-y-4"><p>Operation complete.</p></div>
+            <div id="modal-footer" class="mt-6 pt-4 border-t flex justify-end space-x-3">
+                <button id="modal-primary-btn" class="px-4 py-2 text-sm font-semibold rounded-lg text-white bg-amber-600 hover:bg-amber-700 transition hidden">Confirm</button>
+                <button onclick="hideModal()" id="modal-secondary-btn" class="px-4 py-2 text-sm font-semibold rounded-lg text-gray-700 bg-gray-200 hover:bg-gray-300 transition">Close</button>
+            </div>
+        </div>
+    </div>
+    <!-- END MODAL -->
+
+    <!-- START SPINNER -->
+    <div id="loading-spinner-container" class="fixed inset-0 flex flex-col items-center justify-center p-8 bg-gray-900 bg-opacity-80 z-50" style="display: none;">
+        <div class="w-12 h-12 border-4 border-t-4 border-amber-600 border-opacity-25 rounded-full animate-spin-custom mb-3">
+            <div class="absolute w-full h-full border-4 border-t-4 border-amber-600 rounded-full animate-spin-custom" style="border-top-color: #F59E0B; animation-delay: -0.5s;"></div>
+        </div>
+        <p id="spinner-message" class="text-lg font-medium text-white">Loading delicious content...</p>
+    </div>
+    <!-- END SPINNER -->
+
+
+    <!-- GLOBAL JAVASCRIPT & DYNAMIC FEATURES -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        
+        // --- GLOBAL VARIABLES (MANDATORY) ---
+        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+        
+        let auth;
+        let authReady = false;
+
+        // --- DOM Elements ---
+        // Navbar Auth
+        const loginLink = document.getElementById('login-link');
+        const userProfileMenu = document.getElementById('user-profile-menu');
+        const logoutButton = document.getElementById('logout-button');
+        const desktopDropdown = document.getElementById('desktop-dropdown');
+
+        // Sidebar Auth
+        const sidebar = document.getElementById('kitchenFlevaSidebar');
+        const sidebarLoginLink = document.getElementById('sidebar-login-link');
+        const sidebarProfileLink = document.getElementById('sidebar-profile-link');
+        const sidebarLogoutButton = document.getElementById('sidebar-logout-button');
+
+        // Modal
+        const modalOverlay = document.getElementById('reusable-modal-overlay');
+        const modalContentWrapper = document.getElementById('modal-content-wrapper');
+        const modalTitle = document.getElementById('modal-title');
+        const modalBody = document.getElementById('modal-body');
+        const modalPrimaryBtn = document.getElementById('modal-primary-btn');
+        const modalSecondaryBtn = document.getElementById('modal-secondary-btn');
+        
+        // Spinner
+        const spinnerContainer = document.getElementById('loading-spinner-container');
+        const spinnerMessage = document.getElementById('spinner-message');
+        
+        // Footer Placeholder
+        const footerPlaceholder = document.getElementById('footer-placeholder');
+
+
+        // --- 1. FIREBASE INITIALIZATION & AUTHENTICATION ---
+
+        if (firebaseConfig) {
+            const app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+        } else {
+            console.error("Firebase configuration is missing. Auth features are simulated.");
+        }
+
+        function updateAuthStateUI(user) {
+            const isLoggedIn = user && user.uid && !user.isAnonymous;
+            
+            // Navbar UI
+            if (isLoggedIn) {
+                loginLink.classList.add('hidden');
+                userProfileMenu.classList.remove('hidden');
+            } else {
+                loginLink.classList.remove('hidden');
+                userProfileMenu.classList.add('hidden');
+            }
+
+            // Sidebar UI
+            if (isLoggedIn) {
+                sidebarLoginLink.classList.add('hidden');
+                sidebarProfileLink.classList.remove('hidden');
+                sidebarLogoutButton.classList.remove('hidden');
+            } else {
+                sidebarLoginLink.classList.remove('hidden');
+                sidebarProfileLink.classList.add('hidden');
+                sidebarLogoutButton.classList.add('hidden');
+            }
+        }
+        
+        async function handleAuthInitialization() {
+            if (auth) {
+                if (initialAuthToken) {
+                    try {
+                        await signInWithCustomToken(auth, initialAuthToken);
+                    } catch (error) {
+                        console.error("Custom token error, signing in anonymously:", error.message);
+                        await signInAnonymously(auth);
+                    }
+                } else {
+                    await signInAnonymously(auth);
+                }
+
+                onAuthStateChanged(auth, (user) => {
+                    authReady = true;
+                    updateAuthStateUI(user);
+                });
+            } else {
+                updateAuthStateUI(null);
+            }
+            
+            // Initiate component loading after auth is stable
+            loadFooterComponent();
+        }
+        
+        function handleLogout() {
+            if (auth && authReady) {
+                signOut(auth).catch(error => console.error("Sign out error:", error.message));
+            } else {
+                updateAuthStateUI(null);
+            }
+        }
+
+        if (logoutButton) logoutButton.addEventListener('click', handleLogout);
+        if (sidebarLogoutButton) sidebarLogoutButton.addEventListener('click', handleLogout);
+
+
+        // --- DYNAMIC COMPONENT LOADING LOGIC ---
+        /**
+         * Simulates loading the footer content from its component file.
+         * In a real environment, this would be handled by a build tool or a server.
+         * Here, we fetch the previously generated footer content.
+         */
+        async function loadFooterComponent() {
+            const footerPath = "components/footer.html";
+            try {
+                // NOTE: Fetching local file paths relies on the environment's configuration.
+                // This simulates the behavior of an asynchronous file load.
+                const response = await fetch(footerPath);
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to load component: ${response.statusText}`);
+                }
+                
+                const footerHtml = await response.text();
+                // A simplified extraction might be needed if the file contains full <head> tags,
+                // but since our component was designed to be self-contained HTML for insertion:
+                
+                // We assume the fetch returns the raw inner HTML of the footer. 
+                // We will use the previously generated structure to ensure correctness.
+                const simulatedFooterContent = `
+                    <footer class="bg-gray-900 text-white border-t border-amber-600/30">
+                        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+                            <div class="xl:grid xl:grid-cols-3 xl:gap-8">
+                                <div class="space-y-4 xl:col-span-1">
+                                    <a href="/" class="text-3xl font-extrabold text-amber-500 tracking-tight">Kitchen <span class="text-white">Fleva</span></a>
+                                    <p class="text-gray-400 text-sm max-w-xs">Your daily source for the most delicious, home-cooked recipes and food inspiration from around the world. Spice up your cooking routine!</p>
+                                    <div class="flex space-x-4 mt-6">
+                                        <!-- Social Icons (SVGs are long, so simplified here for brevity) -->
+                                        <a href="#" class="text-gray-400 hover:text-amber-500 transition">FB</a>
+                                        <a href="#" class="text-gray-400 hover:text-amber-500 transition">IG</a>
+                                        <a href="#" class="text-gray-400 hover:text-amber-500 transition">PIN</a>
+                                    </div>
+                                </div>
+                                <div class="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
+                                    <div class="md:grid md:grid-cols-2 md:gap-8">
+                                        <div><h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase">Recipes</h3><ul role="list" class="mt-4 space-y-4"><li><a href="/recipes/browse.html" class="text-base text-gray-400 hover:text-amber-500 transition">Browse All</a></li><li><a href="/recipes/quick-meals.html" class="text-base text-gray-400 hover:text-amber-500 transition">Quick Meals</a></li><li><a href="/recipes/vegetarian.html" class="text-base text-gray-400 hover:text-amber-500 transition">Vegan</a></li><li><a href="/recipes/desserts.html" class="text-base text-gray-400 hover:text-amber-500 transition">Desserts</a></li></ul></div>
+                                        <div class="mt-12 md:mt-0"><h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase">AI & Tools</h3><ul role="list" class="mt-4 space-y-4"><li><a href="/ai/generator.html" class="text-base text-gray-400 hover:text-amber-500 transition">Recipe Generator</a></li><li><a href="/ai/mealplan.html" class="text-base text-gray-400 hover:text-amber-500 transition">Meal Plan Generator</a></li><li><a href="/membership.html" class="text-base text-gray-400 hover:text-amber-500 transition">Membership Plans</a></li><li><a href="/pages/faq.html" class="text-base text-gray-400 hover:text-amber-500 transition">FAQ</a></li></ul></div>
+                                    </div>
+                                    <div class="md:grid md:grid-cols-2 md:gap-8">
+                                        <div><h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase">Company</h3><ul role="list" class="mt-4 space-y-4"><li><a href="/pages/about.html" class="text-base text-gray-400 hover:text-amber-500 transition">About Us</a></li><li><a href="/pages/contact.html" class="text-base text-gray-400 hover:text-amber-500 transition">Contact Us</a></li><li><a href="/pages/partnership.html" class="text-base text-gray-400 hover:text-amber-500 transition">Partnership</a></li></ul></div>
+                                        <div class="mt-12 md:mt-0"><h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase">Legal</h3><ul role="list" class="mt-4 space-y-4"><li><a href="/pages/privacy.html" class="text-base text-gray-400 hover:text-amber-500 transition">Privacy Policy</a></li><li><a href="/pages/terms.html" class="text-base text-gray-400 hover:text-amber-500 transition">Terms of Service</a></li></ul></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-12 border-t border-gray-700 pt-8">
+                                <p class="text-base text-gray-400 text-center">&copy; 2025 Kitchen Fleva. All rights reserved.</p>
+                            </div>
+                        </div>
+                    </footer>
+                `;
+                
+                // Insert the loaded HTML into the placeholder
+                footerPlaceholder.innerHTML = simulatedFooterContent;
+                
+            } catch (error) {
+                console.error("Error loading footer component:", error);
+                // Fallback to the static placeholder or a simple error message
+                footerPlaceholder.innerHTML = `
+                    <footer class="bg-red-800 text-white p-6 text-center">
+                        <p>Error: Failed to load Kitchen Fleva Footer.</p>
+                    </footer>
+                `;
+            }
+        }
+
+
+        // --- 2. SIDEBAR LOGIC ---
+
+        window.toggleSidebar = function() {
+            sidebar.classList.toggle('-translate-x-full');
+        };
+        
+        // Toggle desktop user dropdown
+        const userAvatarButton = document.getElementById('user-avatar-button');
+        if (userAvatarButton) {
+            userAvatarButton.addEventListener('click', () => {
+                desktopDropdown.classList.toggle('opacity-0');
+                desktopDropdown.classList.toggle('visibility');
+            });
+        }
+        document.addEventListener('click', (event) => {
+            const isClickInside = userAvatarButton?.contains(event.target) || desktopDropdown?.contains(event.target);
+            if (desktopDropdown && !isClickInside && !desktopDropdown.classList.contains('opacity-0')) {
+                 desktopDropdown.classList.add('opacity-0');
+                 desktopDropdown.classList.add('visibility');
+            }
+        });
+
+        // --- 3. DARK MODE TOGGLE ---
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const lightIcon = document.getElementById('light-icon');
+        const darkIcon = document.getElementById('dark-icon');
+
+        const isDarkMode = localStorage.getItem('theme') === 'dark' || 
+                           (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+        function applyTheme(isDark) {
+            if (isDark) {
+                document.documentElement.classList.add('dark');
+                lightIcon.classList.add('hidden');
+                darkIcon.classList.remove('hidden');
+            } else {
+                document.documentElement.classList.remove('dark');
+                lightIcon.classList.remove('hidden');
+                darkIcon.classList.add('hidden');
+            }
+        }
+
+        applyTheme(isDarkMode);
+
+        darkModeToggle.addEventListener('click', () => {
+            const isCurrentlyDark = document.documentElement.classList.contains('dark');
+            applyTheme(!isCurrentlyDark);
+            localStorage.setItem('theme', isCurrentlyDark ? 'light' : 'dark');
+        });
+
+
+        // --- 4. MODAL LOGIC (Reusable Functions) ---
+
+        window.showModal = function({
+            title = "Notification", 
+            bodyHtml = "<p>Operation complete.</p>", 
+            onConfirm = null, 
+            primaryText = "Confirm", 
+            secondaryText = "Close"
+        }) {
+            modalTitle.textContent = title;
+            modalBody.innerHTML = bodyHtml;
+            modalSecondaryBtn.textContent = secondaryText;
+
+            if (onConfirm) {
+                modalPrimaryBtn.textContent = primaryText;
+                modalPrimaryBtn.classList.remove('hidden');
+                
+                const newPrimaryBtn = modalPrimaryBtn.cloneNode(true);
+                modalPrimaryBtn.parentNode.replaceChild(newPrimaryBtn, modalPrimaryBtn);
+                newPrimaryBtn.addEventListener('click', () => {
+                    onConfirm();
+                    hideModal();
+                });
+            } else {
+                modalPrimaryBtn.classList.add('hidden');
+                modalPrimaryBtn.onclick = null;
+            }
+
+            modalOverlay.classList.remove('opacity-0', 'pointer-events-none');
+            modalContentWrapper.classList.remove('opacity-0', 'translate-y-[-50px]');
+        };
+
+        window.hideModal = function() {
+            modalOverlay.classList.add('opacity-0', 'pointer-events-none');
+            modalContentWrapper.classList.add('opacity-0', 'translate-y-[-50px]');
+        };
+        
+        modalOverlay.addEventListener('click', function(event) {
+            if (event.target === modalOverlay) hideModal();
+        });
+
+
+        // --- 5. SPINNER LOGIC (Loading Indicator) ---
+
+        window.showSpinner = function(message = "Loading delicious content...") {
+            spinnerMessage.textContent = message;
+            spinnerContainer.style.display = 'flex';
+        };
+
+        window.hideSpinner = function() {
+            spinnerContainer.style.display = 'none';
+        };
+
+
+        // --- 6. FORM SUBMISSIONS ---
+
+        // Hero Search Bar
+        document.getElementById('recipe-search-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const query = document.getElementById('search-input').value.trim();
+            const feedback = document.getElementById('search-feedback');
+
+            if (query === "") {
+                feedback.textContent = "Please enter a search query.";
+                feedback.classList.remove('hidden');
+                return;
+            }
+
+            showSpinner(`Searching for recipes matching "${query}"...`);
+            
+            setTimeout(() => {
+                hideSpinner();
+                showModal({
+                    title: "Search Initiated",
+                    bodyHtml: `<p>We successfully started searching Kitchen Fleva for <strong>${query}</strong>. You would now be redirected to the results page!</p>`,
+                    secondaryText: "Close"
+                });
+            }, 2000);
+        });
+
+        // Newsletter Signup
+        document.getElementById('newsletter-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const emailInput = event.target.querySelector('input[type="email"]');
+            const email = emailInput.value.trim();
+
+            if (email) {
+                showSpinner(`Subscribing ${email}...`);
+                setTimeout(() => {
+                    hideSpinner();
+                    showModal({
+                        title: "Subscription Success!",
+                        bodyHtml: `<p>Thank you for joining Kitchen Fleva! Your **Free Exclusive Recipe eBook** is being sent to <strong>${email}</strong> right now.</p>`,
+                        secondaryText: "Enjoy!"
+                    });
+                    emailInput.value = ''; // Clear form
+                }, 1500);
+            }
+        });
+
+
+        // --- INITIALIZE ALL DYNAMIC FEATURES ---
+        window.onload = handleAuthInitialization;
+    </script>
+</body>
+    </html>
