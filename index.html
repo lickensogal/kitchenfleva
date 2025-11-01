@@ -602,70 +602,77 @@
     </div>
     <!-- END SPINNER -->
 
+        <!-- GLOBAL JAVASCRIPT & DYNAMIC FEATURES -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    
+    // --- GLOBAL VARIABLES (MANDATORY) ---
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
+    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+    
+    let auth;
+    let authReady = false;
 
-    <!-- GLOBAL JAVASCRIPT & DYNAMIC FEATURES -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    // --- DOM Elements ---
+    // Navbar Auth
+    const loginLink = document.getElementById('login-link');
+    const userProfileMenu = document.getElementById('user-profile-menu');
+    const logoutButton = document.getElementById('logout-button');
+    const desktopDropdown = document.getElementById('desktop-dropdown');
+    
+    // Sidebar
+    const sidebar = document.getElementById('kitchenFlevaSidebar');
+    const sidebarLoginLink = document.getElementById('sidebar-login-link');
+    const sidebarProfileLink = document.getElementById('sidebar-profile-link');
+    const sidebarLogoutButton = document.getElementById('sidebar-logout-button');
+
+    // Modal
+    const modalOverlay = document.getElementById('reusable-modal-overlay');
+    const modalContentWrapper = document.getElementById('modal-content-wrapper');
+    const modalTitle = document.getElementById('modal-title');
+    const modalBody = document.getElementById('modal-body');
+    const modalPrimaryBtn = document.getElementById('modal-primary-btn');
+    const modalSecondaryBtn = document.getElementById('modal-secondary-btn');
+    
+    // Spinner
+    const spinnerContainer = document.getElementById('loading-spinner-container');
+    const spinnerMessage = document.getElementById('spinner-message');
+    
+    // Dark Mode
+    const darkModeToggle = document.getElementById('dark-mode-toggle');
+    const lightIcon = document.getElementById('light-icon');
+    const darkIcon = document.getElementById('dark-icon');
+    const currentLanguageSpan = document.getElementById('current-language');
+
+
+    // --- 1. FIREBASE INITIALIZATION & AUTHENTICATION ---
+
+    if (firebaseConfig) {
+        const app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+    } else {
+        console.error("Firebase configuration is missing. Auth features are simulated.");
+    }
+
+    function updateAuthStateUI(user) {
+        const isLoggedIn = user && user.uid && !user.isAnonymous;
         
-        // --- GLOBAL VARIABLES (MANDATORY) ---
-        const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : null;
-        const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
-        
-        let auth;
-        let authReady = false;
-
-        // --- DOM Elements ---
-        // Navbar Auth
-        const loginLink = document.getElementById('login-link');
-        const userProfileMenu = document.getElementById('user-profile-menu');
-        const logoutButton = document.getElementById('logout-button');
-        const desktopDropdown = document.getElementById('desktop-dropdown');
-
-        // Sidebar Auth
-        const sidebar = document.getElementById('kitchenFlevaSidebar');
-        const sidebarLoginLink = document.getElementById('sidebar-login-link');
-        const sidebarProfileLink = document.getElementById('sidebar-profile-link');
-        const sidebarLogoutButton = document.getElementById('sidebar-logout-button');
-
-        // Modal
-        const modalOverlay = document.getElementById('reusable-modal-overlay');
-        const modalContentWrapper = document.getElementById('modal-content-wrapper');
-        const modalTitle = document.getElementById('modal-title');
-        const modalBody = document.getElementById('modal-body');
-        const modalPrimaryBtn = document.getElementById('modal-primary-btn');
-        const modalSecondaryBtn = document.getElementById('modal-secondary-btn');
-        
-        // Spinner
-        const spinnerContainer = document.getElementById('loading-spinner-container');
-        const spinnerMessage = document.getElementById('spinner-message');
-        
-        // Footer Placeholder
-        const footerPlaceholder = document.getElementById('footer-placeholder');
-
-
-        // --- 1. FIREBASE INITIALIZATION & AUTHENTICATION ---
-
-        if (firebaseConfig) {
-            const app = initializeApp(firebaseConfig);
-            auth = getAuth(app);
-        } else {
-            console.error("Firebase configuration is missing. Auth features are simulated.");
-        }
-
-        function updateAuthStateUI(user) {
-            const isLoggedIn = user && user.uid && !user.isAnonymous;
-            
-            // Navbar UI
+        // Navbar UI
+        if (loginLink && userProfileMenu) {
             if (isLoggedIn) {
                 loginLink.classList.add('hidden');
                 userProfileMenu.classList.remove('hidden');
             } else {
                 loginLink.classList.remove('hidden');
                 userProfileMenu.classList.add('hidden');
+                // Hide dropdown when logged out
+                if(desktopDropdown) desktopDropdown.classList.add('opacity-0', 'visibility'); 
             }
+        }
 
-            // Sidebar UI
+        // Sidebar UI
+        if (sidebarLoginLink && sidebarProfileLink && sidebarLogoutButton) {
             if (isLoggedIn) {
                 sidebarLoginLink.classList.add('hidden');
                 sidebarProfileLink.classList.remove('hidden');
@@ -676,314 +683,206 @@
                 sidebarLogoutButton.classList.add('hidden');
             }
         }
-        
-        async function handleAuthInitialization() {
-            if (auth) {
-                if (initialAuthToken) {
-                    try {
-                        await signInWithCustomToken(auth, initialAuthToken);
-                    } catch (error) {
-                        console.error("Custom token error, signing in anonymously:", error.message);
-                        await signInAnonymously(auth);
-                    }
-                } else {
+    }
+    
+    async function handleAuthInitialization() {
+        if (auth) {
+            if (initialAuthToken) {
+                try {
+                    await signInWithCustomToken(auth, initialAuthToken);
+                } catch (error) {
+                    console.error("Custom token error, signing in anonymously:", error.message);
                     await signInAnonymously(auth);
                 }
-
-                onAuthStateChanged(auth, (user) => {
-                    authReady = true;
-                    updateAuthStateUI(user);
-                });
             } else {
-                updateAuthStateUI(null);
+                await signInAnonymously(auth);
             }
-            
-            // Initiate component loading after auth is stable
-            loadFooterComponent();
-        }
-        
-        function handleLogout() {
-            if (auth && authReady) {
-                signOut(auth).catch(error => console.error("Sign out error:", error.message));
-            } else {
-                updateAuthStateUI(null);
-            }
-        }
 
-        if (logoutButton) logoutButton.addEventListener('click', handleLogout);
-        if (sidebarLogoutButton) sidebarLogoutButton.addEventListener('click', handleLogout);
-
-
-        // --- DYNAMIC COMPONENT LOADING LOGIC ---
-        /**
-         * Simulates loading the footer content from its component file.
-         * In a real environment, this would be handled by a build tool or a server.
-         * Here, we fetch the previously generated footer content.
-         */
-        async function loadFooterComponent() {
-            const footerPath = "components/footer.html";
-            try {
-                // NOTE: Fetching local file paths relies on the environment's configuration.
-                // This simulates the behavior of an asynchronous file load.
-                const response = await fetch(footerPath);
-                
-                if (!response.ok) {
-                    throw new Error(`Failed to load component: ${response.statusText}`);
-                }
-                
-                const footerHtml = await response.text();
-                // A simplified extraction might be needed if the file contains full <head> tags,
-                // but since our component was designed to be self-contained HTML for insertion:
-                
-                // We assume the fetch returns the raw inner HTML of the footer. 
-                // We will use the previously generated structure to ensure correctness.
-                const simulatedFooterContent = `
-                    <footer class="bg-gray-900 text-white border-t border-amber-600/30">
-                        <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-                            <div class="xl:grid xl:grid-cols-3 xl:gap-8">
-                                <div class="space-y-4 xl:col-span-1">
-                                    <a href="/" class="text-3xl font-extrabold text-amber-500 tracking-tight">Kitchen <span class="text-white">Fleva</span></a>
-                                    <p class="text-gray-400 text-sm max-w-xs">Your daily source for the most delicious, home-cooked recipes and food inspiration from around the world. Spice up your cooking routine!</p>
-                                    <div class="flex space-x-4 mt-6">
-                                        <!-- Social Icons (SVGs are long, so simplified here for brevity) -->
-                                        <a href="#" class="text-gray-400 hover:text-amber-500 transition">FB</a>
-                                        <a href="#" class="text-gray-400 hover:text-amber-500 transition">IG</a>
-                                        <a href="#" class="text-gray-400 hover:text-amber-500 transition">PIN</a>
-                                    </div>
-                                </div>
-                                <div class="mt-12 grid grid-cols-2 gap-8 xl:mt-0 xl:col-span-2">
-                                    <div class="md:grid md:grid-cols-2 md:gap-8">
-                                        <div><h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase">Recipes</h3><ul role="list" class="mt-4 space-y-4"><li><a href="/recipes/browse.html" class="text-base text-gray-400 hover:text-amber-500 transition">Browse All</a></li><li><a href="/recipes/quick-meals.html" class="text-base text-gray-400 hover:text-amber-500 transition">Quick Meals</a></li><li><a href="/recipes/vegetarian.html" class="text-base text-gray-400 hover:text-amber-500 transition">Vegan</a></li><li><a href="/recipes/desserts.html" class="text-base text-gray-400 hover:text-amber-500 transition">Desserts</a></li></ul></div>
-                                        <div class="mt-12 md:mt-0"><h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase">AI & Tools</h3><ul role="list" class="mt-4 space-y-4"><li><a href="/ai/generator.html" class="text-base text-gray-400 hover:text-amber-500 transition">Recipe Generator</a></li><li><a href="/ai/mealplan.html" class="text-base text-gray-400 hover:text-amber-500 transition">Meal Plan Generator</a></li><li><a href="/membership.html" class="text-base text-gray-400 hover:text-amber-500 transition">Membership Plans</a></li><li><a href="/pages/faq.html" class="text-base text-gray-400 hover:text-amber-500 transition">FAQ</a></li></ul></div>
-                                    </div>
-                                    <div class="md:grid md:grid-cols-2 md:gap-8">
-                                        <div><h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase">Company</h3><ul role="list" class="mt-4 space-y-4"><li><a href="/pages/about.html" class="text-base text-gray-400 hover:text-amber-500 transition">About Us</a></li><li><a href="/pages/contact.html" class="text-base text-gray-400 hover:text-amber-500 transition">Contact Us</a></li><li><a href="/pages/partnership.html" class="text-base text-gray-400 hover:text-amber-500 transition">Partnership</a></li></ul></div>
-                                        <div class="mt-12 md:mt-0"><h3 class="text-sm font-semibold text-gray-200 tracking-wider uppercase">Legal</h3><ul role="list" class="mt-4 space-y-4"><li><a href="/pages/privacy.html" class="text-base text-gray-400 hover:text-amber-500 transition">Privacy Policy</a></li><li><a href="/pages/terms.html" class="text-base text-gray-400 hover:text-amber-500 transition">Terms of Service</a></li></ul></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="mt-12 border-t border-gray-700 pt-8">
-                                <p class="text-base text-gray-400 text-center">&copy; 2025 Kitchen Fleva. All rights reserved.</p>
-                            </div>
-                        </div>
-                    </footer>
-                `;
-                
-                // Insert the loaded HTML into the placeholder
-                footerPlaceholder.innerHTML = simulatedFooterContent;
-                
-            } catch (error) {
-                console.error("Error loading footer component:", error);
-                // Fallback to the static placeholder or a simple error message
-                footerPlaceholder.innerHTML = `
-                    <footer class="bg-red-800 text-white p-6 text-center">
-                        <p>Error: Failed to load Kitchen Fleva Footer.</p>
-                    </footer>
-                `;
-            }
-        }
-
-
-        // --- 2. SIDEBAR LOGIC ---
-
-        window.toggleSidebar = function() {
-            sidebar.classList.toggle('-translate-x-full');
-        };
-        
-        // Toggle desktop user dropdown
-        const userAvatarButton = document.getElementById('user-avatar-button');
-        if (userAvatarButton) {
-            userAvatarButton.addEventListener('click', () => {
-                desktopDropdown.classList.toggle('opacity-0');
-                desktopDropdown.classList.toggle('visibility');
+            onAuthStateChanged(auth, (user) => {
+                authReady = true;
+                updateAuthStateUI(user);
             });
+        } else {
+            updateAuthStateUI(null);
         }
-        document.addEventListener('click', (event) => {
-            const isClickInside = userAvatarButton?.contains(event.target) || desktopDropdown?.contains(event.target);
-            if (desktopDropdown && !isClickInside && !desktopDropdown.classList.contains('opacity-0')) {
-                 desktopDropdown.classList.add('opacity-0');
-                 desktopDropdown.classList.add('visibility');
+    }
+    
+    function handleLogout() {
+        if (auth && authReady) {
+            signOut(auth).catch(error => console.error("Sign out error:", error.message));
+        } else {
+            updateAuthStateUI(null);
+        }
+    }
+
+    if (logoutButton) logoutButton.addEventListener('click', handleLogout);
+    if (sidebarLogoutButton) sidebarLogoutButton.addEventListener('click', handleLogout);
+
+
+    // --- 2. SIDEBAR LOGIC ---
+
+    window.toggleSidebar = function() {
+        sidebar.classList.toggle('-translate-x-full');
+    };
+    
+    // Toggle desktop user dropdown
+    const userAvatarButton = document.getElementById('user-avatar-button');
+    if (userAvatarButton) {
+        userAvatarButton.addEventListener('click', (event) => {
+            event.stopPropagation();
+            if(desktopDropdown) {
+                 desktopDropdown.classList.toggle('opacity-0');
+                 desktopDropdown.classList.toggle('visibility');
             }
         });
-
-        // --- 3. DARK MODE TOGGLE ---
-        const darkModeToggle = document.getElementById('dark-mode-toggle');
-        const lightIcon = document.getElementById('light-icon');
-        const darkIcon = document.getElementById('dark-icon');
-
-        const isDarkMode = localStorage.getItem('theme') === 'dark' || 
-                           (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
-
-        function applyTheme(isDark) {
-            if (isDark) {
-                document.documentElement.classList.add('dark');
-                lightIcon.classList.add('hidden');
-                darkIcon.classList.remove('hidden');
-            } else {
-                document.documentElement.classList.remove('dark');
-                lightIcon.classList.remove('hidden');
-                darkIcon.classList.add('hidden');
-            }
+    }
+    document.addEventListener('click', (event) => {
+        const isClickInside = userAvatarButton?.contains(event.target) || desktopDropdown?.contains(event.target);
+        if (desktopDropdown && !isClickInside && !desktopDropdown.classList.contains('opacity-0')) {
+             desktopDropdown.classList.add('opacity-0');
+             desktopDropdown.classList.add('visibility');
         }
+    });
 
-        applyTheme(isDarkMode);
+    // --- 3. DARK MODE TOGGLE ---
+    const isDarkMode = localStorage.getItem('theme') === 'dark' || 
+                       (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
+    function applyTheme(isDark) {
+        if (isDark) {
+            document.documentElement.classList.add('dark');
+            if (lightIcon) lightIcon.classList.add('hidden');
+            if (darkIcon) darkIcon.classList.remove('hidden');
+        } else {
+            document.documentElement.classList.remove('dark');
+            if (lightIcon) lightIcon.classList.remove('hidden');
+            if (darkIcon) darkIcon.classList.add('hidden');
+        }
+    }
+
+    applyTheme(isDarkMode);
+
+    if (darkModeToggle) {
         darkModeToggle.addEventListener('click', () => {
             const isCurrentlyDark = document.documentElement.classList.contains('dark');
             applyTheme(!isCurrentlyDark);
             localStorage.setItem('theme', isCurrentlyDark ? 'light' : 'dark');
         });
+    }
+    
+    // --- Language Selector Logic (Simulation) ---
+    function updateLanguageUI() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const lang = urlParams.get('lang') || 'en';
+        if (currentLanguageSpan) currentLanguageSpan.textContent = lang.toUpperCase();
+    }
+    
+    window.addEventListener('load', updateLanguageUI);
 
 
-        // --- 4. MODAL LOGIC (Reusable Functions) ---
+    // --- 4. MODAL LOGIC (Reusable Functions) ---
 
-        window.showModal = function({
-            title = "Notification", 
-            bodyHtml = "<p>Operation complete.</p>", 
-            onConfirm = null, 
-            primaryText = "Confirm", 
-            secondaryText = "Close"
-        }) {
-            modalTitle.textContent = title;
-            modalBody.innerHTML = bodyHtml;
-            modalSecondaryBtn.textContent = secondaryText;
+    window.showModal = function({
+        title = "Notification", 
+        bodyHtml = "<p>Operation complete.</p>", 
+        onConfirm = null, 
+        primaryText = "Confirm", 
+        secondaryText = "Close"
+    }) {
+        modalTitle.textContent = title;
+        modalBody.innerHTML = bodyHtml;
+        modalSecondaryBtn.textContent = secondaryText;
 
-            if (onConfirm) {
-                modalPrimaryBtn.textContent = primaryText;
-                modalPrimaryBtn.classList.remove('hidden');
-                
-                const newPrimaryBtn = modalPrimaryBtn.cloneNode(true);
-                modalPrimaryBtn.parentNode.replaceChild(newPrimaryBtn, modalPrimaryBtn);
-                newPrimaryBtn.addEventListener('click', () => {
-                    onConfirm();
-                    hideModal();
-                });
-            } else {
-                modalPrimaryBtn.classList.add('hidden');
-                modalPrimaryBtn.onclick = null;
-            }
-
-            modalOverlay.classList.remove('opacity-0', 'pointer-events-none');
-            modalContentWrapper.classList.remove('opacity-0', 'translate-y-[-50px]');
-        };
-
-        window.hideModal = function() {
-            modalOverlay.classList.add('opacity-0', 'pointer-events-none');
-            modalContentWrapper.classList.add('opacity-0', 'translate-y-[-50px]');
-        };
-        
-        modalOverlay.addEventListener('click', function(event) {
-            if (event.target === modalOverlay) hideModal();
-        });
-
-
-        // --- 5. SPINNER LOGIC (Loading Indicator) ---
-
-        window.showSpinner = function(message = "Loading delicious content...") {
-            spinnerMessage.textContent = message;
-            spinnerContainer.style.display = 'flex';
-        };
-
-        window.hideSpinner = function() {
-            spinnerContainer.style.display = 'none';
-        };
-
-
-        // --- 6. FORM SUBMISSIONS ---
-
-        // Hero Search Bar
-        document.getElementById('recipe-search-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const query = document.getElementById('search-input').value.trim();
-            const feedback = document.getElementById('search-feedback');
-
-            if (query === "") {
-                feedback.textContent = "Please enter a search query.";
-                feedback.classList.remove('hidden');
-                return;
-            }
-
-            showSpinner(`Searching for recipes matching "${query}"...`);
+        if (onConfirm) {
+            modalPrimaryBtn.textContent = primaryText;
+            modalPrimaryBtn.classList.remove('hidden');
             
+            const newPrimaryBtn = modalPrimaryBtn.cloneNode(true);
+            modalPrimaryBtn.parentNode.replaceChild(newPrimaryBtn, modalPrimaryBtn);
+            newPrimaryBtn.addEventListener('click', () => {
+                onConfirm();
+                hideModal();
+            });
+        } else {
+            modalPrimaryBtn.classList.add('hidden');
+            modalPrimaryBtn.onclick = null;
+        }
+
+        modalOverlay.classList.remove('opacity-0', 'pointer-events-none');
+        modalContentWrapper.classList.remove('opacity-0', 'translate-y-[-50px]');
+    };
+
+    window.hideModal = function() {
+        modalOverlay.classList.add('opacity-0', 'pointer-events-none');
+        modalContentWrapper.classList.add('opacity-0', 'translate-y-[-50px]');
+    };
+    
+    modalOverlay.addEventListener('click', function(event) {
+        if (event.target === modalOverlay) hideModal();
+    });
+
+
+    // --- 5. SPINNER LOGIC (Loading Indicator) ---
+
+    window.showSpinner = function(message = "Loading delicious content...") {
+        spinnerMessage.textContent = message;
+        spinnerContainer.style.display = 'flex';
+    };
+
+    window.hideSpinner = function() {
+        spinnerContainer.style.display = 'none';
+    };
+
+
+    // --- 6. FORM SUBMISSIONS ---
+
+    // Hero Search Bar
+    document.getElementById('recipe-search-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const query = document.getElementById('search-input').value.trim();
+        const feedback = document.getElementById('search-feedback');
+
+        if (query === "") {
+            feedback.textContent = "Please enter a search query.";
+            feedback.classList.remove('hidden');
+            return;
+        }
+
+        showSpinner(`Searching for recipes matching "${query}"...`);
+        
+        setTimeout(() => {
+            hideSpinner();
+            showModal({
+                title: "Search Initiated",
+                bodyHtml: `<p>We successfully started searching Kitchen Fleva for <strong>${query}</strong>. You would now be redirected to the results page!</p>`,
+                secondaryText: "Close"
+            });
+        }, 2000);
+    });
+
+    // Newsletter Signup
+    document.getElementById('newsletter-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const emailInput = event.target.querySelector('input[type="email"]');
+        const email = emailInput.value.trim();
+
+        if (email) {
+            showSpinner(`Subscribing ${email}...`);
             setTimeout(() => {
                 hideSpinner();
                 showModal({
-                    title: "Search Initiated",
-                    bodyHtml: `<p>We successfully started searching Kitchen Fleva for <strong>${query}</strong>. You would now be redirected to the results page!</p>`,
-                    secondaryText: "Close"
+                    title: "Subscription Success!",
+                    bodyHtml: `<p>Thank you for joining Kitchen Fleva! Your **Free Exclusive Recipe eBook** is being sent to <strong>${email}</strong> right now.</p>`,
+                    secondaryText: "Enjoy!"
                 });
-            }, 2000);
-        });
-
-        // Newsletter Signup
-        document.getElementById('newsletter-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const emailInput = event.target.querySelector('input[type="email"]');
-            const email = emailInput.value.trim();
-
-            if (email) {
-                showSpinner(`Subscribing ${email}...`);
-                setTimeout(() => {
-                    hideSpinner();
-                    showModal({
-                        title: "Subscription Success!",
-                        bodyHtml: `<p>Thank you for joining Kitchen Fleva! Your **Free Exclusive Recipe eBook** is being sent to <strong>${email}</strong> right now.</p>`,
-                        secondaryText: "Enjoy!"
-                    });
-                    emailInput.value = ''; // Clear form
-                }, 1500);
-            }
-        });
-
-// --- DYNAMIC COMPONENT LOADING LOGIC ---
-        
-        const navbarPlaceholder = document.getElementById('navbar-placeholder');
-
-        async function loadNavbarComponent() {
-            const navbarPath = "components/navbar.html";
-            try {
-                const response = await fetch(navbarPath);
-                if (!response.ok) {
-                    throw new Error(`Failed to load component: ${response.statusText}`);
-                }
-                const navbarHtml = await response.text();
-                
-                // Extract just the inner HTML from <body> (to avoid nesting issues)
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(navbarHtml, 'text/html');
-                const navContent = doc.querySelector('#kitchenFlevaNavbar'); 
-                
-                if (navContent) {
-                    navbarPlaceholder.innerHTML = navContent.outerHTML;
-                    // Because scripts in fetched content don't execute automatically, 
-                    // we need to re-attach the main logic. The logic is designed 
-                    // to run on initialization, so running handleAuthInitialization() 
-                    // after this should be sufficient.
-                    handleAuthInitialization(); 
-                } else {
-                     navbarPlaceholder.innerHTML = '<nav class="bg-red-800 text-white p-4">Error: Navbar content missing.</nav>';
-                }
-                
-            } catch (error) {
-                console.error("Error loading navbar component:", error);
-                navbarPlaceholder.innerHTML = '<nav class="bg-red-800 text-white p-4">Error: Failed to load Kitchen Fleva Navbar.</nav>';
-            }
+                emailInput.value = ''; // Clear form
+            }, 1500);
         }
-        // ... (rest of your component loading and JS logic)
-        
-        // --- UPDATE handleAuthInitialization to call both loaders ---
-        
-        async function handleAuthInitialization() {
-            // ... (Firebase auth logic remains here) ...
-            
-            // Initiate component loading after auth is stable
-            await loadNavbarComponent(); // Load navbar first since it's at the top
-            loadFooterComponent();
-            }
-        // --- INITIALIZE ALL DYNAMIC FEATURES ---
-        window.onload = handleAuthInitialization;
-    </script>
+    });
+
+
+    // --- INITIALIZE ALL DYNAMIC FEATURES ---
+    window.onload = handleAuthInitialization;
+</script>
 </body>
-    </html>
-
-
+</html>
