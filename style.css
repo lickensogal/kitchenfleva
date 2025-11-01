@@ -381,3 +381,79 @@ blockquote {
     }
     }
   
+/* --- CONTACT PAGE ------------------------------------------- */
+.section-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: var(--space-section) var(--space-lg);
+}
+
+.breadcrumb-nav {
+    font-size: 0.9rem;
+    margin-bottom: var(--space-md);
+}
+
+.breadcrumb-nav a {
+    color: var(--color-secondary-cta);
+}
+.breadcrumb-nav a:hover {
+    color: var(--color-primary-cta);
+}
+
+.contact-header {
+    margin-bottom: var(--space-xl);
+}
+.page-heading {
+    margin-bottom: var(--space-md);
+}
+.section-subtitle {
+    color: var(--color-muted-text);
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: var(--space-xl);
+}
+
+.contact-detail {
+    margin-bottom: var(--space-sm);
+}
+
+.social-icons {
+    display: flex;
+    gap: var(--space-md);
+    margin-top: var(--space-sm);
+}
+.social-icon i {
+    font-size: 1.25rem;
+    transition: color 0.3s ease;
+}
+.social-icon:hover i {
+    color: var(--color-primary-cta);
+}
+
+.newsletter-box {
+    text-align: center;
+    padding: var(--space-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+.section-alt-background {
+    background-color: var(--color-alt-bg);
+}
+
+/* Utility spacing */
+.mt-md { margin-top: var(--space-md); }
+.mt-lg { margin-top: var(--space-lg); }
+.mt-xl { margin-top: var(--space-xl); }
+.mb-lg { margin-bottom: var(--space-lg); }
+
+/* Responsive layout for contact grid */
+@media (max-width: 768px) {
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+}
