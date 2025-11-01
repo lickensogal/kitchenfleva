@@ -9,6 +9,18 @@
     <!-- Use Inter font family -->
     <style>
         body { font-family: 'Inter', sans-serif; }
+        /* Ensures the whole sidebar scrolls if content overflows */
+        #kitchenFlevaSidebar {
+            overflow-y: auto;
+        }
+        .collapse-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-in-out;
+        }
+        .collapse-content.open {
+            max-height: 500px; /* Adjust based on max content size */
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
@@ -17,64 +29,91 @@
     <div id="kitchenFlevaSidebar" class="h-full fixed top-0 left-0 w-64 bg-white shadow-xl z-50 transform -translate-x-full transition-transform duration-300 ease-in-out">
         
         <!-- Sidebar Header / Logo -->
-        <div class="p-6 border-b border-gray-100">
+        <div class="p-6 border-b border-gray-100 flex justify-between items-center">
             <a href="/" class="text-3xl font-extrabold text-amber-600 tracking-tight">
                 Kitchen <span class="text-gray-900">Fleva</span>
             </a>
+            <!-- Close Button (Calls window.toggleSidebar() which is defined globally) -->
+             <button onclick="window.toggleSidebar()" class="text-gray-400 hover:text-gray-600 transition" aria-label="Close sidebar">
+                <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+            </button>
         </div>
 
-        <!-- User Info / Auth Status -->
+        <!-- User Info / Auth Status (Simplified from index.html) -->
         <div class="p-6 border-b border-gray-100">
             <div id="logged-out-section">
-                <p class="text-sm font-medium text-gray-500 mb-2">Welcome to Kitchen Fleva!</p>
-                <a href="/pages/login.html" class="block w-full text-center py-2 px-4 mb-2 text-sm font-semibold rounded-lg bg-amber-600 text-white shadow-md hover:bg-amber-700 transition">Log In</a>
-                <a href="/pages/register.html" class="block w-full text-center py-2 px-4 text-sm font-semibold rounded-lg text-amber-600 border border-amber-600 hover:bg-amber-50 transition">Register</a>
+                <a id="sidebar-login-link" href="/pages/login.html" class="block w-full text-center py-2 px-4 text-sm font-semibold rounded-lg bg-amber-600 text-white shadow-md hover:bg-amber-700 transition">Login / Signup</a>
             </div>
 
-            <div id="logged-in-section" class="hidden">
-                <p class="text-lg font-semibold text-gray-900 truncate mb-1" id="user-display-name">Hello, User!</p>
+            <div id="logged-in-section" class="hidden space-y-2">
+                <p class="text-lg font-semibold text-gray-900 truncate" id="user-display-name">Hello, Kitchen Friend!</p>
                 <p class="text-xs text-gray-500 mb-3">ID: <span id="user-display-id" class="font-mono text-xs">Loading...</span></p>
+                
+                <a id="sidebar-profile-link" href="/profile/dashboard.html" class="block w-full text-center py-2 px-4 text-sm font-semibold rounded-lg text-gray-700 bg-gray-200 hover:bg-gray-300 transition">My Dashboard</a>
                 <button id="sidebar-logout-button" class="block w-full text-center py-2 px-4 text-sm font-semibold rounded-lg text-white bg-red-500 shadow-md hover:bg-red-600 transition">Sign Out</button>
             </div>
         </div>
 
-        <!-- Navigation Links -->
-        <nav class="p-4 space-y-2">
-            <a href="/index.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-10l-2-2m2 2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
-                <span class="font-medium">Home</span>
+        <!-- Navigation Links (Collapsible) -->
+        <nav class="p-4 space-y-1">
+            <a href="/index.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition font-semibold">
+                Home
             </a>
-            <a href="/recipes.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zM12 15h.01M12 21h.01M12 3h.01M17.657 16.657L18 17m-6 0a5 5 0 100-10 5 5 0 000 10zM6.343 16.657L6 17m11.314-11.314L18 7M6.686 6.686L6 7"></path></svg>
-                <span class="font-medium">All Recipes</span>
+            <a href="/about.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition font-semibold">
+                About Us
             </a>
-            <a href="/blog.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v3m-2 2l4 4m0 0l-4 4m4-4H7"></path></svg>
-                <span class="font-medium">Cooking Blog</span>
-            </a>
-            <a href="/submit.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path></svg>
-                <span class="font-medium">Submit Recipe</span>
-            </a>
+            
+            <!-- Collapsible Menu Item: Recipes -->
+            <div class="border-t border-gray-100 pt-2">
+                <button onclick="toggleCollapse('recipes-menu')" class="flex justify-between items-center w-full p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition font-semibold">
+                    <span>Recipes</span>
+                    <svg id="recipes-menu-icon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div id="recipes-menu" class="collapse-content ml-4 space-y-1 pb-1">
+                    <a href="/recipes.html" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Recipe Library</a>
+                    <a href="/recipes.html?category=breakfast" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Breakfast</a>
+                    <a href="/recipes.html?category=lunch" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Lunch</a>
+                    <a href="/recipes.html?category=dinner" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Dinner</a>
+                </div>
+            </div>
 
-            <!-- User-specific links (e.g., Dashboard) -->
-            <a id="dashboard-link" href="/dashboard.html" class="hidden items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0h6"></path></svg>
-                <span class="font-medium">My Dashboard</span>
+            <!-- Collapsible Menu Item: Blog -->
+            <div class="border-t border-gray-100 pt-2">
+                 <button onclick="toggleCollapse('blog-menu')" class="flex justify-between items-center w-full p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition font-semibold">
+                    <span>Blog</span>
+                    <svg id="blog-menu-icon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div id="blog-menu" class="collapse-content ml-4 space-y-1 pb-1">
+                    <a href="/blog.html" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Latest Posts</a>
+                    <a href="/blog.html?category=tips" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Recipe Tips</a>
+                    <a href="/blog.html?category=ai" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">AI Cooking Insights</a>
+                </div>
+            </div>
+            
+            <!-- Collapsible Menu Item: AI Tools -->
+            <div class="border-t border-gray-100 pt-2">
+                <button onclick="toggleCollapse('ai-tools-menu')" class="flex justify-between items-center w-full p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition font-semibold">
+                    <span>AI Tools</span>
+                    <svg id="ai-tools-menu-icon" class="w-4 h-4 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+                <div id="ai-tools-menu" class="collapse-content ml-4 space-y-1 pb-1">
+                    <a href="/ai/generator.html" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Recipe Generator</a>
+                    <a href="/ai/mealplan.html" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Meal Plan Generator</a>
+                    <a href="/ai/video.html" class="block p-2 text-sm text-gray-600 hover:bg-gray-100 rounded-lg">Video Generator</a>
+                </div>
+            </div>
+
+            <a href="/membership.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition font-semibold">
+                Membership
+            </a>
+             <a href="/shop.html" class="flex items-center space-x-3 p-3 rounded-lg text-gray-700 hover:bg-amber-50 hover:text-amber-700 transition font-semibold">
+                Shop / Digital Products
             </a>
         </nav>
         
     </div>
 
-    <!-- Example usage / placeholder for demonstration -->
-    <div class="p-10">
-        <button onclick="toggleSidebar()" class="bg-amber-500 text-white p-3 rounded-lg shadow-md hover:bg-amber-600 transition">
-            Toggle Sidebar
-        </button>
-    </div>
-
-
-    <!-- Firebase and Dynamic Logic for Auth State -->
+    <!-- Firebase and Dynamic Logic for Auth State and Collapse -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
@@ -91,8 +130,8 @@
         const loggedOutSection = document.getElementById('logged-out-section');
         const loggedInSection = document.getElementById('logged-in-section');
         const sidebarLogoutButton = document.getElementById('sidebar-logout-button');
-        const dashboardLink = document.getElementById('dashboard-link');
-        const userDisplayName = document.getElementById('user-display-name');
+        const sidebarLoginLink = document.getElementById('sidebar-login-link');
+        const sidebarProfileLink = document.getElementById('sidebar-profile-link');
         const userDisplayId = document.getElementById('user-display-id');
 
         // Initialize Firebase
@@ -103,53 +142,68 @@
             console.error("Firebase configuration is missing. Authentication features will be simulated.");
         }
 
-        // Global function to show/hide the sidebar (can be called from navbar)
+        // --- Sidebar Visibility Toggle ---
+        // This function must be globally available for the Navbar to call it.
         window.toggleSidebar = function() {
             sidebar.classList.toggle('-translate-x-full');
         };
 
-        // Function to update the UI based on auth state
+        // --- Collapsible Menu Logic ---
+        window.toggleCollapse = function(id) {
+            const menu = document.getElementById(id);
+            const icon = document.getElementById(id + '-icon');
+
+            if (menu.classList.contains('open')) {
+                // Collapse it
+                menu.classList.remove('open');
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                // Expand it
+                menu.classList.add('open');
+                icon.style.transform = 'rotate(180deg)';
+            }
+        };
+
+
+        // --- Auth State Logic ---
         function updateAuthStateUI(user) {
-            if (user && user.uid && !user.isAnonymous) {
-                // User is signed in and authenticated (not anonymous)
+            const isLoggedIn = user && user.uid && !user.isAnonymous;
+
+            if (isLoggedIn) {
                 loggedOutSection.classList.add('hidden');
                 loggedInSection.classList.remove('hidden');
-                dashboardLink.classList.replace('hidden', 'flex'); // Show dashboard link
-
-                userDisplayName.textContent = `Hello, Kitchen Friend!`; // Placeholder name
+                sidebarLoginLink.classList.add('hidden');
+                sidebarProfileLink.classList.remove('hidden');
+                sidebarLogoutButton.classList.remove('hidden');
                 userDisplayId.textContent = user.uid;
-                
             } else {
-                // User is signed out or anonymous
                 loggedOutSection.classList.remove('hidden');
                 loggedInSection.classList.add('hidden');
-                dashboardLink.classList.replace('flex', 'hidden'); // Hide dashboard link
+                sidebarLoginLink.classList.remove('hidden');
+                sidebarProfileLink.classList.add('hidden');
+                sidebarLogoutButton.classList.add('hidden');
             }
         }
         
         // Handle initial authentication
         async function handleAuthInitialization() {
             if (auth) {
-                // 1. Attempt to sign in with custom token if available
                 if (initialAuthToken) {
                     try {
                         await signInWithCustomToken(auth, initialAuthToken);
                     } catch (error) {
                         console.error("Error signing in with custom token, falling back to anonymous:", error.message);
-                        await signInAnonymously(auth); // Fallback
+                        await signInAnonymously(auth);
                     }
                 } else {
-                    // 2. Sign in anonymously if no custom token is provided
                     await signInAnonymously(auth);
                 }
 
-                // 3. Listen for auth state changes
                 onAuthStateChanged(auth, (user) => {
                     authReady = true;
                     updateAuthStateUI(user);
                 });
             } else {
-                // Simulation: Assume logged out if Firebase isn't initialized
                 updateAuthStateUI(null);
             }
         }
@@ -174,4 +228,4 @@
         handleAuthInitialization();
     </script>
 </body>
-    </html>
+</html>
