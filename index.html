@@ -53,108 +53,11 @@
 </head>
 <body class="bg-gray-50">
 
-    <!-- 1. NAVIGATION BAR (Complex Structure) -->
-    <nav id="kitchenFlevaNavbar" class="bg-white shadow-lg sticky top-0 z-50">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between h-20">
-                <!-- Logo and Branding -->
-                <div class="flex-shrink-0 flex items-center">
-                    <a href="index.html" class="text-3xl font-extrabold text-amber-600 tracking-tight">
-                        Kitchen <span class="text-gray-900">Fleva</span>
-                    </a>
-                </div>
-
-                <!-- Desktop Navigation Links (with Dropdowns) -->
-                <div class="hidden lg:ml-6 lg:flex lg:space-x-4 xl:space-x-8 items-center">
-                    
-                    <!-- Primary Links -->
-                    <a href="index.html" class="px-1 py-1 border-b-2 border-amber-500 text-sm font-medium text-amber-600 transition">Home</a>
-                    <a href="about.html" class="px-1 py-1 border-b-2 border-transparent text-sm font-medium text-gray-700 hover:border-amber-500 hover:text-amber-600 transition">About Us</a>
-                    <a href="contact.html" class="px-1 py-1 border-b-2 border-transparent text-sm font-medium text-gray-700 hover:border-amber-500 hover:text-amber-600 transition hidden xl:block">Contact</a>
-
-                    <!-- Dropdown Links -->
-                    
-                    <div class="relative group">
-                        <button class="flex items-center text-sm font-medium text-gray-700 hover:text-amber-600 transition">Recipes <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
-                        <div class="dropdown-menu absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1">
-                            <a href="recipes.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Recipe Library</a>
-                            <a href="recipes.html?category=breakfast" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Breakfast</a>
-                            <a href="recipes.html?category=lunch" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Lunch</a>
-                            <a href="recipes.html?category=dinner" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dinner</a>
-                            <a href="recipes.html?category=vegan" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Vegan</a>
-                        </div>
-                    </div>
-
-                    <div class="relative group">
-                        <button class="flex items-center text-sm font-medium text-gray-700 hover:text-amber-600 transition">Blog <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
-                        <div class="dropdown-menu absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1">
-                            <a href="blog-main.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Latest Posts</a>
-                            <a href="blog-main.html?category=tips" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Recipe Tips</a>
-                            <a href="blog-main.html?category=ai" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">AI Cooking Insights</a>
-                        </div>
-                    </div>
-                    
-                    <div class="relative group">
-                        <button class="flex items-center text-sm font-medium text-gray-700 hover:text-amber-600 transition">AI Tools <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg></button>
-                        <div class="dropdown-menu absolute z-10 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1">
-                            <a href="ai/generator.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Recipe Generator</a>
-                            <a href="ai/mealplan.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Meal Plan Generator</a>
-                            <a href="ai/video.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Video Generator</a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Utility and Auth Buttons -->
-                <div class="flex items-center space-x-2">
-                    <!-- Language Selector (Left of nav icon) -->
-                    <div class="relative group hidden sm:block">
-                        <button class="flex items-center text-sm text-gray-500 hover:text-gray-700 transition px-2 py-1 rounded-lg hover:bg-gray-100">
-                            <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M3 9h9m-9 4h6m-3 4h3"></path></svg>
-                            EN
-                        </button>
-                        <div class="dropdown-menu absolute z-10 mt-2 w-32 left-0 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1">
-                            <a href="?lang=en" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">English</a>
-                            <a href="?lang=sw" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Kiswahili</a>
-                            <a href="?lang=fr" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">French</a>
-                            <a href="?lang=es" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Spanish</a>
-                        </div>
-                    </div>
-
-                    <!-- Dark Mode Toggle -->
-                    <button id="dark-mode-toggle" class="p-2 rounded-full text-gray-500 hover:bg-gray-100 hover:text-amber-600 transition" aria-label="Toggle dark mode">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="light-icon"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-                        <svg class="w-6 h-6 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" id="dark-icon"><path d="M17.293 13.914A1.001 1.001 0 0117 14h-4a1 1 0 110-2h4a1 1 0 01.707.293zM10 2a8 8 0 100 16 8 8 0 000-16zM3.465 6.343l.707.707A6 6 0 0010 16a6 6 0 005.828-4.524l.707-.707a8 8 0 11-13.138 0z"></path></svg>
-                    </button>
-
-                    <!-- Auth State Logic -->
-                    <div id="auth-buttons" class="hidden lg:flex items-center space-x-2">
-                        <!-- Logged Out State -->
-                        <a id="login-link" href="/pages/login.html" class="text-sm font-medium text-gray-600 hover:text-amber-600 transition">Login / Signup</a>
-                        
-                        <!-- Logged In State (Dropdown) -->
-                        <div id="user-profile-menu" class="hidden relative group">
-                            <button id="user-avatar-button" class="max-w-xs bg-gray-800 rounded-full flex items-center text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-amber-500 p-0" aria-label="User profile menu">
-                                <svg class="h-8 w-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                            </button>
-                            <div id="desktop-dropdown" class="dropdown-menu absolute z-10 mt-2 w-56 right-0 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 py-1">
-                                <a href="profile/favorites.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Favorites / Saved Recipes</a>
-                                <a href="profile/generated.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Generated Content</a>
-                                <a href="profile/settings.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Account Settings</a>
-                                <a href="membership.html" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Manage Subscription</a>
-                                <button id="logout-button" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-100 border-t mt-1">Logout</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Mobile menu button (Hamburger) -->
-                    <button type="button" id="mobile-menu-open-button" onclick="toggleSidebar()" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-amber-500 lg:hidden" aria-label="Open sidebar menu">
-                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                    </button>
-                </div>
-            </div>
-        </div>
-    </nav>
-    <!-- END NAVIGATION BAR -->
+<!-- 1. NAVIGATION BAR DYNAMIC PLACEHOLDER -->
+    <div id="navbar-placeholder" class="sticky top-0 z-50">
+        <!-- The content of components/navbar.html will be loaded here asynchronously via JS -->
+    </div>
+    <!-- END NAVIGATION BAR DYNAMIC PLACEHOLDER -->
 
 
     <!-- SIDEBAR (components/sidebar.html content - for mobile/tablet) -->
@@ -834,9 +737,54 @@
             }
         });
 
+// --- DYNAMIC COMPONENT LOADING LOGIC ---
+        
+        const navbarPlaceholder = document.getElementById('navbar-placeholder');
 
+        async function loadNavbarComponent() {
+            const navbarPath = "components/navbar.html";
+            try {
+                const response = await fetch(navbarPath);
+                if (!response.ok) {
+                    throw new Error(`Failed to load component: ${response.statusText}`);
+                }
+                const navbarHtml = await response.text();
+                
+                // Extract just the inner HTML from <body> (to avoid nesting issues)
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(navbarHtml, 'text/html');
+                const navContent = doc.querySelector('#kitchenFlevaNavbar'); 
+                
+                if (navContent) {
+                    navbarPlaceholder.innerHTML = navContent.outerHTML;
+                    // Because scripts in fetched content don't execute automatically, 
+                    // we need to re-attach the main logic. The logic is designed 
+                    // to run on initialization, so running handleAuthInitialization() 
+                    // after this should be sufficient.
+                    handleAuthInitialization(); 
+                } else {
+                     navbarPlaceholder.innerHTML = '<nav class="bg-red-800 text-white p-4">Error: Navbar content missing.</nav>';
+                }
+                
+            } catch (error) {
+                console.error("Error loading navbar component:", error);
+                navbarPlaceholder.innerHTML = '<nav class="bg-red-800 text-white p-4">Error: Failed to load Kitchen Fleva Navbar.</nav>';
+            }
+        }
+        // ... (rest of your component loading and JS logic)
+        
+        // --- UPDATE handleAuthInitialization to call both loaders ---
+        
+        async function handleAuthInitialization() {
+            // ... (Firebase auth logic remains here) ...
+            
+            // Initiate component loading after auth is stable
+            await loadNavbarComponent(); // Load navbar first since it's at the top
+            loadFooterComponent();
+            }
         // --- INITIALIZE ALL DYNAMIC FEATURES ---
         window.onload = handleAuthInitialization;
     </script>
 </body>
     </html>
+
