@@ -859,6 +859,37 @@
             });
         }, 2000);
     });
+/**
+ * DYNAMIC FOOTER LOADING SCRIPT
+ * Fetches the content of components/footer.html and inserts it into the placeholder.
+ * This relies on the environment supporting standard fetch requests to local file paths.
+ */
+const footerPlaceholder = document.getElementById('footer-placeholder');
+
+async function loadFooterComponent() {
+    const footerPath = "components/footer.html";
+    
+    try {
+        const response = await fetch(footerPath);
+
+        if (response.ok) {
+            const footerHtml = await response.text();
+            
+            // To ensure only the inner HTML is inserted (and not potentially full <html>/<body> tags),
+            // you might need to parse it, but often inserting the raw text is the goal:
+            footerPlaceholder.innerHTML = footerHtml;
+            
+        } else {
+            console.error(`Error loading component from ${footerPath}: Status ${response.status}`);
+            footerPlaceholder.innerHTML = '<footer class="bg-red-800 text-white p-6 text-center">Error loading footer. Check file path.</footer>';
+        }
+    } catch (error) {
+        console.error("Network or file access error during footer load:", error);
+        footerPlaceholder.innerHTML = '<footer class="bg-red-800 text-white p-6 text-center">Failed to connect to footer component.</footer>';
+    }
+}
+
+// NOTE: You must call loadFooterComponent() from your main initialization function (e.g., inside window.onload).
 
     // Newsletter Signup
     document.getElementById('newsletter-form').addEventListener('submit', function(event) {
@@ -886,4 +917,5 @@
 </script>
 </body>
 </html>
+
 
