@@ -1,80 +1,83 @@
-<link rel="stylesheet" href="style.css">
-<section id="blog-main-hero" class="hero-section small-hero">
-    <div class="hero-content">
-        <h1 class="hero-heading h2-heading">Kitchen Fleva Blog & Articles</h1>
-        <p class="hero-subtitle body-text-large">Fresh Reads, Cooking Tips, and AI Culinary Insights.</p>
-    </div>
-</section>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kitchen Fleva Blog</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
 
-<section id="blog-content-area" class="section-container">
-    <div class="main-content-area blog-grid-layout">
-        
-        <!-- Sidebar for Categories and Newsletter -->
-        <aside class="sidebar-panel card shadow-sm">
-            
-            <!-- Blog Categories -->
-            <div class="sidebar-group">
-                <h4 class="h5-heading">Categories</h4>
-                <ul id="blog-categories-list" class="category-list">
-                    <li><a href="#blog-main?category=latest">Latest Posts</a></li>
-                    <li><a href="#blog-main?category=tips">Recipe Tips</a></li>
-                    <li><a href="#blog-main?category=ai">AI Cooking Insights</a></li>
-                    <li><a href="#blog-main?category=lifestyle">Kitchen Lifestyle</a></li>
-                    <!-- Dynamic categories loaded by JS -->
-                </ul>
-            </div>
+  <!-- Your Blog Hero Section -->
+  <section id="blog-main-hero" class="hero-section small-hero">
+      <div class="hero-content">
+          <h1 class="hero-heading h2-heading">Kitchen Fleva Blog & Articles</h1>
+          <p class="hero-subtitle body-text-large">
+              Fresh Reads, Cooking Tips, and AI Culinary Insights.
+          </p>
+      </div>
+  </section>
 
-            <!-- Top Rated/Popular Widget -->
-            <div class="sidebar-group mt-lg">
-                <h4 class="h5-heading">Most Popular Reads</h4>
-                <div id="popular-posts-widget" class="popular-posts-list">
-                    <!-- Dynamic mini-cards inserted here -->
-                    <a href="#" class="popular-post-item">The Secret to Perfect Ugali Consistency</a>
-                    <a href="#" class="popular-post-item">5 Herbs You Must Grow in Your Kenyan Kitchen</a>
-                </div>
-            </div>
+  <!-- Blog Content Area -->
+  <section id="blog-content-area" class="section-container">
+      <div class="main-content-area blog-grid-layout">
+          
+          <!-- Sidebar -->
+          <aside class="sidebar-panel card shadow-sm">
+              <div class="sidebar-group">
+                  <h4 class="h5-heading">Categories</h4>
+                  <ul id="blog-categories-list" class="category-list">
+                      <li><a href="#blog-main?category=latest">Latest Posts</a></li>
+                      <li><a href="#blog-main?category=tips">Recipe Tips</a></li>
+                      <li><a href="#blog-main?category=ai">AI Cooking Insights</a></li>
+                      <li><a href="#blog-main?category=lifestyle">Kitchen Lifestyle</a></li>
+                  </ul>
+              </div>
 
-            <!-- Newsletter CTA (Repeated from Footer/Home) -->
-            <div class="sidebar-group mt-lg card secondary-bg newsletter-sidebar">
-                <h5 class="h6-heading white-text">Get Fleva Updates</h5>
-                <p class="small-text white-text-muted">Subscribe and get your free eBook!</p>
-                <form id="sidebar-newsletter-form">
-                    <input type="email" placeholder="Your Email" required>
-                    <button type="submit" class="button primary-button button-full-width">Subscribe</button>
-                </form>
-            </div>
-            
-            <!-- Ad Placement: Sidebar Ad -->
-            <div id="sidebar-ad-blog" class="ad-container sidebar-ad mt-lg">
-                <span class="ad-label">ADVERTISEMENT</span>
-                <p class="small-text">Local sponsorship slot.</p>
-            </div>
-        </aside>
+              <div class="sidebar-group mt-lg">
+                  <h4 class="h5-heading">Most Popular Reads</h4>
+                  <div id="popular-posts-widget" class="popular-posts-list">
+                      <a href="#" class="popular-post-item">The Secret to Perfect Ugali Consistency</a>
+                      <a href="#" class="popular-post-item">5 Herbs You Must Grow in Your Kenyan Kitchen</a>
+                  </div>
+              </div>
 
-        <!-- Main Blog Grid -->
-        <div class="blog-grid-container" id="blog-posts-grid">
-            
-            <!-- Filter and Sort Bar (Above grid) -->
-            <div class="blog-filter-bar">
-                <select id="blog-sort-by" class="filter-select">
-                    <option value="newest">Sort by: Newest</option>
-                    <option value="oldest">Sort by: Oldest</option>
-                    <option value="popular">Sort by: Most Popular</option>
-                </select>
-            </div>
+              <div class="sidebar-group mt-lg card secondary-bg newsletter-sidebar">
+                  <h5 class="h6-heading white-text">Get Fleva Updates</h5>
+                  <p class="small-text white-text-muted">Subscribe and get your free eBook!</p>
+                  <form id="sidebar-newsletter-form">
+                      <input type="email" placeholder="Your Email" required>
+                      <button type="submit" class="button primary-button button-full-width">Subscribe</button>
+                  </form>
+              </div>
 
-            <!-- blog-card.html components will be loaded here dynamically by JS -->
-            
-            <div class="spinner-container large" id="blog-library-spinner">
-                <div class="spinner"></div>
-                <p>Fetching fresh content...</p>
-            </div>
-        </div>
-    </div>
+              <div id="sidebar-ad-blog" class="ad-container sidebar-ad mt-lg">
+                  <span class="ad-label">ADVERTISEMENT</span>
+                  <p class="small-text">Local sponsorship slot.</p>
+              </div>
+          </aside>
 
-    <!-- Pagination/Load More -->
-    <div id="blog-pagination-controls" class="text-center mt-xl">
-        <button id="blog-load-more-btn" class="button secondary-button hidden">Load More Articles</button>
-    </div>
-</section>
+          <!-- Blog Grid -->
+          <div class="blog-grid-container" id="blog-posts-grid">
+              <div class="blog-filter-bar">
+                  <select id="blog-sort-by" class="filter-select">
+                      <option value="newest">Sort by: Newest</option>
+                      <option value="oldest">Sort by: Oldest</option>
+                      <option value="popular">Sort by: Most Popular</option>
+                  </select>
+              </div>
 
+              <div class="spinner-container large" id="blog-library-spinner">
+                  <div class="spinner"></div>
+                  <p>Fetching fresh content...</p>
+              </div>
+          </div>
+      </div>
+
+      <div id="blog-pagination-controls" class="text-center mt-xl">
+          <button id="blog-load-more-btn" class="button secondary-button hidden">Load More Articles</button>
+      </div>
+  </section>
+
+</body>
+</html>
