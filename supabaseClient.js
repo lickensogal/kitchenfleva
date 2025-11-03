@@ -1,51 +1,99 @@
+// -----------------------------------------------------------------------------
+// Kitchen Fleva - Supabase Client Initialization
+// -----------------------------------------------------------------------------
+// This module establishes a secure connection between your website and Supabase.
+// It reads credentials from environment variables defined in .env
+// and exports a ready-to-use Supabase client instance throughout the project.
+// -----------------------------------------------------------------------------
+
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.46.1'
+
+// --- Environment Variables ---
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL || 'https://SAMPLE-supabase-project.supabase.co'
+const SUPABASE_ANON_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY || 'SAMPLE_SUPABASE_ANON_KEY'
+
+// --- Initialize Supabase Client ---
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+  auth: {
+    persistSession: true,
+    autoRefreshToken: true,
+    detectSessionInUrl: true,
+  },
+  global: {
+    headers: { 'x-client-info': 'kitchenfleva-web-v1' },
+  },
+})
+
+// --- Helper Functions ---
+
 /**
- * /supabaseClient.js
- * ----------------------------------------------------------------------
- * Central module for initializing and exporting the Supabase client.
- * Imports environment variables for secure connection.
- * ----------------------------------------------------------------------
+ * Checks if the user is authenticated
+ * @returns {Promise<object|null>}
  */
-
-// NOTE: In a real-world, non-SPA project using a bundler (like Vite or Webpack), 
-// the Supabase SDK would be installed via npm and imported via 'import { createClient } from "@supabase/supabase-js"'.
-// For this single HTML file architecture, we rely on the global 'supabase' object loaded in index.html.
-
-// The global constants object (which should contain API keys loaded from .env)
-import { SUPABASE_URL, SUPABASE_ANON_KEY } from './config/constants.js';
-import { logger } from './utils/logger.js';
-
-// Check if the necessary keys are available
-if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
-    logger.error('FATAL ERROR: Supabase URL or Anon Key is missing. Check /config/constants.js and .env.example.');
-    // Fallback to anonymous client if keys are truly unavailable (not recommended)
-    const supabaseClient = {
-        auth: { getSession: () => ({ data: { session: null } }) },
-        from: () => ({ select: () => ({ data: [], error: { message: "Supabase connection failed due to missing keys." } }) }),
-        // Mock the client to prevent immediate crash
-    };
-    export default supabaseClient;
+export async function getCurrentUser() {
+  const { data, error } = await supabase.auth.getUser()
+  if (error) {
+    console.error('Error fetching current user:', error.message)
+    return null
+  }
+  return data.user
 }
 
+/**
+ * Sign in a user with email and password
+ * @param {string} email
+ * @param {string} password
+ * @returns {Promise<object>}
+ */
+export async function signIn(email, password) {
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password })
+  if (error) throw new Error(error.message)
+  return data
+}
 
 /**
- * Initializes the Supabase client using the global keys.
- * @type {import('@supabase/supabase-js').SupabaseClient}
+ * Sign up new user
+ * @param {string} email
+ * @param {string} password
+ * @returns {Promise<object>}
  */
-const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-    auth: {
-        // Automatically refresh tokens and manage session state
-        autoRefreshToken: true,
-        persistSession: true,
-        detectSessionInUrl: true,
-    },
-    // Optional configuration for performance/region optimization
-    realtime: {
-        // Example: Only enable for specific tables if needed to save resources
-        suppressLocalBroadcasts: true,
-    }
-});
+export async function signUp(email, password) {
+  const { data, error } = await supabase.auth.signUp({ email, password })
+  if (error) throw new Error(error.message)
+  return data
+}
 
-logger.debug('Supabase Client Initialized Successfully.');
+/**
+ * Sign out the current user
+ */
+export async function signOut() {
+  const { error } = await supabase.auth.signOut()
+  if (error) console.error('Error signing out:', error.message)
+}
 
-// Export the initialized client for use in auth.js, api.js, etc.
-export default supabaseClient;
+/**
+ * Insert data into a Supabase table
+ * @param {string} table
+ * @param {object} payload
+ */
+export async function insertData(table, payload) {
+  const { data, error } = await supabase.from(table).insert(payload)
+  if (error) throw new Error(`Insert failed: ${error.message}`)
+  return data
+}
+
+/**
+ * Fetch data from a Supabase table
+ * @param {string} table
+ * @param {string[]} columns
+ * @param {string} [filter]
+ */
+export async function fetchData(table, columns = ['*'], filter = '') {
+  let query = supabase.from(table).select(columns.join(','))
+  if (filter) query = query.filter(filter)
+  const { data, error } = await query
+  if (error) throw new Error(`Fetch failed: ${error.message}`)
+  return data
+}
+
+console.log('%c✅ Supabase Client Ready', 'color: green; font-weight: bold')
