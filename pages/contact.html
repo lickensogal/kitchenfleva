@@ -1,110 +1,123 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact | Kitchen Fleva</title>
-  <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
-  <section id="contact-page" class="section-container">
-    <div class="breadcrumb-nav">
-      <a href="#home">Home</a> / Contact
-    </div>
-    
-    <header class="contact-header text-center">
-      <h1 class="page-heading h1-heading">Get in Touch with Kitchen Fleva</h1>
-      <p class="section-subtitle body-text-large">
-        We’d love to hear from you! Send us your inquiries, feedback, or partnership requests. 
-        Add Some Fleva to Your Kitchen!
-      </p>
-    </header>
+<!-- ===========================================================================
+     Kitchen Fleva - Contact & Partnership Page
+============================================================================== -->
 
-    <div class="contact-grid mt-xl">
-      <!-- Left Column: General Contact Form -->
-      <div class="contact-form-wrapper card shadow-md">
-        <h3 class="h3-heading">Send Us a Message</h3>
-        <form id="general-contact-form" class="standard-form">
-          <label for="contact-name">Full Name</label>
-          <input type="text" id="contact-name" name="name" required>
+<div class="container contact-page-container">
 
-          <label for="contact-email">Email Address</label>
-          <input type="email" id="contact-email" name="email" required>
-
-          <label for="contact-subject">Subject / Inquiry Type</label>
-          <select id="contact-subject" name="subject" required>
-            <option value="">-- Select --</option>
-            <option value="general">General Feedback</option>
-            <option value="support">Technical Support</option>
-            <option value="recipe">Recipe Question</option>
-            <option value="billing">Billing / Subscription</option>
-          </select>
-
-          <label for="contact-message">Message</label>
-          <textarea id="contact-message" name="message" rows="6" required></textarea>
-
-          <button type="submit" class="button primary-button button-full-width mt-md">
-            Send Message
-          </button>
-          <div id="contact-form-status" class="form-status-message hidden mt-md"></div>
-        </form>
-      </div>
-
-      <!-- Right Column: Info, Partnership, and Social -->
-      <div class="contact-info-wrapper">
-        <div class="partnership-section card shadow-sm mb-lg">
-          <h4 class="h4-heading">Partner with Us</h4>
-          <p class="body-text-small">
-            We collaborate with brands, chefs, and content creators. Submit a detailed proposal below!
-          </p>
-          <form id="partnership-form" class="standard-form mt-md">
-            <input type="text" placeholder="Name / Brand" required>
-            <input type="email" placeholder="Email Address" required>
-            <textarea placeholder="Proposal details..." rows="3" required></textarea>
-            <button type="submit" class="button secondary-button button-full-width button-sm">
-              Submit Proposal
-            </button>
-          </form>
-        </div>
-
-        <div class="direct-contact-section card shadow-sm">
-          <h4 class="h4-heading">Direct Contact</h4>
-          <p class="contact-detail">
-            <i class="fas fa-envelope primary-color"></i>
-            <a href="mailto:support@kitchenfleva.com">support@kitchenfleva.com</a>
-          </p>
-          <p class="contact-detail">
-            <i class="fab fa-whatsapp primary-color"></i> +254 7XX XXX XXX
-          </p>
-          <p class="contact-detail">
-            <i class="fas fa-map-marker-alt primary-color"></i> Nairobi, Kenya
-          </p>
-        </div>
-
-        <!-- Social Media Links -->
-        <div class="social-links-container mt-lg">
-          <h4 class="h4-heading">Follow the Fleva</h4>
-          <div class="social-icons">
-            <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-pinterest"></i></a>
-            <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Newsletter CTA -->
-    <div class="newsletter-box mt-xl section-alt-background">
-      <h3 class="h3-heading">Get Your Free Recipe EBook!</h3>
-      <p class="body-text">Subscribe to our newsletter for exclusive tips and updates.</p>
-      <form id="contact-newsletter-form" class="newsletter-form">
-        <input type="email" placeholder="Enter your email address" required>
-        <button type="submit" class="button primary-button">Subscribe Now</button>
-      </form>
+  <!-- ========================= Hero Section ========================= -->
+  <section class="hero-section contact-hero" data-component="hero">
+    <div class="hero-content text-center">
+      <h1>Contact & Partnership</h1>
+      <p>Get in touch or propose a partnership. We love hearing from you!</p>
+      <img src="/assets/images/contact-hero.jpg" alt="Contact Hero Image" class="hero-img">
     </div>
   </section>
-</body>
-    </html>
 
+  <!-- ========================= Contact Form Section ========================= -->
+  <section class="contact-form-section">
+    <h2>Send Us a Message</h2>
+    <form id="contact-form" data-form="contact">
+      <div class="form-group">
+        <label for="contact-fullname">Full Name</label>
+        <input type="text" name="fullname" id="contact-fullname" required />
+      </div>
+      <div class="form-group">
+        <label for="contact-email">Email Address</label>
+        <input type="email" name="email" id="contact-email" required />
+      </div>
+      <div class="form-group">
+        <label for="contact-subject">Subject</label>
+        <input type="text" name="subject" id="contact-subject" required />
+      </div>
+      <div class="form-group">
+        <label for="contact-message">Message</label>
+        <textarea name="message" id="contact-message" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Send Message</button>
+    </form>
+  </section>
+
+  <!-- ========================= Partnership Proposal Form Section ========================= -->
+  <section class="partnership-form-section">
+    <h2>Partnership Proposal</h2>
+    <form id="partnership-form" data-form="partnership">
+      <div class="form-group">
+        <label for="partner-company">Company / Organization Name</label>
+        <input type="text" name="company" id="partner-company" required />
+      </div>
+      <div class="form-group">
+        <label for="partner-contact">Contact Person</label>
+        <input type="text" name="contact_person" id="partner-contact" required />
+      </div>
+      <div class="form-group">
+        <label for="partner-email">Email Address</label>
+        <input type="email" name="email" id="partner-email" required />
+      </div>
+      <div class="form-group">
+        <label for="partner-type">Proposal Type</label>
+        <select name="proposal_type" id="partner-type" required>
+          <option value="">Select type</option>
+          <option value="sponsored_recipes">Sponsored Recipes</option>
+          <option value="product_collaboration">Product Collaboration</option>
+          <option value="event">Event</option>
+          <option value="affiliate">Affiliate</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="partner-message">Proposal Details</label>
+        <textarea name="message" id="partner-message" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-secondary">Submit Proposal</button>
+    </form>
+  </section>
+
+  <!-- ========================= Newsletter Signup Section ========================= -->
+  <section class="newsletter-section">
+    <h2>Subscribe for Free Recipes & eBook</h2>
+    <form id="newsletter-form" data-form="newsletter">
+      <div class="form-group">
+        <input type="email" name="email" placeholder="Your email address" required />
+      </div>
+      <button type="submit" class="btn btn-success">Subscribe</button>
+    </form>
+  </section>
+
+  <!-- ========================= Contact Information Section ========================= -->
+  <section class="contact-info-section">
+    <h2>Contact Information</h2>
+    <ul>
+      <li>Email: contact@kitchenfleva.com</li>
+      <li>Phone / WhatsApp: +254-700-XXX-XXX</li>
+      <li>Office: 123 Culinary Street, Nairobi, Kenya</li>
+    </ul>
+    <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.951234!2d36.8219!3d-1.2921!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f173bf5f0341b%3A0x0!2z!MSDDsDU1JzExLjAiTiAzNsKwNDknMTIuOCJF!5e0!3m2!1sen!2ske!4v1699999999999!5m2!1sen!2ske"
+      width="100%" height="300" style="border:0;" allowfullscreen="" loading="lazy">
+    </iframe>
+  </section>
+
+</div>
+
+<!-- ========================= Dynamic Footer ========================= -->
+<footer data-component="footer"></footer>
+
+<script type="module">
+  import * as UI from "../js/ui.js";
+  import initContactForm from "../forms/contactForm.js";
+  import initNewsletterForm from "../forms/newsletterForm.js";
+  import initPartnershipForm from "../forms/partnershipForm.js";
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Initialize UI
+    UI.initAccordions();
+    UI.initModals();
+    UI.initCarousels();
+    UI.initToasts();
+    UI.initScrollTop();
+
+    // Initialize all forms
+    initContactForm();
+    initPartnershipForm();
+    initNewsletterForm();
+  });
+  </script>
