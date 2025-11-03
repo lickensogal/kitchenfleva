@@ -1,157 +1,61 @@
-<section id="hero" class="hero-section">
-    <div class="hero-content">
-        <h1 class="hero-heading">Kitchen Fleva: Made with Passion. Served with Fleva.</h1>
-        <p class="hero-subtitle">Discover authentic Kenyan home recipes and AI-powered meal solutions.</p>
-        <div class="hero-actions">
-            <a href="#recipe-library" class="button primary-button">Browse Recipes</a>
-            <a href="#subscription" class="button secondary-button">Start Trial &rarr;</a>
-        </div>
-    </div>
-    <div class="hero-image-container">
-        <!-- Image dynamically loaded by JS from /assets/images/hero-banner.jpg -->
-        <img id="hero-banner" src="/assets/images/hero-banner.jpg" alt="Beautifully plated Kenyan Dish" class="hero-image">
-    </div>
+<!-- ===========================================================================
+     Kitchen Fleva - home.html
+     Hero Section + Featured Recipes + Blog Preview + Shop Preview
+============================================================================== -->
+
+<section id="home-hero" class="hero-section" data-component="hero">
+  <div class="hero-content container">
+    <h1 class="hero-title">Welcome to Kitchen Fleva</h1>
+    <p class="hero-subtitle">Discover recipes, culinary tips, and AI-powered tools to elevate your cooking.</p>
+    <a href="recipe-library.html" class="btn btn-primary" data-link>Explore Recipes</a>
+  </div>
+  <div class="hero-media">
+    <video src="/assets/media/intro-video.mp4" autoplay muted loop playsinline></video>
+  </div>
 </section>
 
-<section id="featured-recipes" class="section-container">
-    <h2 class="section-title">Featured Fleva: Our Top-Rated Dishes</h2>
-    <p class="section-subtitle">Add Some Fleva to Your Kitchen! Try these user favorites today.</p>
-    
-    <!-- Dynamic Content Area: Featured Recipes Carousel -->
-    <div id="featured-recipe-carousel" class="recipe-carousel-container">
-        <!-- recipe cards (card-recipe.html) will be inserted here by app.js -->
-        <div class="spinner-container" id="featured-recipes-spinner">
-            <!-- spinner.html content -->
-            <div class="spinner"></div>
-            <p>Loading inspiration...</p>
-        </div>
-    </div>
-    <div class="text-center mt-xl">
-        <a href="#recipe-library" class="button secondary-button">View All Recipes (250+)</a>
-    </div>
+<!-- ========================= Featured Recipes ========================= -->
+<section id="featured-recipes" class="section container">
+  <h2 class="section-title">Featured Recipes</h2>
+  <div class="cards-grid" id="featuredRecipesContainer">
+    <!-- Dynamic recipe cards injected via JS -->
+    <div class="spinner" data-component="spinner"></div>
+  </div>
+  <div class="view-all">
+    <a href="recipe-library.html" class="btn btn-secondary" data-link>View All Recipes</a>
+  </div>
 </section>
 
-<section id="recipe-categories" class="section-alt-background">
-    <h2 class="section-title">Explore by Category</h2>
-    <div id="category-grid" class="category-grid-container">
-        <!-- Categories dynamically loaded by JS -->
-        <a href="#recipe-library?category=breakfast" class="category-card">
-            <i class="fas fa-mug-hot category-icon primary-color"></i>
-            <h5 class="category-title">Breakfast</h5>
-            <p class="small-text">Quick starts and weekend feasts.</p>
-        </a>
-        <a href="#recipe-library?category=dinner" class="category-card">
-            <i class="fas fa-utensils category-icon primary-color"></i>
-            <h5 class="category-title">Dinner</h5>
-            <p class="small-text">Hearty meals for the whole family.</p>
-        </a>
-        <a href="#recipe-library?category=vegan" class="category-card">
-            <i class="fas fa-leaf category-icon secondary-color"></i>
-            <h5 class="category-title">Vegan</h5>
-            <p class="small-text">Plant-based power and flavor.</p>
-        </a>
-        <a href="#recipe-library?category=quick" class="category-card">
-            <i class="fas fa-bolt category-icon accent-color"></i>
-            <h5 class="category-title">Quick Meals</h5>
-            <p class="small-text">Ready in 30 minutes or less.</p>
-        </a>
-        <!-- More categories added here by JS -->
-    </div>
+<!-- ========================= Blog Preview ========================= -->
+<section id="blog-preview" class="section container">
+  <h2 class="section-title">Latest Blog Posts</h2>
+  <div class="cards-grid" id="blogPreviewContainer">
+    <!-- Dynamic blog cards injected via JS -->
+    <div class="spinner" data-component="spinner"></div>
+  </div>
+  <div class="view-all">
+    <a href="blog-main.html" class="btn btn-secondary" data-link>View All Blogs</a>
+  </div>
 </section>
 
-<section id="ai-teaser" class="section-container">
-    <div class="two-column-layout reverse-on-mobile">
-        <div class="content-text-block">
-            <h2 class="section-title">Unlock Your Kitchen's Potential with AI</h2>
-            <p class="body-text">Tired of deciding what to cook? Our **AI Recipe Generator** uses Gemini to create personalized meals based on the ingredients you already have in your fridge. Get instant meal plans and cooking videos!</p>
-            <ul class="benefit-list">
-                <li><i class="fas fa-check-circle accent-color"></i> Personalized Recipe Generation</li>
-                <li><i class="fas fa-check-circle accent-color"></i> Weekly AI Meal Planning</li>
-                <li><i class="fas fa-check-circle accent-color"></i> Short AI Cooking Video Clips</li>
-            </ul>
-            <a href="#ai-tools" class="button primary-button mt-md">Explore AI Tools</a>
-        </div>
-        <div class="content-image-block">
-            <img src="/assets/images/ai-placeholder.jpg" alt="AI Generated Cooking Concept" class="image-rounded-lg shadow-md">
-        </div>
-    </div>
+<!-- ========================= Shop Preview ========================= -->
+<section id="shop-preview" class="section container">
+  <h2 class="section-title">Our Products</h2>
+  <div class="cards-grid" id="shopPreviewContainer">
+    <!-- Dynamic product cards injected via JS -->
+    <div class="spinner" data-component="spinner"></div>
+  </div>
+  <div class="view-all">
+    <a href="/pages/shop.html" class="btn btn-secondary" data-link>Go to Shop</a>
+  </div>
 </section>
 
-<section id="latest-blog" class="section-alt-background">
-    <h2 class="section-title">Fresh Reads & Kitchen Tips</h2>
-    <p class="section-subtitle">Stay updated with the latest trends and techniques from our blog.</p>
-    
-    <!-- Dynamic Content Area: Latest Blog Posts -->
-    <div id="latest-blog-grid" class="blog-grid-container">
-        <!-- card-blog.html templates will be inserted here by app.js -->
-        <div class="spinner-container" id="blog-spinner">
-            <div class="spinner"></div>
-            <p>Fetching latest articles...</p>
-        </div>
-    </div>
-    <div class="text-center mt-xl">
-        <a href="#blog-main" class="button secondary-button">Read The Full Blog</a>
-    </div>
-</section>
-
-<section id="membership-cta" class="section-container">
-    <div class="cta-card">
-        <h3 class="h3-heading">Ready for Exclusive Fleva?</h3>
-        <p class="body-text">Go Premium to unlock every recipe, unlimited AI tools, and all digital products. Cancel anytime.</p>
-        <div class="cta-actions">
-            <a href="#subscription" class="button primary-button">Become a Premium Member</a>
-            <a href="#faq" class="button ghost-button">Compare Plans</a>
-        </div>
-    </div>
-</section>
-
-<section id="shop-preview" class="section-container">
-    <h2 class="section-title">Digital Products & eBooks</h2>
-    <p class="section-subtitle">Downloadable guides to master Kenyan cooking techniques and meal prep.</p>
-    
-    <!-- Dynamic Content Area: Digital Products Preview -->
-    <div id="product-preview-grid" class="product-grid-container">
-        <!-- Product cards inserted here by app.js -->
-        <div class="placeholder-card">
-            <img src="/assets/images/placeholders/ebook-cover.jpg" alt="Ebook Preview" class="card-image">
-            <h5 class="card-title">The Ultimate Ugali Guide</h5>
-            <p class="small-text">$14.99</p>
-            <a href="#shop" class="button primary-button button-sm">Buy Now</a>
-        </div>
-        <div class="placeholder-card">
-            <img src="/assets/images/placeholders/meal-planner.jpg" alt="Meal Planner Preview" class="card-image">
-            <h5 class="card-title">7-Day Keto African Plan</h5>
-            <p class="small-text">$9.99</p>
-            <a href="#shop" class="button primary-button button-sm">Buy Now</a>
-        </div>
-    </div>
-    <div class="text-center mt-xl">
-        <a href="#shop" class="button secondary-button">Visit The Shop</a>
-    </div>
-</section>
-
-<section id="testimonials" class="section-alt-background">
-    <h2 class="section-title">What Our Community Says</h2>
-    <div id="testimonial-carousel" class="testimonial-grid-container">
-        <!-- Testimonials dynamically loaded by JS -->
-        <div class="testimonial-card card shadow-md">
-            <p class="blockquote">"The best source for authentic Pili Pili recipes! The AI generator saves me so much time. Truly added some Fleva to my kitchen!"</p>
-            <div class="testimonial-meta">
-                <img src="/assets/images/placeholders/user-placeholder.png" alt="User Photo" class="user-photo">
-                <p class="user-name">— Jane M., Nairobi</p>
-            </div>
-        </div>
-        <!-- More testimonials... -->
-    </div>
-</section>
-
-<section id="newsletter-signup" class="section-container">
-    <div class="newsletter-box">
-        <h3 class="h3-heading">Don't Miss Out!</h3>
-        <p class="body-text">Subscribe to our newsletter and get a **FREE recipe eBook** delivered straight to your inbox.</p>
-        <form id="newsletter-form" class="newsletter-form">
-            <input type="email" placeholder="Enter your email address" required>
-            <button type="submit" class="button primary-button">Subscribe Now</button>
-        </form>
-    </div>
+<!-- ========================= Newsletter CTA ========================= -->
+<section id="newsletter" class="section newsletter-section container">
+  <h2 class="section-title">Stay Updated</h2>
+  <p>Subscribe to our newsletter for the latest recipes, blog posts, and offers.</p>
+  <form data-form="newsletter" class="newsletter-form">
+    <input type="email" name="email" placeholder="Enter your email" required>
+    <button type="submit" class="btn btn-primary">Subscribe</button>
+  </form>
 </section>
