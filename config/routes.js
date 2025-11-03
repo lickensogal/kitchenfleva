@@ -1,51 +1,145 @@
-/**
- * /config/routes.js
- * ----------------------------------------------------------------------
- * Defines all application routes (Hash -> HTML path + required user role).
- * Roles: 'public', 'subscriber', 'moderator', 'admin'
- * ----------------------------------------------------------------------
- */
+/* ===========================================================================
+   Kitchen Fleva - routes.js
+   Centralized route mapping for pages, dashboards, and API endpoints
+   =========================================================================== */
 
-const routes = {
-    // --- PUBLIC PAGES ---
-    '#home': { path: 'pages/home.html', role: 'public', title: 'Home' },
-    '#about': { path: 'pages/about.html', role: 'public', title: 'About Us' },
-    '#recipes': { path: 'pages/recipe-library.html', role: 'public', title: 'Recipe Library' },
-    '#recipe-single': { path: 'pages/recipe-single.html', role: 'public', title: 'Recipe Details' },
-    '#blog': { path: 'pages/blog-main.html', role: 'public', title: 'Blog' },
-    '#contact': { path: 'pages/contact.html', role: 'public', title: 'Contact' },
-    '#faq': { path: 'pages/faq.html', role: 'public', title: 'FAQ' },
-    '#login': { path: 'pages/login.html', role: 'public', title: 'Login' },
-    '#register': { path: 'pages/register.html', role: 'public', title: 'Register' },
-    
-    // --- MEMBERSHIP / SHOP / LEGAL ---
-    '#subscription': { path: 'pages/subscription.html', role: 'public', title: 'Membership' },
-    '#shop': { path: 'pages/shop.html', role: 'public', title: 'Digital Shop' },
-    '#ai-tools': { path: 'pages/ai-tools.html', role: 'subscriber', title: 'AI Tools' }, // Requires any authenticated user
-    
-    // --- LEGAL (Public access) ---
-    '#privacy': { path: 'legal/privacy-policy.html', role: 'public', title: 'Privacy Policy' },
-    '#terms': { path: 'legal/terms-of-service.html', role: 'public', title: 'Terms of Service' },
-    '#cookies': { path: 'legal/cookie-policy.html', role: 'public', title: 'Cookie Policy' },
-    '#disclaimer': { path: 'legal/disclaimer.html', role: 'public', title: 'Disclaimer' },
-
-    // --- AUTHENTICATED USER PAGES ---
-    '#profile': { path: 'pages/profile.html', role: 'subscriber', title: 'User Profile' },
-    '#favorites': { path: 'pages/profile.html?tab=favorites', role: 'subscriber', title: 'Favorites' }, // Renders Profile page with specific tab
-    '#generated-content': { path: 'pages/profile.html?tab=ai', role: 'subscriber', title: 'My AI Content' },
-
-    // --- DASHBOARDS (RBAC Enforcement) ---
-    '#admin-dashboard': { path: 'dashboards/admin/index.html', role: 'admin', title: 'Admin Dashboard' },
-    '#admin-users': { path: 'dashboards/admin/users.html', role: 'admin', title: 'Manage Users' },
-    '#admin-recipes': { path: 'dashboards/admin/recipes.html', role: 'admin', title: 'Manage Recipes' },
-    
-    '#moderator-dashboard': { path: 'dashboards/moderator/index.html', role: 'moderator', title: 'Moderator Dashboard' },
-    '#moderator-flagged': { path: 'dashboards/moderator/flagged-content.html', role: 'moderator', title: 'Flagged Content' },
-
-    // --- ERROR PAGES ---
-    '#404': { path: 'pages/404.html', role: 'public', title: 'Page Not Found' },
-    '#access-denied': { path: 'pages/access-denied.html', role: 'public', title: 'Access Denied' },
+// =========================
+// FRONTEND PAGE ROUTES
+// =========================
+export const frontendRoutes = {
+  home: "/pages/home.html",
+  about: "/pages/about.html",
+  "recipe-library": "/pages/recipe-library.html",
+  "recipe-single": "/pages/recipe-single.html",
+  "blog-main": "/pages/blog-main.html",
+  "blog-post": "/pages/blog-post.html",
+  profile: "/pages/profile.html",
+  contact: "/pages/contact.html",
+  faq: "/pages/faq.html",
+  login: "/pages/login.html",
+  register: "/pages/register.html",
 };
 
-export default routes;
-      
+// =========================
+// DASHBOARD ROUTES
+// =========================
+export const dashboardRoutes = {
+  admin: {
+    index: "/dashboards/admin/index.html",
+    users: "/dashboards/admin/users.html",
+    posts: "/dashboards/admin/posts.html",
+    recipes: "/dashboards/admin/recipes.html",
+    products: "/dashboards/admin/products.html",
+    comments: "/dashboards/admin/comments.html",
+    analytics: "/dashboards/admin/analytics.html",
+    settings: "/dashboards/admin/settings.html",
+  },
+  moderator: {
+    index: "/dashboards/moderator/index.html",
+    flaggedContent: "/dashboards/moderator/flagged-content.html",
+    reports: "/dashboards/moderator/reports.html",
+  },
+};
+
+// =========================
+// API / SUPABASE ENDPOINTS
+// =========================
+export const apiRoutes = {
+  auth: {
+    signIn: "/auth/signin",
+    signUp: "/auth/signup",
+    signOut: "/auth/signout",
+    currentUser: "/auth/current-user",
+  },
+  recipes: {
+    list: "/recipes/list",
+    single: "/recipes/get",
+    create: "/recipes/create",
+    update: "/recipes/update",
+    delete: "/recipes/delete",
+  },
+  blogs: {
+    list: "/blogs/list",
+    post: "/blogs/get",
+    create: "/blogs/create",
+    update: "/blogs/update",
+    delete: "/blogs/delete",
+  },
+  users: {
+    list: "/users/list",
+    profile: "/users/profile",
+    update: "/users/update",
+    delete: "/users/delete",
+  },
+  comments: {
+    list: "/comments/list",
+    create: "/comments/create",
+    delete: "/comments/delete",
+  },
+  products: {
+    list: "/products/list",
+    single: "/products/get",
+    create: "/products/create",
+    update: "/products/update",
+    delete: "/products/delete",
+  },
+  payments: {
+    initiate: "/payments/initiate",
+    verify: "/payments/verify",
+    refund: "/payments/refund",
+    subscriptions: "/payments/subscriptions",
+  },
+  newsletter: {
+    subscribe: "/newsletter/subscribe",
+    unsubscribe: "/newsletter/unsubscribe",
+  },
+  contact: {
+    submit: "/contact/submit",
+  },
+};
+
+// =========================
+// FUNCTION TO RESOLVE ROUTES
+// =========================
+/**
+ * Get route URL dynamically
+ * @param {string} type - 'frontend' | 'dashboard' | 'api'
+ * @param {string} key - route key
+ * @param {string} subKey - optional subkey for nested routes
+ * @returns {string} full route path
+ */
+export function getRoute(type, key, subKey = null) {
+  let route = "";
+  switch (type) {
+    case "frontend":
+      route = frontendRoutes[key] || "/";
+      break;
+    case "dashboard":
+      if (dashboardRoutes[key] && subKey) {
+        route = dashboardRoutes[key][subKey] || dashboardRoutes[key].index;
+      } else {
+        route = dashboardRoutes[key]?.index || "/";
+      }
+      break;
+    case "api":
+      if (apiRoutes[key] && subKey) {
+        route = apiRoutes[key][subKey] || "";
+      } else {
+        route = apiRoutes[key] || "";
+      }
+      break;
+    default:
+      route = "/";
+  }
+  return route;
+}
+
+// =========================
+// EXPORT DEFAULT
+// =========================
+export default {
+  frontendRoutes,
+  dashboardRoutes,
+  apiRoutes,
+  getRoute,
+};
