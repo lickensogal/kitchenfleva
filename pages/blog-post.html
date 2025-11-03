@@ -1,1 +1,115 @@
+<!-- ===========================================================================
+     Kitchen Fleva - blog-post.html
+     Individual Blog Article Page
+============================================================================== -->
 
+<div class="container blog-post-container">
+
+  <!-- ========================= Breadcrumb ========================= -->
+  <nav class="breadcrumb">
+    <a href="home.html" data-link>Home</a> &gt;
+    <a href="blog-main.html" data-link>Blog</a> &gt;
+    <span id="postTitleBreadcrumb">Loading...</span>
+  </nav>
+
+  <div class="blog-post-wrapper">
+
+    <!-- ========================= Main Content ========================= -->
+    <main class="blog-post-main">
+
+      <!-- Blog Post Header -->
+      <header class="blog-post-header">
+        <h1 id="blogPostTitle">Loading...</h1>
+        <div class="blog-post-meta">
+          <span id="blogPostAuthor">Author: Loading...</span> |
+          <span id="blogPostDate">Date: Loading...</span> |
+          <span id="blogPostCategory">Category: Loading...</span>
+        </div>
+      </header>
+
+      <!-- Blog Featured Image -->
+      <figure class="blog-post-image">
+        <img id="blogPostImage" src="/assets/placeholders/recipe-placeholder.jpg" alt="Blog Image">
+      </figure>
+
+      <!-- Blog Content -->
+      <article id="blogPostContent" class="blog-post-content">
+        <div class="spinner" data-component="spinner"></div>
+      </article>
+
+      <!-- ========================= Post Interactions ========================= -->
+      <section class="blog-post-actions">
+        <button id="likePostBtn" class="btn btn-like">Like</button>
+        <button id="bookmarkPostBtn" class="btn btn-bookmark">Bookmark</button>
+        <div class="social-share">
+          <span>Share:</span>
+          <button data-share="facebook">FB</button>
+          <button data-share="twitter">TW</button>
+          <button data-share="whatsapp">WA</button>
+        </div>
+      </section>
+
+      <!-- ========================= Comments Section ========================= -->
+      <section class="blog-post-comments">
+        <h2>Comments</h2>
+
+        <!-- Comment Form -->
+        <form id="commentForm" data-form="comment">
+          <textarea name="comment" placeholder="Write your comment..." required></textarea>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
+        <!-- Comment List -->
+        <div id="commentList">
+          <div class="spinner" data-component="spinner"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ========================= Sidebar ========================= -->
+    <aside class="blog-post-sidebar">
+
+      <!-- Related Posts -->
+      <section class="related-posts">
+        <h3>Related Posts</h3>
+        <div id="relatedPosts" class="cards-grid">
+          <div class="spinner" data-component="spinner"></div>
+        </div>
+      </section>
+
+      <!-- AI Suggested Content -->
+      <section class="ai-suggested-posts">
+        <h3>AI Suggested Blogs</h3>
+        <div id="aiSuggestedBlogs" class="cards-grid">
+          <div class="spinner" data-component="spinner"></div>
+        </div>
+      </section>
+
+      <!-- Categories -->
+      <section class="sidebar-categories">
+        <h3>Categories</h3>
+        <ul id="sidebarCategories">
+          <li>Loading...</li>
+        </ul>
+      </section>
+
+    </aside>
+
+  </div>
+
+</div>
+
+<!-- ========================= Dynamic Footer ========================= -->
+<footer data-component="footer"></footer>
+
+<!-- ========================= Workflow Notes ========================= -->
+<!--
+1. Blog content fetched via blogService.js using post ID from URL
+2. Comments fetched and posted via Supabase; real-time updates if available
+3. Like and bookmark actions integrated with userService.js for logged-in users
+4. Social share buttons dynamically construct URLs for FB/TW/WA
+5. Sidebar dynamically loads categories and AI-suggested blogs (ai_tools.js)
+6. All spinners are replaced with content once data loads
+7. UI interactions handled via ui.js
+-->
