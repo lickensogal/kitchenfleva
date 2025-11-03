@@ -1,58 +1,85 @@
-/**
- * /config/site-config.js
- * ----------------------------------------------------------------------
- * Global configuration settings for Kitchen Fleva (branding, contact, defaults).
- * ----------------------------------------------------------------------
- */
+/* ===========================================================================
+   Kitchen Fleva - site-config.js
+   Core Site Constants & Meta Information
+   =========================================================================== */
 
-const siteConfig = {
-    // --- BRANDING ---
-    siteName: "Kitchen Fleva",
-    taglines: [
-        "Made with Passion. Served with Fleva.",
-        "Add Some Fleva to Your Kitchen!",
-    ],
-    logo: {
-        desktop: '/assets/images/logo.png',
-        favicon: '/assets/images/favicon.ico',
-    },
+export const SITE_CONFIG = {
+  // -------------------------
+  // Basic Site Info
+  // -------------------------
+  siteName: "Kitchen Fleva",
+  siteTagline: "Fresh Recipes, Tips & Culinary AI Insights",
+  siteDescription: "Kitchen Fleva is your ultimate destination for healthy recipes, cooking tips, AI-powered culinary tools, blogs, and more.",
+  siteKeywords: [
+    "Kitchen Fleva", "Recipes", "Cooking Tips", "Healthy Meals", "AI Recipes", "Food Blog", "Culinary Tools"
+  ],
+  siteLogo: "/assets/images/logo.png",
+  favicon: "/assets/images/favicon.ico",
 
-    // --- CONTACT INFO ---
-    contact: {
-        email: 'info@kitchenfleva.com',
-        phone: '+254712345678', // Example Kenyan number (WhatsApp compatible)
-        address: 'Nairobi, Kenya',
-        social: {
-            facebook: 'https://facebook.com/KitchenFleva',
-            instagram: 'https://instagram.com/KitchenFleva',
-            pinterest: 'https://pinterest.com/KitchenFleva',
-            whatsapp: 'https://wa.me/254712345678',
-            youtube: 'https://youtube.com/KitchenFleva',
-        },
-    },
+  // -------------------------
+  // URLs & Base Paths
+  // -------------------------
+  baseUrl: window.location.origin,           // Auto-detect current domain
+  apiBaseUrl: "/api",                        // Default API base (can point to Supabase or backend endpoints)
+  assetsPath: "/assets",                     // Path to images, media, etc.
 
-    // --- DEFAULTS ---
-    defaultSettings: {
-        language: 'en', // Default language
-        theme: 'light', // Default theme mode
-        maxRecipeCards: 12, // Default recipes per page/load
-    },
+  // -------------------------
+  // Social Links
+  // -------------------------
+  social: {
+    facebook: "https://facebook.com/kitchenfleva",
+    instagram: "https://instagram.com/kitchenfleva",
+    twitter: "https://twitter.com/kitchenfleva",
+    linkedin: "https://linkedin.com/company/kitchenfleva",
+    youtube: "https://youtube.com/kitchenfleva"
+  },
 
-    // --- SUBSCRIPTIONS ---
-    subscriptionPlans: {
-        free: { name: "Free", price: 0, benefits: ["Limited content", "Basic search"] },
-        basic: { name: "Basic", price: 500, currency: "KES", benefits: ["50+ exclusive recipes", "Weekly AI meal plan"] },
-        premium: { name: "Premium", price: 1500, currency: "KES", benefits: ["Unlimited access", "AI Recipe Generator", "Priority support"] },
-        vip: { name: "VIP", price: 3000, currency: "KES", benefits: ["All Premium features", "Personalized AI tools", "Exclusive video access"] },
-    },
+  // -------------------------
+  // SEO & Meta Defaults
+  // -------------------------
+  meta: {
+    defaultTitle: "Kitchen Fleva | Fresh Recipes & Culinary Tips",
+    defaultDescription: "Explore recipes, cooking tips, AI culinary tools, blogs, and more on Kitchen Fleva.",
+    defaultImage: "/assets/images/hero-banner.jpg",
+    defaultAuthor: "Kitchen Fleva Team",
+    defaultViewport: "width=device-width, initial-scale=1",
+    defaultCharset: "UTF-8"
+  },
 
-    // --- LEGAL LINKS (Paths to the HTML files) ---
-    legal: [
-        { title: 'Terms of Use', hash: '#terms', path: 'legal/terms-of-service.html' },
-        { title: 'Privacy Policy', hash: '#privacy', path: 'legal/privacy-policy.html' },
-        { title: 'Cookie Policy', hash: '#cookies', path: 'legal/cookie-policy.html' },
-        { title: 'Disclaimer', hash: '#disclaimer', path: 'legal/disclaimer.html' },
-    ]
+  // -------------------------
+  // Analytics & Tracking
+  // -------------------------
+  analytics: {
+    googleAnalyticsId: "G-XXXXXXXXXX",
+    facebookPixelId: "XXXXXXXXXXXXXX"
+  },
+
+  // -------------------------
+  // Newsletter / Forms
+  // -------------------------
+  newsletter: {
+    tableName: "newsletter_subscribers",
+    successMessage: "Thank you for subscribing!",
+    errorMessage: "Failed to subscribe, please try again."
+  },
+
+  // -------------------------
+  // Payment & E-commerce
+  // -------------------------
+  payments: {
+    defaultCurrency: "USD",
+    supportedGateways: ["mpesa", "stripe", "paypal", "paystack", "flutterwave", "razorpay"],
+    successMessage: "Payment successful!",
+    errorMessage: "Payment failed. Please try again."
+  },
+
+  // -------------------------
+  // Miscellaneous
+  // -------------------------
+  defaultUserAvatar: "/assets/images/placeholders/user-placeholder.png",
+  defaultRecipeImage: "/assets/images/placeholders/recipe-placeholder.jpg",
+  maxUploadFileSizeMB: 25
 };
 
-export default siteConfig;
+// Console confirmation
+console.log("%c✅ SITE CONFIG Loaded", "color: green; font-weight: bold");
