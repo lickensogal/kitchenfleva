@@ -1,31 +1,89 @@
-Dependency Directories
+# =========================
+# Node / JS dependencies
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
 
-/node_modules
-/dist
-/build
-
-Environment Variables
-
+# =========================
+# Environment & Secrets
+# =========================
 .env
-.env.*
 .env.local
+.env.development
+.env.production
+.env.test
+.env*
 
-Supabase Local Development Files
+# =========================
+# Build / Output
+# =========================
+dist/
+build/
+*.min.js
+*.bundle.js
+*.map
+*.cache
 
-/supabase/.temp/
-/supabase/db
-/supabase/config.toml
-*.db
-
-Log and Cache Files
-
-*.log
-*.tmp
-.cache
-.DS_Store # macOS files
-
-Build and IDE-specific files
-
+# =========================
+# IDE / Editor files
+# =========================
 .vscode/
-*.sublime-workspace
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
 Thumbs.db
+
+# =========================
+# Logs
+# =========================
+logs/
+*.log
+*.csv
+*.zip
+*.bak
+*.tmp
+
+# =========================
+# Media / Assets caches
+# =========================
+/assets/media/ui-sounds/*.mp3
+/assets/media/*.mp4
+/assets/media/background-music.mp3
+/assets/media/ebooks/*.pdf
+
+# =========================
+# Backups
+# =========================
+/backups/
+*.backup
+*.bak
+
+# =========================
+# Supabase / DB Files
+# =========================
+/supabase/schema.sql
+/supabase/policies.sql
+/supabase/functions/*.js
+
+# =========================
+# Tests / Coverage
+# =========================
+/tests/coverage/
+*.test.js
+*.spec.js
+
+# =========================
+# Misc
+# =========================
+*.tmp
+*.swp
+*.swo
+*.DS_Store
