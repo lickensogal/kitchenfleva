@@ -1,71 +1,90 @@
-/**
- * /config/paymentGateways.js
- * ----------------------------------------------------------------------
- * Defines all supported payment gateways, their configurations, and paths
- * to their respective client-side integration files.
- * ----------------------------------------------------------------------
- */
+/* ===========================================================================
+   Kitchen Fleva - paymentGateways.js
+   Central configuration for all supported payment gateways
+   =========================================================================== */
 
-import { PAYMENT_MPESA, PAYMENT_STRIPE, PAYMENT_PAYPAL } from './constants.js';
+// =========================
+// SUPPORTED PAYMENT GATEWAYS
+// =========================
+export const GATEWAYS = {
+  MPESA: "mpesa",
+  STRIPE: "stripe",
+  PAYPAL: "paypal",
+  PAYSTACK: "paystack",
+  FLUTTERWAVE: "flutterwave",
+  RAZORPAY: "razorpay",
+  CARDS: "cards", // VISA, MasterCard, AMEX, etc.
+};
 
-const paymentGateways = [
-    {
-        id: 'mpesa',
-        name: PAYMENT_MPESA,
-        logo: '/assets/images/icons/mpesa-logo.svg',
-        description: 'Pay via Safaricom M-Pesa STK Push (Kenya).',
-        clientFile: '../payments/mpesa.js',
-        supportedCurrencies: ['KES'],
-        isActive: true,
-    },
-    {
-        id: 'stripe',
-        name: PAYMENT_STRIPE,
-        logo: '/assets/images/icons/stripe-logo.svg',
-        description: 'Pay securely using Credit/Debit Cards (Visa, MasterCard).',
-        clientFile: '../payments/stripe.js',
-        supportedCurrencies: ['USD', 'KES', 'EUR'],
-        isActive: true,
-        keys: {
-            publishableKey: 'pk_test_YOUR_STRIPE_PUBLIC_KEY', // Only public key here
-        }
-    },
-    {
-        id: 'paypal',
-        name: PAYMENT_PAYPAL,
-        logo: '/assets/images/icons/paypal-logo.svg',
-        description: 'Pay using your PayPal account.',
-        clientFile: '../payments/paypal.js',
-        supportedCurrencies: ['USD', 'EUR'],
-        isActive: true,
-    },
-    {
-        id: 'flutterwave',
-        name: 'Flutterwave',
-        logo: '/assets/images/icons/flutterwave-logo.svg',
-        description: 'Supports various African payment methods (Rave).',
-        clientFile: '../payments/flutterwave.js',
-        supportedCurrencies: ['NGN', 'GHS', 'ZAR', 'KES'],
-        isActive: true,
-    },
-    {
-        id: 'paystack',
-        name: 'Paystack',
-        logo: '/assets/images/icons/paystack-logo.svg',
-        description: 'Trusted payment solution for Nigeria and Ghana.',
-        clientFile: '../payments/paystack.js',
-        supportedCurrencies: ['NGN', 'GHS'],
-        isActive: true,
-    },
-    // Add Razorpay, etc., if needed, following the same structure
-];
+// =========================
+// PAYMENT KEYS (ENV Variables Recommended)
+// =========================
+export const KEYS = {
+  MPESA: {
+    CONSUMER_KEY: import.meta.env.VITE_MPESA_CONSUMER_KEY || "YOUR_MPESA_CONSUMER_KEY",
+    CONSUMER_SECRET: import.meta.env.VITE_MPESA_CONSUMER_SECRET || "YOUR_MPESA_CONSUMER_SECRET",
+    SHORTCODE: import.meta.env.VITE_MPESA_SHORTCODE || "600000",
+    PASSKEY: import.meta.env.VITE_MPESA_PASSKEY || "YOUR_MPESA_PASSKEY",
+    ENV: import.meta.env.VITE_MPESA_ENV || "sandbox", // sandbox or production
+  },
+  STRIPE: {
+    PUBLIC_KEY: import.meta.env.VITE_STRIPE_PUBLIC_KEY || "YOUR_STRIPE_PUBLIC_KEY",
+    SECRET_KEY: import.meta.env.VITE_STRIPE_SECRET_KEY || "YOUR_STRIPE_SECRET_KEY",
+    WEBHOOK_SECRET: import.meta.env.VITE_STRIPE_WEBHOOK_SECRET || "YOUR_STRIPE_WEBHOOK_SECRET",
+  },
+  PAYPAL: {
+    CLIENT_ID: import.meta.env.VITE_PAYPAL_CLIENT_ID || "YOUR_PAYPAL_CLIENT_ID",
+    SECRET: import.meta.env.VITE_PAYPAL_SECRET || "YOUR_PAYPAL_SECRET",
+    ENV: import.meta.env.VITE_PAYPAL_ENV || "sandbox", // sandbox or live
+  },
+  PAYSTACK: {
+    PUBLIC_KEY: import.meta.env.VITE_PAYSTACK_PUBLIC_KEY || "YOUR_PAYSTACK_PUBLIC_KEY",
+    SECRET_KEY: import.meta.env.VITE_PAYSTACK_SECRET_KEY || "YOUR_PAYSTACK_SECRET_KEY",
+    ENV: import.meta.env.VITE_PAYSTACK_ENV || "sandbox",
+  },
+  FLUTTERWAVE: {
+    PUBLIC_KEY: import.meta.env.VITE_FLUTTERWAVE_PUBLIC_KEY || "YOUR_FLUTTERWAVE_PUBLIC_KEY",
+    SECRET_KEY: import.meta.env.VITE_FLUTTERWAVE_SECRET_KEY || "YOUR_FLUTTERWAVE_SECRET_KEY",
+    ENCRYPTION_KEY: import.meta.env.VITE_FLUTTERWAVE_ENCRYPTION_KEY || "YOUR_FLUTTERWAVE_ENCRYPTION_KEY",
+    ENV: import.meta.env.VITE_FLUTTERWAVE_ENV || "sandbox",
+  },
+  RAZORPAY: {
+    KEY_ID: import.meta.env.VITE_RAZORPAY_KEY_ID || "YOUR_RAZORPAY_KEY_ID",
+    KEY_SECRET: import.meta.env.VITE_RAZORPAY_KEY_SECRET || "YOUR_RAZORPAY_KEY_SECRET",
+    ENV: import.meta.env.VITE_RAZORPAY_ENV || "sandbox",
+  },
+  CARDS: {
+    VISA: "visa",
+    MASTERCARD: "mastercard",
+    AMEX: "amex",
+  },
+};
 
-/**
- * Fetches the configuration for a specific gateway.
- * @param {string} id - The gateway ID (e.g., 'mpesa').
- */
-export function getGatewayConfig(id) {
-    return paymentGateways.find(g => g.id === id);
+// =========================
+// DEFAULT SETTINGS
+// =========================
+export const DEFAULTS = {
+  CURRENCY: "USD",
+  CURRENCY_SYMBOL: "$",
+  PAYMENT_TIMEOUT: 30000, // in milliseconds
+  RETRY_ATTEMPTS: 2,
+  SUCCESS_REDIRECT: "/thank-you.html",
+  FAILURE_REDIRECT: "/payment-failed.html",
+};
+
+// =========================
+// HELPER FUNCTION: Check if Gateway is Enabled
+// =========================
+export function isGatewayEnabled(gateway) {
+  return Object.keys(GATEWAYS).includes(gateway.toUpperCase());
 }
 
-export default paymentGateways;
+// =========================
+// EXPORT DEFAULT
+// =========================
+export default {
+  GATEWAYS,
+  KEYS,
+  DEFAULTS,
+  isGatewayEnabled,
+};
