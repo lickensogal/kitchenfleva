@@ -1,41 +1,113 @@
-/**
- * /config/constants.js
- * ----------------------------------------------------------------------
- * Centralized constant definitions and environment variable loading.
- * NOTE: Keys are loaded via the global process.env (runtime injection).
- * ----------------------------------------------------------------------
- */
+/* ===========================================================================
+   Kitchen Fleva - constants.js
+   Global reusable constants, statuses, limits, and default values
+   =========================================================================== */
 
-// --- ENVIRONMENT VARIABLES (Loaded from .env.example/Runtime) ---
-export const SUPABASE_URL = 'YOUR_SUPABASE_PROJECT_URL'; // Should be loaded from process.env.VITE_SUPABASE_URL
-export const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY'; // Should be loaded from process.env.VITE_SUPABASE_ANON_KEY
-export const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY'; // For AI features
-export const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/';
-export const GEMINI_MODEL = 'gemini-2.5-flash-preview-09-2025'; // Default model for text/structured data
+// =========================
+// STATUS CONSTANTS
+// =========================
+export const STATUS = {
+  ACTIVE: "active",
+  INACTIVE: "inactive",
+  PENDING: "pending",
+  APPROVED: "approved",
+  REJECTED: "rejected",
+  DRAFT: "draft",
+  PUBLISHED: "published",
+  FLAGGED: "flagged",
+  COMPLETED: "completed",
+  FAILED: "failed",
+};
 
-// --- SUPABASE STORAGE BUCKETS ---
-export const BUCKET_RECIPES = 'recipe_images';
-export const BUCKET_PRODUCTS = 'product_downloads';
-export const BUCKET_VIDEOS = 'ai_videos';
+// =========================
+// USER ROLES
+// =========================
+export const USER_ROLES = {
+  ADMIN: "admin",
+  MODERATOR: "moderator",
+  MEMBER: "member",
+  GUEST: "guest",
+};
 
-// --- API ENDPOINTS (Internal Supabase Edge Functions) ---
-// These are client-facing URLs that trigger the secure backend logic.
-export const API_PAYMENTS_PROCESS = '/functions/v1/handlePayments'; 
-export const API_AI_GENERATE = '/functions/v1/ai-generate';
+// =========================
+// FORM & INPUT LIMITS
+// =========================
+export const LIMITS = {
+  MAX_TITLE_LENGTH: 120,
+  MAX_DESC_LENGTH: 1000,
+  MAX_COMMENT_LENGTH: 500,
+  MAX_USERNAME_LENGTH: 50,
+  MAX_PASSWORD_LENGTH: 64,
+  MAX_EMAIL_LENGTH: 100,
+  MAX_FILE_SIZE_MB: 10,
+  MAX_RECIPES_FETCH: 50,
+  MAX_BLOGS_FETCH: 50,
+  MAX_PRODUCTS_FETCH: 50,
+};
 
-// --- UI AND UX CONSTANTS ---
-export const COOKIE_CONSENT_KEY = 'kf_cookie_consent';
-export const MAX_RECIPE_TITLE_LENGTH = 70;
-export const MAX_BLOG_SNIPPET_LENGTH = 150;
-export const ANIMATION_DURATION = 300; // ms for transitions
+// =========================
+// DEFAULT VALUES
+// =========================
+export const DEFAULTS = {
+  THEME: "light",
+  LANGUAGE: "en",
+  AVATAR: "/assets/placeholders/user-placeholder.png",
+  RECIPE_IMAGE: "/assets/placeholders/recipe-placeholder.jpg",
+  BLOG_IMAGE: "/assets/placeholders/recipe-placeholder.jpg",
+  PRODUCT_IMAGE: "/assets/placeholders/recipe-placeholder.jpg",
+  NOTIFICATION_SOUND: "/assets/media/ui-sounds/notification.mp3",
+  SUCCESS_SOUND: "/assets/media/ui-sounds/success.mp3",
+  CLICK_SOUND: "/assets/media/ui-sounds/click.mp3",
+};
 
-// --- PAYMENT GATEWAY CODES (Used for database tracking) ---
-export const PAYMENT_MPESA = 'M-Pesa';
-export const PAYMENT_STRIPE = 'Stripe';
-export const PAYMENT_PAYPAL = 'PayPal';
+// =========================
+// PAYMENT CONSTANTS
+// =========================
+export const PAYMENT_STATUS = {
+  PENDING: "pending",
+  SUCCESS: "success",
+  FAILED: "failed",
+  REFUNDED: "refunded",
+};
 
-// --- USER ROLE CODES ---
-export const ROLE_ADMIN = 'admin';
-export const ROLE_MODERATOR = 'moderator';
-export const ROLE_SUBSCRIBER = 'subscriber';
-export const ROLE_PUBLIC = 'public';
+// =========================
+// ROUTING CONSTANTS
+// =========================
+export const ROUTE_TYPES = {
+  FRONTEND: "frontend",
+  DASHBOARD: "dashboard",
+  API: "api",
+};
+
+// =========================
+// DATE & TIME FORMATS
+// =========================
+export const DATE_FORMATS = {
+  DISPLAY: "DD/MM/YYYY",
+  FULL: "DD/MM/YYYY HH:mm:ss",
+  ISO: "YYYY-MM-DDTHH:mm:ssZ",
+};
+
+// =========================
+// NOTIFICATION TYPES
+// =========================
+export const NOTIFICATION_TYPES = {
+  SUCCESS: "success",
+  ERROR: "danger",
+  INFO: "info",
+  WARNING: "warning",
+};
+
+// =========================
+// EXPORT DEFAULT
+// =========================
+export default {
+  STATUS,
+  USER_ROLES,
+  LIMITS,
+  DEFAULTS,
+  PAYMENT_STATUS,
+  ROUTE_TYPES,
+  DATE_FORMATS,
+  NOTIFICATION_TYPES,
+};
