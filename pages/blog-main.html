@@ -1,83 +1,120 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kitchen Fleva Blog</title>
-  <link rel="stylesheet" href="../style.css">
-</head>
-<body>
+<!-- ===========================================================================
+     Kitchen Fleva - blog-main.html
+     Blog Listing Page - Grid View + Sidebar + Pagination + AI Integration
+============================================================================== -->
 
-  <!-- Your Blog Hero Section -->
-  <section id="blog-main-hero" class="hero-section small-hero">
-      <div class="hero-content">
-          <h1 class="hero-heading h2-heading">Kitchen Fleva Blog & Articles</h1>
-          <p class="hero-subtitle body-text-large">
-              Fresh Reads, Cooking Tips, and AI Culinary Insights.
-          </p>
-      </div>
-  </section>
+<div class="container blog-main-container">
 
-  <!-- Blog Content Area -->
-  <section id="blog-content-area" class="section-container">
-      <div class="main-content-area blog-grid-layout">
-          
-          <!-- Sidebar -->
-          <aside class="sidebar-panel card shadow-sm">
-              <div class="sidebar-group">
-                  <h4 class="h5-heading">Categories</h4>
-                  <ul id="blog-categories-list" class="category-list">
-                      <li><a href="#blog-main?category=latest">Latest Posts</a></li>
-                      <li><a href="#blog-main?category=tips">Recipe Tips</a></li>
-                      <li><a href="#blog-main?category=ai">AI Cooking Insights</a></li>
-                      <li><a href="#blog-main?category=lifestyle">Kitchen Lifestyle</a></li>
-                  </ul>
-              </div>
+  <!-- ========================= Breadcrumb / Navigation ========================= -->
+  <nav class="breadcrumb">
+    <a href="home.html" data-link>Home</a> &gt;
+    <span>Blog</span>
+  </nav>
 
-              <div class="sidebar-group mt-lg">
-                  <h4 class="h5-heading">Most Popular Reads</h4>
-                  <div id="popular-posts-widget" class="popular-posts-list">
-                      <a href="#" class="popular-post-item">The Secret to Perfect Ugali Consistency</a>
-                      <a href="#" class="popular-post-item">5 Herbs You Must Grow in Your Kenyan Kitchen</a>
-                  </div>
-              </div>
+  <div class="blog-content-wrapper">
 
-              <div class="sidebar-group mt-lg card secondary-bg newsletter-sidebar">
-                  <h5 class="h6-heading white-text">Get Fleva Updates</h5>
-                  <p class="small-text white-text-muted">Subscribe and get your free eBook!</p>
-                  <form id="sidebar-newsletter-form">
-                      <input type="email" placeholder="Your Email" required>
-                      <button type="submit" class="button primary-button button-full-width">Subscribe</button>
-                  </form>
-              </div>
+    <!-- ========================= Main Blog Grid ========================= -->
+    <main class="blog-grid">
 
-              <div id="sidebar-ad-blog" class="ad-container sidebar-ad mt-lg">
-                  <span class="ad-label">ADVERTISEMENT</span>
-                  <p class="small-text">Local sponsorship slot.</p>
-              </div>
-          </aside>
+      <!-- Featured Posts -->
+      <section class="featured-posts">
+        <h2>Featured Posts</h2>
+        <div id="featuredPosts" class="cards-grid">
+          <div class="spinner" data-component="spinner"></div>
+        </div>
+      </section>
 
-          <!-- Blog Grid -->
-          <div class="blog-grid-container" id="blog-posts-grid">
-              <div class="blog-filter-bar">
-                  <select id="blog-sort-by" class="filter-select">
-                      <option value="newest">Sort by: Newest</option>
-                      <option value="oldest">Sort by: Oldest</option>
-                      <option value="popular">Sort by: Most Popular</option>
-                  </select>
-              </div>
+      <!-- Blog Posts Grid -->
+      <section class="all-posts">
+        <h2>All Blog Posts</h2>
 
-              <div class="spinner-container large" id="blog-library-spinner">
-                  <div class="spinner"></div>
-                  <p>Fetching fresh content...</p>
-              </div>
-          </div>
-      </div>
+        <!-- Filters -->
+        <div class="blog-filters">
+          <input type="text" id="blogSearch" placeholder="Search posts..." />
+          <select id="blogCategoryFilter">
+            <option value="">All Categories</option>
+            <!-- Categories loaded dynamically -->
+          </select>
+          <select id="blogLanguageFilter">
+            <option value="">All Languages</option>
+            <option value="en">English</option>
+            <option value="sw">Kiswahili</option>
+            <option value="fr">French</option>
+            <option value="es">Spanish</option>
+            <option value="pt">Portuguese</option>
+            <option value="ar">Arabic</option>
+          </select>
+        </div>
 
-      <div id="blog-pagination-controls" class="text-center mt-xl">
-          <button id="blog-load-more-btn" class="button secondary-button hidden">Load More Articles</button>
-      </div>
-  </section>
+        <!-- Blog Cards Grid -->
+        <div id="blogPostsGrid" class="cards-grid">
+          <div class="spinner" data-component="spinner"></div>
+        </div>
 
-</body>
-</html>
+        <!-- Pagination -->
+        <div id="blogPagination" class="pagination">
+          <!-- Dynamically generated pagination via ui.js -->
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- ========================= Sidebar ========================= -->
+    <aside class="blog-sidebar">
+
+      <!-- Categories -->
+      <section class="sidebar-categories">
+        <h3>Categories</h3>
+        <ul id="sidebarCategories">
+          <li>Loading...</li>
+        </ul>
+      </section>
+
+      <!-- Tags -->
+      <section class="sidebar-tags">
+        <h3>Tags</h3>
+        <div id="sidebarTags">
+          <!-- Dynamically injected tags -->
+        </div>
+      </section>
+
+      <!-- Recent Posts -->
+      <section class="sidebar-recent-posts">
+        <h3>Recent Posts</h3>
+        <ul id="recentPosts">
+          <li>Loading...</li>
+        </ul>
+      </section>
+
+      <!-- AI Generated Post Prompt -->
+      <section class="sidebar-ai">
+        <h3>AI Blog Suggestions</h3>
+        <div id="aiSuggestedBlogs" class="cards-grid">
+          <div class="spinner" data-component="spinner"></div>
+        </div>
+      </section>
+
+    </aside>
+
+  </div>
+
+</div>
+
+<!-- ========================= Dynamic Footer ========================= -->
+<footer data-component="footer"></footer>
+
+<!-- ========================= Template / Workflow Notes ========================= -->
+<!--
+1. Blog posts fetched via blogService.js.
+   - Rendered dynamically using card-blog.html template
+   - Supports filters by category and language
+2. Featured posts displayed at the top
+3. Pagination handled via ui.js
+4. Sidebar dynamically loads categories, tags, and recent posts
+5. Blog card interactions:
+   - Clicking a card navigates to blog-post.html dynamically via router.js
+   - Users can like/bookmark if logged in
+6. AI-generated blog posts pulled via ai_tools.js (blogWriter.js)
+7. All UI interactions (accordion, modals, toast) handled via ui.js
+-->
