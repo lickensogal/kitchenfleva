@@ -1,112 +1,183 @@
-/**
- * /app.js
- * ----------------------------------------------------------------------
- * Main entry point for the Kitchen Fleva Single Page Application (SPA).
- * Orchestrates initialization of Auth, Routing, UI, and Global State.
- * ----------------------------------------------------------------------
- */
+/* ===========================================================================
+   Kitchen Fleva - app.js
+   Main site loader, dynamic components injection, Supabase integration
+   =========================================================================== */
 
-// --- 1. CORE IMPORTS ---
-// Supabase Client (Initialized separately for clarity)
-import supabaseClient from './supabaseClient.js';
-// Core App Logic
-import { initializeRouter } from './router.js'; 
-import { initializeAuth } from './js/auth.js';
-import { loadNavbar, loadFooter } from './js/ui.js';
-import * as Theme from './config/theme.js';
-import * as Language from './js/language.js';
-import { logger } from './utils/logger.js';
+import { supabase } from "./supabaseClient.js";
+import { loadPage } from "./router.js";
+import * as UI from "./js/ui.js";
+import * as Auth from "./js/auth.js";
+import * as Language from "./js/language.js";
+import * as AI from "./js/ai_tools.js";
+import * as Payments from "./js/payments.js";
 
-// --- 2. GLOBAL STATE ---
-// Global state object accessible across the application via window.App
-window.App = {
-    supabase: supabaseClient,
-    user: null,           // Current Supabase user (auth.user)
-    profile: null,        // User's profile from the 'users' table (contains role/membership)
-    isAuthReady: false,   // True once the initial auth check is complete
-    language: 'en',       // Current active language code
-    translations: {},     // Loaded translation map
-    currentPage: '#home',
-};
+// =========================
+// 1) DOM SELECTORS
+// =========================
+const html = document.documentElement;
+const body = document.body;
 
-// --- 3. INITIALIZATION FUNCTION ---
+const header = document.querySelector("header");
+const menuToggle = document.querySelector(".menu-toggle");
+const navLinks = document.querySelector(".nav-links");
+const themeToggle = document.querySelector(".theme-toggle");
 
-/**
- * Initializes core services, loads UI components, and starts the application.
- */
-async function initializeApp() {
-    logger.debug('Starting Kitchen Fleva Initialization...');
+// Global dynamic container (for pages/components)
+const appContainer = document.getElementById("app");
 
-    try {
-        // A. Load Initial Configuration (Theme, Language)
-        const initialLang = localStorage.getItem('user_lang') || 'en';
-        window.App.language = initialLang;
-        await Language.loadTranslations(initialLang); 
-        
-        const initialTheme = localStorage.getItem('user_theme');
-        Theme.applyTheme(initialTheme);
-        
-        // B. Load Static UI Components (Navbar, Footer)
-        await loadNavbar();
-        await loadFooter();
-        
-        // C. Initialize Authentication and load user profile/role
-        // This sets window.App.user, window.App.profile, and window.App.isAuthReady
-        initializeAuth(); 
+// =========================
+// 2) INITIALIZATION
+// =========================
+document.addEventListener("DOMContentLoaded", async () => {
+  // Load default page
+  const defaultPage = window.location.pathname.endsWith("/") ? "home" : window.location.pathname.split("/").pop().replace(".html","");
+  await loadPage(defaultPage, appContainer);
 
-        // D. Wait for Auth check before starting router (ensures correct dashboard/premium access)
-        await new Promise(resolve => {
-            const check = setInterval(() => {
-                if (window.App.isAuthReady) {
-                    clearInterval(check);
-                    resolve();
-                }
-            }, 50);
-        });
+  // Load saved theme
+  const savedTheme = localStorage.getItem("theme") || "light";
+  html.setAttribute("data-theme", savedTheme);
 
-        // E. Start Router
-        initializeRouter();
-        
-    } catch (error) {
-        logger.error('Failed during application initialization:', error);
-        // Display a general error message to the user if core loading fails
-        document.getElementById('app-content').innerHTML = `
-            <div class="full-screen-loader">
-                <h2>Error Loading Kitchen Fleva</h2>
-                <p>A critical error occurred. Please refresh or try again later.</p>
-            </div>
-        `;
-    } finally {
-        // Remove the initial loading spinner regardless of success/failure
-        document.getElementById('initial-loading-spinner')?.remove();
-        logger.debug('Kitchen Fleva is Ready.');
-    }
+  // Initialize UI components
+  UI.initAccordions();
+  UI.initModals();
+  UI.initCarousels();
+  UI.initToasts();
+  UI.initScrollTop();
+
+  // Initialize language
+  Language.init();
+
+  // Initialize authentication state
+  Auth.initAuthState();
+
+  // Play intro media if exists
+  UI.playIntroMedia();
+
+  // Listen to route changes
+  setupRouting();
+});
+
+// =========================
+// 3) HEADER SCROLL EFFECT
+// =========================
+window.addEventListener("scroll", () => {
+  if(window.scrollY > 50){
+    header.classList.add("scrolled");
+  } else {
+    header.classList.remove("scrolled");
+  }
+});
+
+// =========================
+// 4) MOBILE MENU TOGGLE
+// =========================
+if(menuToggle && navLinks){
+  menuToggle.addEventListener("click", () => {
+    navLinks.classList.toggle("show");
+  });
 }
 
-// --- 4. GLOBAL EVENT LISTENERS ---
+// =========================
+// 5) THEME TOGGLE
+// =========================
+if(themeToggle){
+  themeToggle.addEventListener("click", () => {
+    const currentTheme = html.getAttribute("data-theme");
+    const newTheme = currentTheme === "dark" ? "light" : "dark";
+    html.setAttribute("data-theme", newTheme);
+    localStorage.setItem("theme", newTheme);
+    UI.showToast(`Switched to ${newTheme} mode`, "success");
+  });
+}
 
-/**
- * Handles the Dark Mode toggle button click in the Navbar.
- */
-document.getElementById('header-container')?.addEventListener('click', (e) => {
-    if (e.target.closest('#theme-toggle')) {
-        const newTheme = Theme.toggleTheme(); 
-        logger.log(`[Theme] Switched to ${newTheme} mode.`);
+// =========================
+// 6) ROUTER
+// =========================
+function setupRouting() {
+  document.querySelectorAll('a[data-link]').forEach(link => {
+    link.addEventListener("click", async (e) => {
+      e.preventDefault();
+      const page = link.getAttribute("href").replace(".html", "");
+      await loadPage(page, appContainer);
+      window.history.pushState({ page }, "", `${page}.html`);
+    });
+  });
+
+  window.addEventListener("popstate", async (e) => {
+    const page = e.state?.page || "home";
+    await loadPage(page, appContainer);
+  });
+}
+
+// =========================
+// 7) REAL-TIME DATA SYNC (Supabase)
+// =========================
+supabase.channel('realtime-updates')
+  .on('postgres_changes', { event: '*', schema: 'public' }, payload => {
+    console.log('Realtime update:', payload);
+    UI.updateDynamicComponents(payload);
+  })
+  .subscribe();
+
+// =========================
+// 8) FORMS
+// =========================
+document.addEventListener("submit", async (e) => {
+  if(e.target.matches("form[data-form='newsletter']")){
+    e.preventDefault();
+    const email = e.target.querySelector("input[type='email']").value.trim();
+    if(email){
+      const { error } = await supabase.from("newsletter_subscribers").insert([{ email }]);
+      if(error){
+        UI.showToast("Failed to subscribe. Try again!", "danger");
+      } else {
+        UI.showToast("Subscribed successfully!", "success");
+        e.target.reset();
+      }
+    } else {
+      UI.showToast("Please enter a valid email.", "warning");
     }
+  }
+
+  if(e.target.matches("form[data-form='contact']")){
+    e.preventDefault();
+    const name = e.target.querySelector("input[name='name']").value.trim();
+    const email = e.target.querySelector("input[name='email']").value.trim();
+    const message = e.target.querySelector("textarea[name='message']").value.trim();
+    if(name && email && message){
+      const { error } = await supabase.from("contact_messages").insert([{ name, email, message }]);
+      if(error){
+        UI.showToast("Failed to send message!", "danger");
+      } else {
+        UI.showToast("Message sent successfully!", "success");
+        e.target.reset();
+      }
+    } else {
+      UI.showToast("All fields are required.", "warning");
+    }
+  }
 });
 
-/**
- * Handles the Language Selector dropdown change in the Navbar.
- */
-document.getElementById('header-container')?.addEventListener('change', (e) => {
-    if (e.target.id === 'language-selector') {
-        const newLang = e.target.value;
-        Language.switchLanguage(newLang); 
-        logger.log(`[i18n] Switched language to ${newLang}.`);
-    }
+// =========================
+// 9) INIT AI TOOLS
+// =========================
+AI.initRecipeGenerator();
+AI.initBlogWriter();
+AI.initChatbot();
+
+// =========================
+// 10) PAYMENTS INTEGRATION
+// =========================
+Payments.initAllGateways();
+
+// =========================
+// 11) UTILITY EVENTS
+// =========================
+// Smooth scroll for internal anchors
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener("click", function(e){
+    e.preventDefault();
+    const target = document.querySelector(this.getAttribute("href"));
+    if(target) target.scrollIntoView({ behavior: "smooth" });
+  });
 });
-
-
-// --- 5. START APPLICATION ---
-window.addEventListener('load', initializeApp);
-  
