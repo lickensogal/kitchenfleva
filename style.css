@@ -1730,3 +1730,243 @@ header.transparent.scrolled {
    END Phase 5 - Blog, Recipes, Forms, Checkout Pages
    Next: Phase 6 — Special Components, Animations, Utilities, and Final Overrides
    ========================= */
+
+/* ===========================================================
+   Kitchen Fleva - style.css  (Phase 6)
+   Special Components, Animations, Utilities, Dark/Light Tweaks
+   =========================================================== */
+
+/* =========================
+   1) MODALS / POPUPS
+   ========================= */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+}
+.modal-overlay.active { display: flex; }
+
+.modal {
+  background: var(--color-card-bg);
+  border-radius: var(--radius-lg);
+  padding: var(--space-xl);
+  max-width: 600px;
+  width: 90%;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  animation: modalFadeIn 0.3s ease forwards;
+}
+
+.modal-close {
+  position: absolute;
+  top: var(--space-sm);
+  right: var(--space-sm);
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--color-muted-text);
+}
+.modal-close:hover { color: var(--color-primary-cta); }
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* =========================
+   2) TOOLTIPS
+   ========================= */
+.tooltip {
+  position: relative;
+  cursor: help;
+}
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--color-body-text);
+  color: #fff;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-fast);
+  z-index: 999;
+}
+.tooltip:hover::after { opacity: 1; }
+
+/* =========================
+   3) ANIMATIONS / TRANSITIONS
+   ========================= */
+.fade-in { animation: fadeIn 0.4s ease forwards; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.slide-up { animation: slideUp 0.4s ease forwards; }
+@keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.bounce {
+  display: inline-block;
+  animation: bounceAnim 1s infinite;
+}
+@keyframes bounceAnim {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+/* =========================
+   4) ACCORDIONS / COLLAPSIBLE
+   ========================= */
+.accordion {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-xs);
+}
+.accordion-item + .accordion-item { border-top: 1px solid var(--color-border); }
+.accordion-header {
+  padding: var(--space-md);
+  background: var(--color-alt-bg);
+  cursor: pointer;
+  font-weight: 600;
+  transition: background var(--transition-fast);
+}
+.accordion-header:hover { background: var(--color-primary-cta-hover); color: #fff; }
+.accordion-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease, padding 0.3s ease;
+  padding: 0 var(--space-md);
+}
+.accordion-item.active .accordion-body { max-height: 500px; padding: var(--space-md); }
+
+/* =========================
+   5) BADGES & LABELS ADVANCED
+   ========================= */
+.badge-new { background: var(--color-primary-cta-hover); color: #fff; }
+.badge-sale { background: var(--color-danger); color: #fff; }
+.badge-popular { background: var(--color-secondary-cta); color: #fff; }
+
+/* =========================
+   6) CAROUSELS / SLIDERS
+   ========================= */
+.carousel {
+  position: relative;
+  overflow: hidden;
+}
+.carousel-track {
+  display: flex;
+  transition: transform 0.4s ease;
+}
+.carousel-item {
+  min-width: 100%;
+  flex-shrink: 0;
+}
+.carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 var(--space-md);
+}
+.carousel-nav button {
+  background: rgba(0,0,0,0.2);
+  border: none;
+  color: #fff;
+  padding: 8px 12px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background var(--transition-fast);
+}
+.carousel-nav button:hover { background: rgba(0,0,0,0.5); }
+
+/* =========================
+   7) NOTIFICATIONS / TOASTS
+   ========================= */
+.toast {
+  position: fixed;
+  bottom: var(--space-lg);
+  right: var(--space-lg);
+  background: var(--color-card-bg);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  animation: slideInRight 0.4s ease forwards;
+  opacity: 0;
+}
+.toast.show { opacity: 1; }
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+/* =========================
+   8) DARK / LIGHT MODE FINAL TWEAKS
+   ========================= */
+[data-theme="dark"] {
+  /* links hover for dark */
+  a:hover, .nav-links a:hover, .nav-dropdown-menu a:hover {
+    color: var(--color-accent);
+  }
+  /* form inputs focus for dark */
+  .input:focus, textarea:focus, select:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 6px 20px rgba(244,162,97,0.08);
+  }
+  /* cards & modals */
+  .card, .modal {
+    background: var(--color-alt-bg);
+    border-color: rgba(255,255,255,0.08);
+  }
+  /* footer newsletter input */
+  .footer-newsletter input[type="email"] {
+    background: #264653;
+    color: #E6EEF0;
+  }
+}
+
+/* =========================
+   9) UTILITY OVERRIDES
+   ========================= */
+.text-uppercase { text-transform: uppercase; }
+.text-lowercase { text-transform: lowercase; }
+.text-capitalize { text-transform: capitalize; }
+
+.overflow-hidden { overflow: hidden; }
+.overflow-auto { overflow: auto; }
+
+.transition-fast { transition: all 0.15s ease; }
+.transition-normal { transition: all 0.3s ease; }
+.transition-slow { transition: all 0.5s ease; }
+
+/* =========================
+   10) FINAL RESPONSIVE OVERRIDES
+   ========================= */
+@media (max-width: var(--bp-tablet)) {
+  .modal { padding: var(--space-lg); }
+  .accordion-body { max-height: 400px; }
+}
+
+@media (max-width: var(--bp-mobile)) {
+  .tooltip::after { font-size: 0.65rem; }
+  .carousel-nav button { padding: 6px 10px; }
+  .toast { bottom: var(--space-md); right: var(--space-md); }
+}
+
+/* =========================
+   END Phase 6 - Special Components, Animations, Utilities
+   Full style.css compilation complete
+   =========================================================== */
