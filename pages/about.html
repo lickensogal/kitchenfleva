@@ -1,60 +1,83 @@
-  <link rel="stylesheet" href="../style.css">
-<section id="about-hero" class="hero-section small-hero">
-    <div class="hero-content">
-        <h1 class="hero-heading h2-heading">Our Story: Made with Passion. Served with Fleva.</h1>
-        <p class="hero-subtitle body-text-large">Bringing the heart of the Kenyan kitchen to the digital world.</p>
-    </div>
-</section>
+<!-- ===========================================================================
+     Kitchen Fleva - about.html
+     Fully dynamic About Us Page
+============================================================================== -->
 
-<section id="mission-vision" class="section-container two-column-layout">
-    <div class="content-text-block">
-        <h2 class="h3-heading">Our Mission</h2>
-        <p class="body-text">
-            **Kitchen Fleva** was founded on the belief that the rich, diverse flavors of Kenyan home cooking deserve a modern, accessible platform. Our mission is to preserve the authenticity of traditional recipes while infusing them with contemporary ease and technology. We aim to be the definitive digital hub for anyone—from seasoned cooks to culinary novices—looking to add genuine "fleva" to their kitchen.
-        </p>
-        <h2 class="h3-heading mt-lg">Our Vision</h2>
-        <p class="body-text">
-            To create the most trusted and comprehensive digital cooking ecosystem in Africa and beyond. We envision a future where meal planning is effortless, recipes are personalized by AI, and every user feels connected to the passion and heritage of the food they prepare. We are building a community where flavor, technology, and tradition meet.
-        </p>
-    </div>
-    <div class="content-image-block">
-        <img src="/assets/images/placeholder-kitchen.jpg" alt="A busy, modern Kenyan kitchen" class="image-rounded-lg shadow-md">
-    </div>
-</section>
+<div class="container about-page-container">
 
-<section id="pillars" class="section-alt-background">
-    <h2 class="section-title">The Fleva Pillars</h2>
-    <p class="section-subtitle">The four principles that guide everything we create, curate, and share.</p>
-    <div class="three-column-grid">
-        <div class="card pillar-card">
-            <i class="fas fa-seedling icon-large primary-color"></i>
-            <h4 class="h4-heading">Authenticity</h4>
-            <p class="small-text">Sourcing and preserving genuine, regional Kenyan recipes, ensuring the flavors are true to their heritage.</p>
-        </div>
-        <div class="card pillar-card">
-            <i class="fas fa-microchip icon-large secondary-color"></i>
-            <h4 class="h4-heading">Innovation</h4>
-            <p class="small-text">Leveraging AI for personalized meal plans, recipe generation, and video tutorials to simplify the cooking process.</p>
-        </div>
-        <div class="card pillar-card">
-            <i class="fas fa-users icon-large primary-color"></i>
-            <h4 class="h4-heading">Community</h4>
-            <p class="small-text">Fostering a welcoming space for users to share, rate, and discuss recipes and cooking experiences.</p>
-        </div>
-        <div class="card pillar-card">
-            <i class="fas fa-book-open icon-large secondary-color"></i>
-            <h4 class="h4-heading">Education</h4>
-            <p class="small-text">Providing high-quality articles, tips, and digital products that empower users to master new skills.</p>
-        </div>
+  <!-- ========================= Hero Section ========================= -->
+  <section class="hero-section about-hero" data-component="hero">
+    <!-- Content dynamically fetched from Supabase "pages" table where page='about' -->
+  </section>
+
+  <!-- ========================= Our Story Section ========================= -->
+  <section class="about-story" id="about-story">
+    <!-- Fetched dynamically from Supabase -->
+  </section>
+
+  <!-- ========================= Mission & Vision Section ========================= -->
+  <section class="about-mission-vision" id="mission-vision">
+    <!-- Mission & Vision loaded dynamically from Supabase -->
+  </section>
+
+  <!-- ========================= Team Section ========================= -->
+  <section class="about-team" id="team">
+    <h2>Meet Our Team</h2>
+    <div class="team-grid" id="team-grid">
+      <!-- Dynamically populate team members from Supabase "team_members" table -->
     </div>
-</section>
+  </section>
 
-<section id="cta-contact" class="section-container">
-    <div class="cta-card secondary-bg">
-        <h3 class="h3-heading white-text">Partner with Kitchen Fleva</h3>
-        <p class="body-text white-text-muted">Interested in collaboration or integrating your brand with our passionate community? Let's talk.</p>
-        <a href="#contact" class="button primary-button mt-md">Contact Our Team Today</a>
-    </div>
-</section>
+  <!-- ========================= Call to Action Section ========================= -->
+  <section class="about-cta" id="about-cta">
+    <!-- Dynamically fetch CTA content from Supabase -->
+  </section>
 
+</div>
 
+<!-- ========================= Dynamic Footer ========================= -->
+<footer data-component="footer"></footer>
+
+<script type="module">
+  import { fetchData } from "../supabaseClient.js";
+  import * as UI from "../js/ui.js";
+
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Load Hero Section
+    const hero = await fetchData("pages", ["title","subtitle","hero_image"], "page=eq.about");
+    if(hero.length){
+      document.querySelector(".hero-section").innerHTML = UI.renderHero(hero[0]);
+    }
+
+    // Load About Story
+    const story = await fetchData("about_sections", ["section_title","section_content"], "");
+    if(story.length){
+      document.getElementById("about-story").innerHTML = story.map(s => UI.renderAboutSection(s)).join("");
+    }
+
+    // Load Mission & Vision
+    const mv = await fetchData("mission_vision", ["type","content"], "");
+    if(mv.length){
+      document.getElementById("mission-vision").innerHTML = UI.renderMissionVision(mv);
+    }
+
+    // Load Team Members
+    const team = await fetchData("team_members", ["name","role","image_url"], "");
+    if(team.length){
+      document.getElementById("team-grid").innerHTML = team.map(member => UI.renderTeamMember(member)).join("");
+    }
+
+    // Load Call To Action
+    const cta = await fetchData("cta_sections", ["title","subtitle","button_text","button_link"], "page=eq.about");
+    if(cta.length){
+      document.getElementById("about-cta").innerHTML = UI.renderCTA(cta[0]);
+    }
+
+    // Initialize UI components
+    UI.initAccordions();
+    UI.initModals();
+    UI.initCarousels();
+    UI.initToasts();
+    UI.initScrollTop();
+  });
+                            </script>
