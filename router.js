@@ -1,31 +1,32 @@
 /* ===========================================================================
    Kitchen Fleva - router.js
    Handles all page routing, dynamic content injection, and SPA-like behavior
+   Fully functional and connected to dynamic components & UI
    =========================================================================== */
 
 import * as UI from "./js/ui.js";
+import * as Auth from "./js/auth.js";
+import { supabase } from "./supabaseClient.js";
 
 // =========================
 // DOM SELECTORS
 // =========================
 const appContainer = document.getElementById("app");
-const header = document.querySelector("header");
-const footer = document.querySelector("footer");
 
 // =========================
 // PAGE MAPPING
 // =========================
 const pages = {
-  home: "pages/home.html",
-  about: "pages/about.html",
-  "recipe-library": "pages/recipe-library.html",
-  "recipe-single": "pages/recipe-single.html",
-  "blog-main": "pages/blog-main.html",
+  home: "/pages/home.html",
+  about: "/pages/about.html",
+  "recipe-library": "/pages/recipe-library.html",
+  "recipe-single": "/pages/recipe-single.html",
+  "blog-main": "/pages/blog-main.html",
   "blog-post": "/pages/blog-post.html",
   profile: "/pages/profile.html",
   contact: "/pages/contact.html",
   faq: "/pages/faq.html",
-  login: "pages/login.html",
+  login: "/pages/login.html",
   register: "/pages/register.html",
   // dashboards
   "admin-dashboard": "/dashboards/admin/index.html",
@@ -48,10 +49,10 @@ export async function loadPage(page, container = appContainer) {
     const html = await response.text();
     container.innerHTML = html;
 
-    // Load global components dynamically if placeholders exist
+    // Inject global components dynamically
     await injectComponents();
 
-    // Initialize page-specific scripts and UI
+    // Initialize page-specific scripts & UI
     UI.initAccordions();
     UI.initModals();
     UI.initCarousels();
@@ -59,8 +60,14 @@ export async function loadPage(page, container = appContainer) {
     UI.initScrollTop();
     UI.bindDynamicButtons(container);
 
-    // SEO & analytics updates
+    // Initialize authentication if profile/dashboard exists
+    Auth.initAuthState();
+
+    // Update SEO meta
     updatePageMeta(page);
+
+    // Scroll to top on new page load
+    window.scrollTo({ top: 0, behavior: "smooth" });
 
   } catch (err) {
     console.error("Router loadPage error:", err);
@@ -93,7 +100,20 @@ async function injectComponents() {
     modalPlaceholder.innerHTML = modalHTML;
   }
 
-  // CARDS & PAGINATION can be dynamically injected similarly if placeholders exist
+  // CARDS & PAGINATION placeholders
+  const cardPlaceholders = document.querySelectorAll("[data-component='card']");
+  for (let placeholder of cardPlaceholders) {
+    const type = placeholder.dataset.type || "recipe"; // default recipe
+    const cardHTML = await fetch(`/components/card-${type}.html`).then(r => r.text());
+    placeholder.innerHTML = cardHTML;
+  }
+
+  // SPINNER
+  const spinnerPlaceholder = document.querySelector("[data-component='spinner']");
+  if (spinnerPlaceholder) {
+    const spinnerHTML = await fetch("/components/spinner.html").then(r => r.text());
+    spinnerPlaceholder.innerHTML = spinnerHTML;
+  }
 }
 
 // =========================
@@ -118,12 +138,17 @@ function updatePageMeta(page) {
 
   document.title = titleMap[page] || "Kitchen Fleva";
   const description = `Welcome to Kitchen Fleva - your hub for recipes, blogs, AI culinary tools, and more.`;
-  const metaDesc = document.querySelector("meta[name='description']");
-  if (metaDesc) metaDesc.setAttribute("content", description);
+  let metaDesc = document.querySelector("meta[name='description']");
+  if (!metaDesc) {
+    metaDesc = document.createElement("meta");
+    metaDesc.setAttribute("name", "description");
+    document.head.appendChild(metaDesc);
+  }
+  metaDesc.setAttribute("content", description);
 }
 
 // =========================
-// EXPORTED FUNCTION TO PROGRAMMATICALLY NAVIGATE
+// PROGRAMMATIC NAVIGATION
 // =========================
 export async function navigateTo(page) {
   await loadPage(page);
@@ -131,15 +156,34 @@ export async function navigateTo(page) {
 }
 
 // =========================
-// INITIAL ROUTING ON LOAD
+// INITIAL ROUTING
 // =========================
 export function initRouter() {
   const currentPage = window.location.pathname.split("/").pop().replace(".html", "") || "home";
   loadPage(currentPage);
 
-  // Handle back/forward browser navigation
+  // Handle SPA back/forward navigation
   window.addEventListener("popstate", (event) => {
     const page = event.state?.page || "home";
     loadPage(page);
   });
-      }
+
+  // Intercept internal links
+  document.body.addEventListener("click", (e) => {
+    const link = e.target.closest("a[data-link]");
+    if (link) {
+      e.preventDefault();
+      const page = link.getAttribute("href").replace(".html", "");
+      navigateTo(page);
+    }
+  });
+}
+
+// =========================
+// REAL-TIME COMPONENT UPDATES (Supabase)
+supabase.channel("realtime-updates")
+  .on("postgres_changes", { event: "*", schema: "public" }, payload => {
+    console.log("Realtime update:", payload);
+    UI.updateDynamicComponents(payload);
+  })
+  .subscribe();
