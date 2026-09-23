@@ -1,7 +1,7 @@
-import { subscribeToNewsletter } from './forms/newsletterForm.js'
-import { createCart } from './js/ui/cart.js'
-import { getHomeContent } from './js/services/contentService.js'
-import { createHomeRenderer } from './js/components/homeRenderer.js'
+import { subscribeToNewsletter } from '../../forms/newsletterForm.js'
+import { createCart } from '../ui/cart.js'
+import { getHomeContent } from '../services/contentService.js'
+import { createHomeRenderer } from '../components/homeRenderer.js'
 
 const $ = (selector) => document.querySelector(selector)
 
