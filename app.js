@@ -1,160 +1,32 @@
-/* ===========================================================================
-   Kitchen Fleva - app.js
-   Main site loader, dynamic components injection, Supabase integration
-   Fully integrated with router.js and SPA behavior
-   =========================================================================== */
-
-import { supabase } from "./supabaseClient.js";
-import { initRouter, navigateTo } from "./router.js";
-import * as UI from "./js/ui.js";
-import * as Auth from "./js/auth.js";
-import * as Language from "./js/language.js";
-import * as AI from "./js/ai_tools.js";
-import * as Payments from "./js/payments.js";
-
-// =========================
-// 1) DOM SELECTORS
-// =========================
-const html = document.documentElement;
-const body = document.body;
-
-const menuToggle = document.querySelector(".menu-toggle");
-const navLinks = document.querySelector(".nav-links");
-const themeToggle = document.querySelector(".theme-toggle");
-
-// =========================
-// 2) INITIALIZATION
-// =========================
-document.addEventListener("DOMContentLoaded", async () => {
-  // Load saved theme
-  const savedTheme = localStorage.getItem("theme") || "light";
-  html.setAttribute("data-theme", savedTheme);
-
-  // Initialize UI components
-  UI.initAccordions();
-  UI.initModals();
-  UI.initCarousels();
-  UI.initToasts();
-  UI.initScrollTop();
-
-  // Initialize language
-  Language.init();
-
-  // Initialize authentication
-  Auth.initAuthState();
-
-  // Initialize router (SPA navigation)
-  initRouter();
-
-  // Play intro media if exists
-  UI.playIntroMedia();
-
-  // Initialize AI tools
-  AI.initRecipeGenerator();
-  AI.initBlogWriter();
-  AI.initChatbot();
-
-  // Initialize payment gateways
-  Payments.initAllGateways();
-
-  // Setup mobile menu toggle
-  if(menuToggle && navLinks){
-    menuToggle.addEventListener("click", () => {
-      navLinks.classList.toggle("show");
-    });
-  }
-
-  // Setup theme toggle
-  if(themeToggle){
-    themeToggle.addEventListener("click", () => {
-      const currentTheme = html.getAttribute("data-theme");
-      const newTheme = currentTheme === "dark" ? "light" : "dark";
-      html.setAttribute("data-theme", newTheme);
-      localStorage.setItem("theme", newTheme);
-      UI.showToast(`Switched to ${newTheme} mode`, "success");
-    });
-  }
-
-  // Setup smooth scroll for internal anchors
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener("click", function(e){
-      e.preventDefault();
-      const target = document.querySelector(this.getAttribute("href"));
-      if(target) target.scrollIntoView({ behavior: "smooth" });
-    });
-  });
-
-  // Setup form submissions (newsletter/contact)
-  setupForms();
-
-  // Setup Supabase real-time updates
-  setupRealtime();
-});
-
-// =========================
-// 3) HEADER SCROLL EFFECT
-// =========================
-window.addEventListener("scroll", () => {
-  const header = document.querySelector("header");
-  if(!header) return;
-  if(window.scrollY > 50){
-    header.classList.add("scrolled");
-  } else {
-    header.classList.remove("scrolled");
-  }
-});
-
-// =========================
-// 4) FORMS
-// =========================
-function setupForms() {
-  document.addEventListener("submit", async (e) => {
-    // Newsletter subscription
-    if(e.target.matches("form[data-form='newsletter']")){
-      e.preventDefault();
-      const email = e.target.querySelector("input[type='email']").value.trim();
-      if(email){
-        const { error } = await supabase.from("newsletter_subscribers").insert([{ email }]);
-        if(error){
-          UI.showToast("Failed to subscribe. Try again!", "danger");
-        } else {
-          UI.showToast("Subscribed successfully!", "success");
-          e.target.reset();
-        }
-      } else {
-        UI.showToast("Please enter a valid email.", "warning");
-      }
-    }
-
-    // Contact form
-    if(e.target.matches("form[data-form='contact']")){
-      e.preventDefault();
-      const name = e.target.querySelector("input[name='name']").value.trim();
-      const email = e.target.querySelector("input[name='email']").value.trim();
-      const message = e.target.querySelector("textarea[name='message']").value.trim();
-      if(name && email && message){
-        const { error } = await supabase.from("contact_messages").insert([{ name, email, message }]);
-        if(error){
-          UI.showToast("Failed to send message!", "danger");
-        } else {
-          UI.showToast("Message sent successfully!", "success");
-          e.target.reset();
-        }
-      } else {
-        UI.showToast("All fields are required.", "warning");
-      }
-    }
-  });
-}
-
-// =========================
-// 5) SUPABASE REAL-TIME
-// =========================
-function setupRealtime() {
-  supabase.channel('realtime-updates')
-    .on('postgres_changes', { event: '*', schema: 'public' }, payload => {
-      console.log('Realtime update:', payload);
-      UI.updateDynamicComponents(payload);
-    })
-    .subscribe();
-       }
+const recipes = [
+  { title: 'One-pot coconut chicken', category: 'quick', label: 'Weeknight favourite', time: '45 min · Easy', image: 'https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?auto=format&fit=crop&w=700&q=80' },
+  { title: 'Smoky sukuma wiki', category: 'kenyan', label: 'Kenyan favourite', time: '25 min · Easy', image: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=700&q=80' },
+  { title: 'Cardamom tea cake', category: 'baking', label: 'Slow weekend', time: '1 hr · Medium', image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=700&q=80' },
+  { title: 'Tomato and herb eggs', category: 'quick', label: 'Breakfast', time: '20 min · Easy', image: 'https://images.unsplash.com/photo-1565299507177-b0ac66763828?auto=format&fit=crop&w=700&q=80' },
+  { title: 'Pilau for a crowd', category: 'kenyan', label: 'Gather round', time: '1 hr · Medium', image: 'https://images.unsplash.com/photo-1596797038530-2c107229654b?auto=format&fit=crop&w=700&q=80' },
+  { title: 'The perfect mandazi', category: 'baking', label: 'From our archive', time: '50 min · Easy', image: 'https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=700&q=80' }
+];
+const stories = [
+  { title: 'How to build a kitchen you actually enjoy cooking in', tag: 'Kitchen notes', image: 'https://images.unsplash.com/photo-1556911220-e15b29be8c8f?auto=format&fit=crop&w=700&q=80', text: 'A few small changes can make everyday cooking feel lighter.' },
+  { title: 'The story of tea, warmth and Kenyan afternoons', tag: 'Food culture', image: 'https://images.unsplash.com/photo-1544787219-7f47ccb76574?auto=format&fit=crop&w=700&q=80', text: 'Some recipes are really memories in disguise.' },
+  { title: 'Five ways to make vegetables the main event', tag: 'Cooking well', image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=700&q=80', text: 'Big flavour does not need a long ingredient list.' }
+];
+const products = [
+  { title: 'The Everyday Kenyan Kitchen', description: '24 recipes for generous, delicious meals.', price: 850 },
+  { title: 'The Home Baker’s Notes', description: 'A practical guide to confident baking.', price: 650 },
+  { title: 'Cook More, Stress Less', description: 'A seven-day meal planning guide.', price: 500 }
+];
+let bag = [];
+const $ = (selector) => document.querySelector(selector);
+function renderRecipes(filter = 'all') { $('#recipe-grid').innerHTML = recipes.filter(r => filter === 'all' || r.category === filter).map(r => `<article class="recipe-card"><div class="recipe-photo" style="background-image:url('${r.image}')"></div><div class="recipe-body"><small class="eyebrow">${r.label}</small><h3>${r.title}</h3><p>A comforting recipe with plenty of flavour and no fuss.</p><span class="card-meta">${r.time}</span></div></article>`).join(''); }
+function renderStories() { $('#story-grid').innerHTML = stories.map(s => `<article class="story-card"><div class="story-image" style="background-image:url('${s.image}')"></div><small>${s.tag}</small><h3>${s.title}</h3><p>${s.text}</p><a class="text-link" href="#stories">Read story →</a></article>`).join(''); }
+function renderProducts() { $('#product-grid').innerHTML = products.map((p, i) => `<article class="product-card"><div class="product-cover">${i === 0 ? 'Everyday<br>Kenyan<br>Kitchen' : i === 1 ? 'Home<br>Baker’s<br>Notes' : 'Cook more,<br>stress less'}</div><div class="product-info"><h3>${p.title}</h3><p>${p.description}</p><div class="product-bottom"><strong>KES ${p.price.toLocaleString()}</strong><button class="buy-btn" data-product="${p.title}">Add to bag</button></div></div></article>`).join(''); }
+function renderBag() { $('#cart-count').textContent = bag.length; $('#cart-items').innerHTML = bag.length ? bag.map((p, i) => `<div class="cart-item"><span>${p.title}<br><small>KES ${p.price.toLocaleString()}</small></span><button data-remove="${i}">Remove</button></div>`).join('') : '<p class="empty-cart">Your bag is waiting for something lovely.</p>'; $('#cart-total').textContent = `KES ${bag.reduce((sum, p) => sum + p.price, 0).toLocaleString()}`; }
+function openBag() { $('#cart-drawer').classList.add('open'); $('#cart-drawer').setAttribute('aria-hidden', 'false'); $('#overlay').classList.add('show'); }
+function closeBag() { $('#cart-drawer').classList.remove('open'); $('#cart-drawer').setAttribute('aria-hidden', 'true'); $('#overlay').classList.remove('show'); }
+renderRecipes(); renderStories(); renderProducts(); renderBag();
+document.addEventListener('click', (event) => { const filter = event.target.closest('[data-filter]'); if (filter) { document.querySelectorAll('.filter').forEach(b => b.classList.remove('active')); filter.classList.add('active'); renderRecipes(filter.dataset.filter); } const buy = event.target.closest('[data-product]'); if (buy) { const product = products.find(p => p.title === buy.dataset.product); bag.push(product); renderBag(); openBag(); } const remove = event.target.closest('[data-remove]'); if (remove) { bag.splice(Number(remove.dataset.remove), 1); renderBag(); } });
+$('#cart-open').addEventListener('click', openBag); $('#cart-close').addEventListener('click', closeBag); $('#overlay').addEventListener('click', closeBag); $('#checkout').addEventListener('click', () => alert(bag.length ? 'Checkout is the next step. Your bag is ready!' : 'Add a guide to your bag first.'));
+$('.menu-toggle').addEventListener('click', () => { const nav = $('.site-nav'); const isOpen = nav.classList.toggle('open'); $('.menu-toggle').setAttribute('aria-expanded', isOpen); });
+$('#theme-toggle').addEventListener('click', () => document.body.classList.toggle('dark'));
+$('#newsletter-form').addEventListener('submit', (event) => { event.preventDefault(); $('#form-message').textContent = 'You’re on the list — welcome to the table!'; event.target.reset(); });

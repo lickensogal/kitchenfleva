@@ -1,210 +1,49 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Kitchen Fleva – AI-powered recipes, meal plans, and digital cooking tools." />
-  <title>Kitchen Fleva | Smart Cooking & AI Recipes</title>
-
-  <!-- Favicon -->
-  <link rel="icon" href="assets/images/favicon.png" type="image/png" />
-
-  <!-- Global Styles -->
-  <link rel="stylesheet" href="style.css" />
-
-  <!-- Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet" />
-  <script src="https://kit.fontawesome.com/a2d9d5b69a.js" crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kitchen Fleva — recipes, kitchen stories, and practical cooking guides from home cooks and chefs.">
+  <title>Kitchen Fleva | Cook something worth sharing</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
-  <!-- Loader -->
-  <div id="site-loader">
-    <div class="spinner"></div>
-  </div>
-
-  <!-- HEADER / NAVIGATION BAR -->
-  <header class="main-header">
-    <div class="container header-container">
-      <div class="logo">
-        <a href="index.html">Kitchen Fleva</a>
-      </div>
-
-      <nav class="nav">
-        <ul class="nav-list">
-          <li><a href="index.html" class="active">Home</a></li>
-          <li><a href="pages/about.html">About Us</a></li>
-          <li><a href="pages/recipe-library.html">Recipes</a></li>
-          <li><a href="pages/blog-main.html">Blog</a></li>
-          <li><a href="pages/shop.html">Shop</a></li>
-          <li class="dropdown">
-            <a href="#">AI Tools <i class="fas fa-chevron-down"></i></a>
-            <ul class="dropdown-menu">
-              <li><a href="pages/ai/recipe-generator.html">Recipe Generator</a></li>
-              <li><a href="pages/ai/blog-writer.html">Blog Writer</a></li>
-              <li><a href="pages/ai/image-enhancer.html">Image Enhancer</a></li>
-              <li><a href="pages/ai/chatbot.html">Chatbot Assistant</a></li>
-              <li><a href="pages/ai/ingredient-analyzer.html">Ingredient Analyzer</a></li>
-            </ul>
-          </li>
-          <li class="dropdown">
-            <a href="#">Membership <i class="fas fa-chevron-down"></i></a>
-            <ul class="dropdown-menu">
-              <li><a href="pages/subscription.html">Subscription Plans</a></li>
-              <li><a href="pages/upgrade.html">Upgrade Account</a></li>
-            </ul>
-          </li>
-          <li><a href="pages/contact.html">Contact / Partnership</a></li>
-        </ul>
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a class="brand" href="#home" aria-label="Kitchen Fleva home"><span class="brand-mark">KF</span><span>Kitchen <em>Fleva</em></span></a>
+      <button class="menu-toggle" aria-label="Open menu" aria-expanded="false">☰</button>
+      <nav class="site-nav" aria-label="Main navigation">
+        <a href="#recipes">Recipes</a><a href="#stories">Stories</a><a href="#shop">Kitchen shop</a><a href="#about">About</a>
       </nav>
-
-      <div class="nav-right">
-        <!-- LANGUAGE SELECTOR -->
-        <div class="language-selector dropdown">
-          <button id="language-btn"><i class="fas fa-globe"></i></button>
-          <ul class="dropdown-menu lang-menu">
-            <li><button data-lang="en">English</button></li>
-            <li><button data-lang="sw">Kiswahili</button></li>
-            <li><button data-lang="fr">Français</button></li>
-            <li><button data-lang="es">Español</button></li>
-            <li><button data-lang="pt">Português</button></li>
-            <li><button data-lang="ar">العربية</button></li>
-          </ul>
-        </div>
-
-        <!-- DARK MODE TOGGLE -->
-        <button id="theme-toggle"><i class="fas fa-moon"></i></button>
-
-        <!-- USER SECTION -->
-        <div id="user-menu" class="dropdown user-dropdown">
-          <button id="user-btn"><i class="fas fa-user-circle"></i></button>
-          <ul class="dropdown-menu user-menu">
-            <li class="logged-out"><a href="pages/login.html">Login</a></li>
-            <li class="logged-out"><a href="pages/register.html">Sign Up</a></li>
-
-            <li class="logged-in"><a href="pages/user/favorites.html">Favorites</a></li>
-            <li class="logged-in"><a href="pages/user/generated-content.html">Generated Content</a></li>
-            <li class="logged-in"><a href="pages/user/account.html">Account Settings</a></li>
-            <li class="logged-in"><a href="pages/user/subscription.html">Manage Subscription</a></li>
-            <li class="logged-in"><button id="logout-btn">Logout</button></li>
-          </ul>
-        </div>
-      </div>
+      <div class="nav-actions"><button class="icon-btn" id="theme-toggle" aria-label="Toggle colour theme">☼</button><button class="cart-btn" id="cart-open">Bag <span id="cart-count">0</span></button></div>
     </div>
   </header>
 
-  <!-- HERO SECTION -->
-  <section id="hero" class="hero-section">
-    <div class="container hero-content">
-      <div class="hero-text">
-        <h2 id="hero-tagline">Cook Smart. Eat Better.</h2>
-        <p id="hero-subtext">Discover AI-powered recipes and meal plans tailored just for you.</p>
-        <div class="hero-buttons">
-          <a href="pages/recipe-library.html" class="btn primary-btn">Browse Recipes</a>
-          <a href="pages/subscription.html" class="btn secondary-btn">Subscribe Now</a>
-          <a href="pages/shop.html" class="btn tertiary-btn">Shop Digital Products</a>
-        </div>
-      </div>
-      <div class="hero-image">
-        <img id="hero-image" src="assets/images/hero-banner.png" alt="AI Cooking Banner" />
-      </div>
-    </div>
-  </section>
+  <main id="home">
+    <section class="hero container">
+      <div class="hero-copy"><p class="eyebrow">Made for real kitchens</p><h1>Good food begins with a little <span>Fleva.</span></h1><p class="hero-lede">Recipes, stories and practical kitchen guides for people who love to cook, learn and share.</p><div class="hero-actions"><a class="button button-dark" href="#recipes">Explore recipes <span>→</span></a><a class="text-link" href="#shop">Browse the kitchen shop ↗</a></div><div class="hero-note"><span class="avatar-stack"><i>JM</i><i>AK</i><i>LO</i></span><span><strong>Made by cooks, for cooks.</strong><br>Fresh ideas every week.</span></div></div>
+      <div class="hero-art"><div class="hero-image"><div class="image-label">Today’s table<br><strong>is waiting.</strong></div></div><div class="floating-card"><span class="rating">★★★★★</span><strong>One-pot coconut<br>chicken</strong><small>45 min · Easy</small></div></div>
+    </section>
 
-  <!-- FEATURED RECIPES -->
-  <section id="featured-recipes" class="section">
-    <div class="container">
-      <h3 class="section-title">Featured Recipes</h3>
-      <div class="recipe-carousel" id="recipe-carousel"></div>
-    </div>
-  </section>
+    <section class="trust-strip"><div class="container trust-inner"><span>What you’ll find here</span><b>Recipes worth repeating</b><b>Stories worth reading</b><b>Guides worth keeping</b></div></section>
 
-  <!-- RECIPE CATEGORIES -->
-  <section id="categories" class="section light-bg">
-    <div class="container">
-      <h3 class="section-title">Explore Categories</h3>
-      <div class="category-grid" id="category-grid"></div>
-    </div>
-  </section>
+    <section class="section container" id="recipes"><div class="section-heading"><div><p class="eyebrow">From our kitchen</p><h2>Recipes to put on repeat</h2></div><a class="text-link" href="#recipes">View all recipes →</a></div><div class="filters" role="group" aria-label="Recipe filters"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="quick">Quick & easy</button><button class="filter" data-filter="kenyan">Kenyan favourites</button><button class="filter" data-filter="baking">Baking</button></div><div class="recipe-grid" id="recipe-grid"></div></section>
 
-  <!-- LATEST BLOG POSTS -->
-  <section id="latest-blogs" class="section">
-    <div class="container">
-      <h3 class="section-title">Latest from Our Blog</h3>
-      <div class="blog-grid" id="blog-grid"></div>
-      <a href="pages/blog-main.html" class="btn view-all-btn">Read More Posts</a>
-    </div>
-  </section>
+    <section class="story-banner container" id="about"><div><p class="eyebrow">The Kitchen Fleva journal</p><h2>There’s always more to learn around the table.</h2><p>From the way your grandmother seasons sukuma wiki to the little tricks that make weekday cooking easier — we’re here for the knowledge behind good food.</p><a class="button button-light" href="#stories">Read our stories <span>→</span></a></div><div class="story-art" aria-hidden="true">✦</div></section>
 
-  <!-- PREMIUM / SUBSCRIPTION -->
-  <section id="premium" class="section premium-section">
-    <div class="container premium-content">
-      <div class="premium-text">
-        <h3>Go Premium, Unlock Everything</h3>
-        <p>Exclusive AI recipes, digital guides, and personalized meal planning tools.</p>
-        <a href="pages/subscription.html" class="btn primary-btn">Become a Premium Member</a>
-      </div>
-      <div class="premium-image">
-        <img src="assets/images/premium-banner.png" alt="Premium Membership Banner" />
-      </div>
-    </div>
-  </section>
+    <section class="section container" id="stories"><div class="section-heading"><div><p class="eyebrow">Read, learn, cook</p><h2>From the journal</h2></div><a class="text-link" href="#stories">All stories →</a></div><div class="story-grid" id="story-grid"></div></section>
 
-  <!-- SHOP PREVIEW -->
-  <section id="shop-preview" class="section light-bg">
-    <div class="container">
-      <h3 class="section-title">Top Digital Products</h3>
-      <div class="shop-grid" id="shop-grid"></div>
-      <a href="pages/shop.html" class="btn view-all-btn">View All Products</a>
-    </div>
-  </section>
+    <section class="shop-section" id="shop"><div class="container"><div class="section-heading"><div><p class="eyebrow">The kitchen shop</p><h2>Guides made to be used</h2></div><a class="text-link light-link" href="#shop">View the shop →</a></div><div class="product-grid" id="product-grid"></div></div></section>
 
-  <!-- TESTIMONIALS -->
-  <section id="testimonials" class="section">
-    <div class="container">
-      <h3 class="section-title">What Our Users Say</h3>
-      <div class="testimonials-carousel" id="testimonials-carousel"></div>
-    </div>
-  </section>
+    <section class="newsletter container"><div><p class="eyebrow">A seat at our table</p><h2>Get fresh kitchen inspiration.</h2><p>One useful recipe, story or kitchen tip in your inbox each week. No noise.</p></div><form id="newsletter-form"><label class="sr-only" for="email">Email address</label><input id="email" type="email" placeholder="Your email address" required><button class="button button-dark" type="submit">Join us →</button><small id="form-message" role="status"></small></form></section>
+  </main>
 
-  <!-- NEWSLETTER SIGNUP -->
-  <section id="newsletter" class="section newsletter-section">
-    <div class="container newsletter-container">
-      <h3>Stay Updated with Kitchen Fleva</h3>
-      <p>Subscribe and get our free “Quick & Healthy Meals” eBook instantly.</p>
-      <form id="newsletter-form">
-        <input type="email" id="newsletter-email" placeholder="Enter your email" required />
-        <button type="submit" class="btn primary-btn">Subscribe</button>
-      </form>
-    </div>
-  </section>
+  <footer class="site-footer"><div class="container footer-grid"><div><a class="brand brand-light" href="#home"><span class="brand-mark">KF</span><span>Kitchen <em>Fleva</em></span></a><p>A warmer, more useful corner of the internet for people who love food.</p></div><div><strong>Explore</strong><a href="#recipes">Recipes</a><a href="#stories">Journal</a><a href="#shop">Kitchen shop</a></div><div><strong>Kitchen Fleva</strong><a href="#about">Our story</a><a href="mailto:hello@kitchenfleva.com">Contact us</a><a href="#home">Privacy</a></div></div><div class="container footer-bottom"><span>© 2026 Kitchen Fleva</span><span>Made with care in Kenya</span></div></footer>
 
-  <!-- FOOTER -->
-  <div id="footer-container"></div>
-
-  <!-- GLOBAL SCRIPTS -->
-  <script type="module" src="./supabaseClient.js"></script>
-  <script type="module" src="./router.js"></script>
-
-  <!-- CONFIG -->
-  <script type="module" src="./config/site-config.js"></script>
-  <script type="module" src="./config/constants.js"></script>
-  <script type="module" src="./config/routes.js"></script>
-  <script type="module" src="./config/theme.js"></script>
-
-  <!-- MODULES -->
-  <script type="module" src="./js/modules/recipeService.js"></script>
-  <script type="module" src="./js/modules/blogService.js"></script>
-  <script type="module" src="./js/modules/productService.js"></script>
-  <script type="module" src="./forms/newsletterForm.js"></script>
-  <script type="module" src="./forms/contactForm.js"></script>
-  <script type="module" src="./auth/auth.js"></script>
-  <script type="module" src="./lang/language.js"></script>
-  <script type="module" src="./components/footer.js"></script>
-  <script type="module" src="./components/ui.js"></script>
-
-  <!-- APP ENTRY -->
-  <script type="module" src="./app.js"></script>
+  <aside class="cart-drawer" id="cart-drawer" aria-label="Shopping bag" aria-hidden="true"><div class="drawer-head"><h2>Your bag</h2><button id="cart-close" aria-label="Close shopping bag">×</button></div><div id="cart-items" class="cart-items"><p class="empty-cart">Your bag is waiting for something lovely.</p></div><div class="cart-footer"><div><span>Total</span><strong id="cart-total">KES 0</strong></div><button class="button button-dark" id="checkout">Continue to checkout</button><small>Digital products are delivered by email after payment.</small></div></aside><div class="overlay" id="overlay"></div>
+  <script type="module" src="app.js"></script>
 </body>
 </html>
-
