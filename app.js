@@ -1,14 +1,8 @@
 import { initialiseHomePage } from './js/pages/homePage.js'
 
-const savedTheme = localStorage.getItem('kitchenfleva-theme') || 'light'
-
 function initialiseTheme() {
+  const savedTheme = localStorage.getItem('kitchenfleva-theme') || 'light'
   document.body.classList.toggle('dark', savedTheme === 'dark')
-
-  document.querySelector('#theme-toggle')?.addEventListener('click', () => {
-    const isDark = document.body.classList.toggle('dark')
-    localStorage.setItem('kitchenfleva-theme', isDark ? 'dark' : 'light')
-  })
 }
 
 async function bootstrap() {
