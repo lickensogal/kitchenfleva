@@ -1,4 +1,5 @@
 const $ = (selector) => document.querySelector(selector)
+const escapeHtml = (value = '') => String(value).replace(/[&<>'"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[char]))
 
 function readItems() {
   try {
@@ -25,7 +26,7 @@ export function createCart() {
     if (total) total.textContent = `KES ${items.reduce((sum, item) => sum + itemPrice(item), 0).toLocaleString()}`
     if (list) {
       list.innerHTML = items.length
-        ? items.map((item, index) => `<div class="cart-item"><span>${item.title}<br><small>KES ${itemPrice(item).toLocaleString()}</small></span><button class="remove-item" data-item="${index}" aria-label="Remove item">×</button></div>`).join('')
+        ? items.map((item, index) => `<div class="cart-item"><span>${escapeHtml(item.title)}<br><small>KES ${itemPrice(item).toLocaleString()}</small></span><button class="remove-item" data-item="${index}" aria-label="Remove ${escapeHtml(item.title)}">×</button></div>`).join('')
         : '<p class="empty-cart">Your bag is waiting for something lovely.</p>'
     }
 
