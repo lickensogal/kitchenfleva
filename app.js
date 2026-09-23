@@ -1,11 +1,26 @@
 import { initialiseHomePage } from './js/pages/homePage.js'
 
-/**
- * Application entry point.
- * Page-specific behaviour lives in js/pages rather than in this bootstrap file.
- */
-document.addEventListener('DOMContentLoaded', () => {
-  const page = document.body.dataset.page || 'home'
+const savedTheme = localStorage.getItem('kitchenfleva-theme') || 'light'
 
-  if (page === 'home') initialiseHomePage()
-})
+function initialiseTheme() {
+  document.body.classList.toggle('dark', savedTheme === 'dark')
+
+  document.querySelector('#theme-toggle')?.addEventListener('click', () => {
+    const isDark = document.body.classList.toggle('dark')
+    localStorage.setItem('kitchenfleva-theme', isDark ? 'dark' : 'light')
+  })
+}
+
+async function bootstrap() {
+  initialiseTheme()
+
+  if (document.querySelector('#home')) {
+    await initialiseHomePage()
+  }
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', bootstrap, { once: true })
+} else {
+  bootstrap()
+}
