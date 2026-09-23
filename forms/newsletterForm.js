@@ -25,15 +25,18 @@ export async function subscribeToNewsletter(email, source = 'homepage') {
   return data || { email: normalizedEmail }
 }
 
-// Kept for legacy pages that explicitly call the initializer.
+// Compatibility initializer for legacy pages. The active homepage binds its own
+// status message so this is only used when another page explicitly calls it.
 export default function initNewsletterForm() {
   const form = document.getElementById('newsletter-form')
   if (!form || form.dataset.newsletterBound === 'true') return
   form.dataset.newsletterBound = 'true'
+
   form.addEventListener('submit', async (event) => {
     event.preventDefault()
+    const email = form.querySelector('input[type="email"]')?.value
     try {
-      await subscribeToNewsletter(form.querySelector('input[type="email"]')?.value)
+      await subscribeToNewsletter(email)
       form.reset()
     } catch (error) {
       console.error('Newsletter signup error:', error)
